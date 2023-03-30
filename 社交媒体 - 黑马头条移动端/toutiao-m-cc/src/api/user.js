@@ -5,10 +5,15 @@ import request from '@/utils/request'
 // import store from '@/store'
 
 export const login = data => {
+  // console.log(data)
+  const newData = {
+    mobile: '13911111111',
+    code: '246810'
+  }
   return request({
     method: 'POST',
     url: '/app/v1_0/authorizations',
-    data
+    ...newData
   })
 }
 

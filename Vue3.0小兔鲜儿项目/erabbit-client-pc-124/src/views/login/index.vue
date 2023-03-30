@@ -1,3 +1,4 @@
+<!-- 组件：头部、表单、底部 -->
 <template>
   <LoginHeader>欢迎登录</LoginHeader>
   <section class="login-section">
@@ -28,7 +29,7 @@ export default {
   components: { LoginHeader, LoginFooter, LoginForm },
   setup () {
     const activeName = ref('account')
-
+    // console.log(activeName)
     // 存储回跳地址
     const store = useStore()
     const route = useRoute()

@@ -1,5 +1,6 @@
 <template>
-  <footer class="login-footer">
+  <div>
+    <footer class="login-footer">
     <div class='container'>
       <p>
         <a href="javascript:;">关于我们</a>
@@ -13,6 +14,7 @@
       <p>CopyRight &copy; 小兔鲜儿</p>
     </div>
   </footer>
+  </div>
 </template>
 
 <script>

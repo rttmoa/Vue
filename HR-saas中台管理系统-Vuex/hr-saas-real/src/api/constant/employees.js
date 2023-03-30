@@ -12,8 +12,7 @@ export default {
     }
   ],
   // 管理形式
-  subjection: [
-    {
+  subjection: [{
       id: '1',
       value: '总部'
     },
@@ -23,8 +22,7 @@ export default {
     }
   ],
   // 在职状态
-  workingState: [
-    {
+  workingState: [{
       id: '1',
       value: '在职'
     },

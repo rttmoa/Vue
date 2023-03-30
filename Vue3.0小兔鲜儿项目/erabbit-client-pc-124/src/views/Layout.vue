@@ -1,17 +1,17 @@
 <template>
-<!-- 顶部通栏 -->
-<AppNavbar />
-<!-- 头部组件 -->
-<AppHeader />
-<!-- 吸顶头部 -->
-<AppHeaderSticky />
-<!-- 内容容器 -->
-<div class="app-body">
-  <!-- 二级路由 -->
-  <RouterView />
-</div>
-<!-- 底部组件 -->
-<AppFooter />
+  <!-- 顶部通栏 -->
+  <AppNavbar />
+  <!-- 头部组件 -->
+  <AppHeader />
+  <!-- 吸顶头部 -->
+  <AppHeaderSticky />
+  <!-- 内容容器 -->
+  <div class="app-body">
+    <!-- 二级路由 -->
+    <RouterView />
+  </div>
+  <!-- 底部组件 -->
+  <AppFooter />
 </template>
 <script>
 import AppNavbar from '@/components/app-navbar'

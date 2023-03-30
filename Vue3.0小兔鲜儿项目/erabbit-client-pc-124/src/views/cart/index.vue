@@ -1,10 +1,12 @@
 <template>
   <div class="xtx-cart-page">
     <div class="container">
+      <!-- 面包屑 -->
       <XtxBread>
         <XtxBreadItem to="/">首页</XtxBreadItem>
         <XtxBreadItem>购物车</XtxBreadItem>
       </XtxBread>
+      <!-- 购物车内容：table表格 -->
       <div class="cart">
         <table>
           <thead>
@@ -21,6 +23,7 @@
           <tbody>
             <tr v-if="$store.getters['cart/validList'].length===0">
               <td colspan="6">
+                <!-- 没有商品时，渲染空数据 -->
                 <CartNone />
               </td>
             </tr>
@@ -33,7 +36,7 @@
                   </RouterLink>
                   <div>
                     <p class="name ellipsis">{{goods.name}}</p>
-                    <!-- 选择规格组件 -->
+                    <!-- 选择规格组件 - 商品信息(规格) -->
                     <CartSku @change="$event=>updateCartSku(goods.skuId, $event)" :skuId="goods.skuId" :attrsText="goods.attrsText" />
                   </div>
                 </div>
@@ -87,7 +90,7 @@
       <!-- 操作栏 -->
       <div class="action">
         <div class="batch">
-          <XtxCheckbox @change="checkAll" :modelValue="$store.getters['cart/isCheckAll']">全选</XtxCheckbox>
+          <XtxCheckbox @change="checkAll" :modelValue="$store.getters['cart/isCheckAll']">全选2</XtxCheckbox>
           <a @click="batchDeleteCart()" href="javascript:;">删除商品</a>
           <a href="javascript:;">移入收藏夹</a>
           <a @click="batchDeleteCart(true)" href="javascript:;">清空失效商品</a>

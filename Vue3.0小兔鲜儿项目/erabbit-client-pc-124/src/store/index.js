@@ -5,6 +5,7 @@ import createPersistedState from 'vuex-persistedstate'
 import cart from './modules/cart'
 import user from './modules/user'
 import category from './modules/category'
+// console.log(category)
 
 export default createStore({
   modules: {
