@@ -5,11 +5,7 @@
       class="page-nav-bar"
       title="登录"
     >
-      <van-icon
-        slot="left"
-        name="cross"
-        @click="$router.back()"
-      />
+      <van-icon slot="left" name="cross" @click="$router.back()"/>
     </van-nav-bar>
     <!-- /导航栏 -->
 

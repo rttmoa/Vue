@@ -1,7 +1,8 @@
 /**
  * PostCSS 配置文件
  */
-
+// 结束需 重启服务
+// 01-项目初始化 --- 关于 .postcssrc.js 配置文件
 module.exports = {
   // 配置要使用的 PostCSS 插件
   plugins: {
