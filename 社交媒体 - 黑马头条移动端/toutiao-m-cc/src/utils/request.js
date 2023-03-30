@@ -7,8 +7,9 @@ import JSONBig from 'json-bigint'
 
 const request = axios.create({
   // 接口的基准路径
-  baseURL: 'http://ttapi.research.itcast.cn/',
-
+  baseURL: 'http://api-toutiao-web.itheima.net',
+  // baseURL: 'http://ttapi.research.itcast.cn/',
+  // baseURL: "http://toutiao.itheima.net",
   // 自定义后端返回的原始数据
   // data: 后端返回的原始数据，说白了就是 JSON 格式的字符串
   transformResponse: [function (data) {
@@ -17,7 +18,6 @@ const request = axios.create({
     } catch (err) {
       return data
     }
-
     // axios 默认会在内部这样来处理后端返回的数据
     // return JSON.parse(data)
   }]
@@ -29,13 +29,15 @@ request.interceptors.request.use(function (config) {
   // 请求发起会经过这里
   // config：本次请求的请求配置对象
   const { user } = store.state
+  // console.log(user)
   if (user && user.token) {
     config.headers.Authorization = `Bearer ${user.token}`
   }
-
+  // console.log(config)
   // 注意：这里务必要返回 config 配置对象，否则请求就停在这里出不去了
   return config
 }, function (error) {
+  // console.log(error)
   // 如果请求出错了（还没有发出去）会进入这里
   return Promise.reject(error)
 })

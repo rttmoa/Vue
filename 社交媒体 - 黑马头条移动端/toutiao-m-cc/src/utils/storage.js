@@ -18,6 +18,7 @@ export const setItem = (key, value) => {
  */
 export const getItem = key => {
   const data = window.localStorage.getItem(key)
+  console.log(data)
   try {
     return JSON.parse(data)
   } catch (err) {

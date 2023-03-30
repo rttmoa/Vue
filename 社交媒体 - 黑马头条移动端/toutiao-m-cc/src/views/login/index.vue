@@ -128,7 +128,8 @@ export default {
         // back 的方式不严谨，后面讲功能优化的时候再说
         this.$router.back()
       } catch (err) {
-        if (err.response.status === 400) {
+        // console.log(err)
+        if (err && err.response && err.response.status === 400) {
           this.$toast.fail('手机号或验证码错误')
         } else {
           this.$toast.fail('登录失败，请稍后重试')

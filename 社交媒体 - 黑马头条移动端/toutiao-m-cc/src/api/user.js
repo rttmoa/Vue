@@ -13,7 +13,7 @@ export const login = data => {
   return request({
     method: 'POST',
     url: '/app/v1_0/authorizations',
-    ...newData
+    data: newData
   })
 }
 
