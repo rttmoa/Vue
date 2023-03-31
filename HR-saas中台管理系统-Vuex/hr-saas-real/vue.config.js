@@ -92,7 +92,7 @@ module.exports = {
     name: name,
     resolve: {
       alias: {
-        '@': resolve('src')
+        '@': resolve('/src')
       }
     },
     // 排除打包的属性
@@ -109,8 +109,7 @@ module.exports = {
       return args
     })
     // it can improve the speed of the first screen, it is recommended to turn on preload
-    config.plugin('preload').tap(() => [
-      {
+    config.plugin('preload').tap(() => [{
         rel: 'preload',
         // to ignore runtime.js
         // https://github.com/vuejs/vue-cli/blob/dev/packages/@vue/cli-service/lib/config/app.js#L171
@@ -139,8 +138,7 @@ module.exports = {
       })
       .end()
 
-    config
-      .when(process.env.NODE_ENV !== 'development',
+    config.when(process.env.NODE_ENV !== 'development',
         config => {
           config
             .plugin('ScriptExtHtmlWebpackPlugin')
@@ -150,8 +148,7 @@ module.exports = {
               inline: /runtime\..*\.js$/
             }])
             .end()
-          config
-            .optimization.splitChunks({
+          config.optimization.splitChunks({
               chunks: 'all',
               cacheGroups: {
                 libs: {

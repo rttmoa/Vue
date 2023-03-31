@@ -1,13 +1,15 @@
 <template>
   <div class="login-container">
-    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
 
+    <!-- 表单提交验证 -->
+    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
+      <!-- 标题 -->
       <div class="title-container">
         <h3 class="title">
-          <img src="@/assets/common/login-logo.png" alt="">
+          <img src="@/assets/common/login-logo.png" alt="" />
         </h3>
       </div>
-
+      <!-- 手机号验证 -->
       <el-form-item prop="mobile">
         <span class="svg-container">
           <svg-icon icon-class="user" />
@@ -48,11 +50,13 @@
         type="primary"
         style="width:100%;margin-bottom:30px;"
         @click.native.prevent="handleLogin"
-      >登录</el-button>
+      >
+        登录
+      </el-button>
 
       <div class="tips">
         <span style="margin-right:20px;">账号: 13800000002</span>
-        <span> 密码: 123456</span>
+        <span>密码: 123456</span>
       </div>
 
     </el-form>
@@ -65,14 +69,10 @@ import { mapActions } from 'vuex'
 export default {
   name: 'Login',
   data() {
+    /***--- validator 自定义校验函数  ---**/
     const validateMobile = (rule, value, callback) => {
-      // value是否符合手机号格式
       validMobile(value) ? callback() : callback(new Error('手机号格式不正确'))
     }
-    // validator 自定义校验函数
-    // 可以自主的校验函数
-    // function (rule, value, callback) {}
-    // value => callback  callback(new Error())
 
     return {
       loginForm: {
@@ -112,16 +112,20 @@ export default {
         this.passwordType = 'password'
       }
       this.$nextTick(() => {
-        this.$refs.password.focus()
+        this.$refs.password.focus() // 鼠标聚焦事件
       })
     },
     // 登录
     handleLogin() {
       this.$refs.loginForm.validate(async isOK => {
         if (isOK) {
+          console.log("可以登陆")
+          // return
           // 表示校验通过
           this.loading = true
           try {
+            console.log(this['user/login']) //     res[key] = function mappedAction () {}
+            console.log(this.loginForm) // {__ob__: Observer}
             await this['user/login'](this.loginForm)
             // 只要进行到这个位置 说明登录成功了 跳到主页
             this.$router.push('/')
