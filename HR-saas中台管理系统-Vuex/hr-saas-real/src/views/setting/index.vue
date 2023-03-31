@@ -1,7 +1,14 @@
+<!-- 2、公司设置 -->
+<!--
+  树结构
+ -->
 <template>
   <div class="dashboard-container">
+
+    <h3 style="padding-left: 20px">需 测试 分配权限(树结构)</h3>
+
     <div class="app-container">
-      <!-- 公司页面结构 -->
+      <!-- 公司页面结构  ———— 角色管理+公司信息 -->
       <el-tabs>
         <el-tab-pane label="角色管理">
           <el-row style="height: 60px">
@@ -38,7 +45,7 @@
             title="对公司名称、公司地址、营业执照、公司地区的更新，将使得公司资料被重新审核，请谨慎修改"
             type="info"
             show-icon
-            :closable="false"
+            :closable="true"
           />
           <el-form label-width="120px" style="margin-top:50px">
             <el-form-item label="公司名称">
@@ -59,10 +66,20 @@
                 style="width:400px"
               />
             </el-form-item>
+            <el-form-item label="备注22_test">
+              <el-input
+                v-model="formData.remarks"
+                type="textarea"
+                :rows="3"
+                style="width:400px"
+              />
+            </el-form-item>
           </el-form>
         </el-tab-pane>
+        <el-tab-pane label="需 测试 分配权限(树结构)" ></el-tab-pane>
       </el-tabs>
     </div>
+
     <!-- 弹层组件 -->
     <!-- this.$emit("update:visible", false) -->
     <el-dialog title="编辑角色" :visible="showDialog" @close="btnCancel">
@@ -85,8 +102,8 @@
           </el-col>
         </el-row>
       </template>
-
     </el-dialog>
+
     <!-- 放置一个分配权限的弹层 -->
     <el-dialog title="分配权限" :visible="showPermDialog" @close="btnPermCancel">
       <!-- node-key指定当前节点数据中的唯一标识字段 -->
@@ -109,8 +126,11 @@
         </el-col>
       </el-row>
     </el-dialog>
+
   </div>
 </template>
+
+
 
 <script>
 import { getRoleList, getCompanyInfo, deleteRole, getRoleDetail, updateRole, addRole, assignPerm } from '@/api/setting'
@@ -120,17 +140,17 @@ import { mapGetters } from 'vuex'
 export default {
   data() {
     return {
-      list: [],
+      list: [],  // 获取的角色管理数据
       page: {
         total: 0,
         page: 1,
         pagesize: 10
       },
-      formData: {},
-      roleForm: {},
+      formData: {}, // 公司信息页数据
+      roleForm: {}, // 新增/编辑角色信息
       rules: { name: [{ required: true, message: '角色名称不能为空', trigger: 'blur' }] },
-      showDialog: false,
-      showPermDialog: false,
+      showDialog: false,  // 是否显示弹出框
+      showPermDialog: false, // 是否显示分配权限弹出框
       roleId: null, // 记录当前点击分分配权限的角色id
       permData: [], // 专门来接收权限数据
       defaultProps: {
@@ -139,39 +159,46 @@ export default {
       selectChecks: [] // 用来接收当前角色所拥有的权限数据
     }
   },
+  // 计算
   computed: {
     ...mapGetters(['companyId'])
   },
+  // 创建
   created() {
-    this.getRoleList()
-    this.getCompanyInfo()
+    this.getRoleList()    // 获取角色数据
+    this.getCompanyInfo() // 获取公司数据
   },
   methods: {
     // 页码改变事件
 
     // 获取列表数据
     async getRoleList() {
+      // console.log(await getRoleList(this.page))
       const { total, rows } = await getRoleList(this.page)
       this.page.total = total
       this.list = rows
     },
     async getCompanyInfo() {
-      // await getCompanyInfo(this.$store.getters.companyId)
+      // console.log(await getCompanyInfo(this.companyId))
+      // console.log(await getCompanyInfo(this.$store.getters.companyId))
       this.formData = await getCompanyInfo(this.companyId)
     },
-    async  delRole(id) {
+    async delRole(id) {
       try {
         await this.$confirm('确定删除此角色？')
         await deleteRole(id)
         this.getRoleList()
       } catch (error) {
-        console.log(error)
+        console.error("catch e", error)
       }
     },
+    // 编辑按钮
     async editRole(id) {
+      // console.log(await getRoleDetail(id))
       this.roleForm = await getRoleDetail(id)
       this.showDialog = true
     },
+    // 提交按钮 —— 添加或者编辑角色时
     async btnOK() {
       try {
         await this.$refs.roleForm.validate()
@@ -183,34 +210,43 @@ export default {
           await addRole(this.roleForm)
         }
         this.getRoleList() // 获取角色列表
-        this.showDialog = false // 关闭弹层 会触发 close事件
       } catch (error) {
         console.log(error)
+        this.showDialog = false // 关闭弹层 会触发 close事件
       }
     },
     btnCancel() {
       this.roleForm = {} // 重置数据
       this.$refs.roleForm.resetFields() // 重置校验
-      this.showDialog = false
+      this.showDialog = false;
     },
-    // 分配权限
+    // 分配权限 —————————————— 树结构(utils)
     async  assignRole(id) {
-      this.roleId = id
+      console.log("分配权限")
+      console.log((await getPermissionList()).map(v => { return {name: v.name, id: v.id, pid: v.pid} }))
+      console.log(transListToTreeData((await getPermissionList()).map(v => { return {name: v.name, id: v.id, pid: v.pid} }), "0"))
+      this.roleId = id;
       this.permData = transListToTreeData(await getPermissionList(), '0') // 将树形转化
       const { permIds } = await getRoleDetail(id) // permIds就是当前点击的角色的权限数据
       this.selectChecks = permIds
-      this.showPermDialog = true
+      this.showPermDialog = true;
+      // debugger
     },
-    // 确定分配权限
+    /***--- 确定分配权限 ---**/
     async btnPermOK() {
+      console.log(this)
+      console.log(this.roleId)
+      console.log(this.$refs.permTree)
+      console.log(this.$refs.permTree.getCheckedKeys())
       //  this.$refs.permTree.getCheckedKeys()得到的是一个字符串数组 数组中id的值
-      await assignPerm({ id: this.roleId, permIds: this.$refs.permTree.getCheckedKeys() })
-      this.$message.success('分配权限成功')
-      this.showPermDialog = false
+      await assignPerm({ id: this.roleId, permIds: this.$refs.permTree.getCheckedKeys() });
+      this.$message.success('分配权限成功');
+      this.showPermDialog = false;
     },
+    // 分配权限关闭 + 关闭选择的树结构 + 关闭弹窗
     btnPermCancel() {
-      this.selectChecks = []
-      this.showPermDialog = false
+      this.selectChecks = [];
+      this.showPermDialog = false;
     }
   }
 }

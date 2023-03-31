@@ -1,6 +1,9 @@
 // 检查权限点
 // 导出一个混入对象
 import store from '@/store'
+
+
+
 export default {
   methods: {
     //   有权限就返回true 没权限返回false

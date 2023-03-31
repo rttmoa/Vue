@@ -3,6 +3,8 @@ import { Message } from 'element-ui'
 import { getTimeStamp } from '@/utils/auth'
 import store from '@/store'
 import router from '@/router'
+
+
 const TimeOut = 5400 // 定义超时时间
 const service = axios.create({
 //    设置基础地址

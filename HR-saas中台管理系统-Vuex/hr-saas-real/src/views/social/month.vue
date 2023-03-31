@@ -110,6 +110,11 @@
 
 </template>
 
+
+
+
+
+
 <script>
 import { getArchivingCont, getArchivingArchive, newReport } from '@/api/social'
 export default {

@@ -1,3 +1,4 @@
+<!-- 工资 + 202030报表按钮 -->
 <template>
   <div class="monthStatementBox">
     <div class="monthStatementTop">
@@ -52,11 +53,7 @@
 
 <script>
 
-import {
-  getArchivingCont,
-  newReport
-  // getArchivingArchive
-} from '@/api/salarys'
+import { getArchivingCont, newReport /* getArchivingArchive */ } from '@/api/salarys'
 export default {
   name: 'HistoricalArchiving',
   data() {
@@ -77,7 +74,8 @@ export default {
     async getArchivingCont() {
       this.loading = true
       const yearMonth = this.yearMonth
-      this.contentData = await getArchivingCont({ yearMonth, opType: 1 })
+      // this.contentData = await getArchivingCont({ yearMonth, opType: 1 })
+      this.contentData = []
       this.loading = false
     },
     clickCancel() {
@@ -92,8 +90,7 @@ export default {
     },
     // 归档报表
     archivingReportForm() {
-      this.$confirm('您确认归档当月报表吗？')
-        .then(async() => {
+      this.$confirm('您确认归档当月报表吗？').then(async() => {
           // await getArchivingArchive({ yearMonth: this.yearMonth })
           this.$message.success('归档成功')
         })
@@ -130,7 +127,7 @@ export default {
       return t2
     },
     handleExport() {
-
+      console.log("点击了导出按钮")
     }
   }
 }

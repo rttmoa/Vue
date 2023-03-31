@@ -126,6 +126,7 @@ export function exportApprovals(data) {
   })
 }
 
+/***--- 更新用户信息 ---**/
 export function updateUser(data) {
   return request({
     url: `/sys/user/${data.id}`,

@@ -50,6 +50,7 @@ export default {
   },
   methods: {
     async getDepartments() {
+      console.log(123)
       this.loading = true
       const { depts, companyName } = await getDepartments()
       this.company = { manager: '负责人', name: companyName, id: '' }

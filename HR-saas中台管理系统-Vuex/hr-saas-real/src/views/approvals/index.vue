@@ -87,11 +87,16 @@ export default {
   methods: {
     // 初始化数据
     async  getApprovalList() {
-      this.loading = true
-      const { rows, total } = await getApprovalList({ year: 2018, ...this.page })
-      this.page.total = total
-      this.list = rows
-      this.loading = false
+      this.loading = true;
+      try {
+        const { rows, total } = await getApprovalList({ year: 2018, ...this.page })
+        this.page.total = total
+        this.list = rows
+      } catch (Exception) {
+        console.log("审批页", Exception)
+      } finally {
+        this.loading = false
+      } 
     },
     toDetail(obj) {
       var name = obj.processName

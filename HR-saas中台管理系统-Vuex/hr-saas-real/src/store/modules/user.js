@@ -1,6 +1,8 @@
 import { getToken, setToken, removeToken, setTimeStamp } from '@/utils/auth'
 import { login, getUserInfo, getUserDetailById } from '@/api/user'
 import { resetRouter } from '@/router'
+
+
 const state = {
   token: getToken(), // 设置token为共享
   userInfo: {} // 这里为什么不写null ?

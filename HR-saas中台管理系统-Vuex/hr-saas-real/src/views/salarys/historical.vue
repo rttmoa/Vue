@@ -85,7 +85,7 @@ export default {
       this.tableData = data.items
       this.loading = false
     },
-    async  openTable(obj, index) {
+    async openTable(obj, index) {
       if (!obj.act) {
         this.loading = true
         const { data } = await getArchivingCont({ month: obj.month })

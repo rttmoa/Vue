@@ -1,3 +1,4 @@
+<!-- 工资 + 个人信息详情页面 -->
 <template>
   <div class="detailsContainer">
     <div class="contLeft">
@@ -50,10 +51,10 @@
 </template>
 
 <script>
-import { getSalaryDetail, getSettings } from '@/api/salarys'
-import { getUserDetailById } from '@/api/user'
-import { getHistorysData } from '@/api/social'
-import { getAtteArchiveDetail } from '@/api/attendances'
+  import { getSalaryDetail, getSettings } from '@/api/salarys'
+  import { getUserDetailById } from '@/api/user'
+  import { getHistorysData } from '@/api/social'
+  import { getAtteArchiveDetail } from '@/api/attendances'
 
 export default {
   name: 'UsersTableIndex',

@@ -2,7 +2,10 @@ import Cookies from 'js-cookie'
 
 const TokenKey = 'hr-saas-111-token'
 
-const timeKey = 'hr-sass-time-key' // 用来作为时间戳存储的key
+const timeKey = 'hr-sass-time-key'    // 用来作为时间戳存储的key
+
+
+
 
 export function getToken() {
   return Cookies.get(TokenKey)

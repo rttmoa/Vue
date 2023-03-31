@@ -31,7 +31,9 @@ import ScrollPane from './ScrollPane'
 import path from 'path'
 
 export default {
-  components: { ScrollPane },
+  components: {
+    ScrollPane
+  },
   data() {
     return {
       visible: false,

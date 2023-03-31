@@ -1,3 +1,4 @@
+<!-- 首页 + 流程申请 + 我的信息 -->
 <template>
   <div v-loading="loading" class="myInfo">
     <div class="myInfoTop">
@@ -56,19 +57,24 @@ export default {
     ...mapGetters(['userId'])
   },
   created() {
-    this.getUserInfo()
+    this.getUserInfo();
   },
   methods: {
     async onSubmit() {
-      const user = this.myInfo
-      await updateUser(user)
-      await updatePersonal(user)
+      console.log(this.myInfo); return;
+      const user = this.myInfo;
+      await updateUser(user) // 更新用户信息
+      await updatePersonal(user) // 更新用户详情的基础信息
       this.$message.success('保存成功')
     },
     onCancel() {
-      this.$router.back(-1)
+      this.$router.back(-1);
     },
     async getUserInfo() {
+      console.log(this.userId) // 1063705989926227968
+      console.log(await getUserDetailById(this.userId)) // 获取用户详情信息
+      console.log(await getPersonalDetail(this.userId)) // 读取用户详情的基础信息
+
       this.loading = true
       const detailData = await getUserDetailById(this.userId)
       const personData = await getPersonalDetail(this.userId)

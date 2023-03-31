@@ -5,45 +5,41 @@
       <page-tools :show-before="true">
         <!-- 前面内容 -->
         <template v-slot:before>有 {{ attendInfo.tobeTaskCount }} 条考勤审批尚未处理</template>
+        <!-- —————— 右侧跳转页 -->
         <template v-slot:after>
           <el-button size="mini" type="danger" @click="$router.push('/import?type=attendance')">导入</el-button>
           <el-button size="mini" type="warning">提醒</el-button>
           <el-button size="mini" type="primary" @click="handleSet">设置</el-button>
           <el-button size="mini" type="default" @click="$router.push('/attendances/archiving/')">历史归档</el-button>
+          <!-- ———— 跳转到当前目录 report.vue 文件中 -->
           <el-button size="mini" type="primary" @click="$router.push({'path':'/attendances/report/'+ yearMonth})">{{ yearMonth }}报表</el-button>
         </template>
       </page-tools>
+
+      <!-- 渲染 ———— 部门和考勤状态 -->
       <el-card class="hr-block">
         <el-form ref="formData" :model="formData" label-width="120px" class="formInfo">
           <el-form-item label="部门:">
             <el-checkbox-group v-model="formData.deptID">
-              <el-checkbox
-                v-for="item in departments"
-                :key="item.id"
-                :label="item.name"
-              >
+              <el-checkbox v-for="item in departments" :key="item.id" :label="item.name">
                 {{ item.name }}
               </el-checkbox>
             </el-checkbox-group>
           </el-form-item>
           <el-form-item label="考勤状态：">
             <el-radio-group v-model="formData.stateID">
-              <el-radio
-                v-for="item in stateData.holidayType"
-                :key="item.id"
-                :label="item.value"
-                :value="item.value"
-              >
+              <el-radio v-for="item in stateData.holidayType" :key="item.id" :label="item.value" :value="item.value">
                 {{ item.value }}
               </el-radio>
             </el-radio-group>
           </el-form-item>
         </el-form>
       </el-card>
-      <!-- 考勤数据 -->
+
+      <!-- 渲染 ———— 考勤数据 -->
       <el-card class="hr-block">
         <!-- 考勤列表 -->
-        <div style="width:100%;position: relative;overflow-x: auto; overflow-y: hidden;">
+        <div style="width:100%; position: relative; overflow-x: auto; overflow-y: hidden;">
           <div style="width: 3000px;">
             <table border="0" align="center" cellpadding="0" cellspacing="0" class="tableInfo">
               <tr>
@@ -59,12 +55,13 @@
                 <td width="100">{{ item.username }}</td>
                 <td width="100">{{ item.workNumber }}</td>
                 <td width="200">{{ item.departmentName }}</td>
-                <td width="100">{{ item.mobile }}</td>
+                <td width="150">{{ item.mobile }}</td>
+                <!--  ———— 点击表格可修改考勤状态 -->
                 <td
                   v-for="(it,ind) in item.attendanceRecord"
                   :key="ind"
                   width="110"
-                  @click="showChangeDialog(item,ind,it)"
+                  @click="showChangeDialog(item, ind, it)"
                 >
                   <span v-if="it.adtStatu===1">√</span>
                   <span v-if="it.adtStatu===2">旷工</span>
@@ -92,13 +89,10 @@
               </tr>
             </table>
           </div>
-
         </div>
-        <el-dialog
-          :visible.sync="centerDialogVisible"
-          width="30%"
-          center
-        >
+
+
+        <el-dialog :visible.sync="centerDialogVisible" width="30%" center>
           <span slot="title" style="color:#fff;">{{ attendInfo.name }} {{ attendInfo.month }}/{{ attendInfo.getDate }}（实际工作日考勤方案）</span>
           <div class="attenInfo">
             <p class="colRed">注：统计考勤时，异常状态优先正常状态</p>
@@ -129,14 +123,10 @@
         </el-row>
       </el-card>
     </div>
+
     <el-card>
       <!-- 提醒组件 -->
-      <el-dialog
-        title="提醒"
-        :visible.sync="tipsDialogVisible"
-        width="280px"
-        center
-      >
+      <el-dialog title="提醒" :visible.sync="tipsDialogVisible" width="280px" center>
         <div class="attenInfo">
           <p>系统将通过邮件与短信的形式，对全体员工中存在旷工的考勤进行提醒，该提醒每月仅可发送 1 次。</p>
         </div>
@@ -145,9 +135,17 @@
           <el-button @click="centerDialogVisible = false">取消</el-button>
         </span>
       </el-dialog>
-      <!-- 设置组件 -->
-      <attendance-set ref="set" @handleCloseModal="handleCloseModal" /></el-card></div>
+
+      <!-- 设置组件 —— 弹出框 -->
+      <attendance-set ref="set" @handleCloseModal="handleCloseModal" />
+    </el-card>
+
+  </div>
 </template>
+
+
+
+
 
 <script>
 import attendanceApi from '@/api/constant/attendance'
@@ -162,7 +160,7 @@ export default {
       list: [],
       selectData: [],
       stateData: attendanceApi,
-      departments: [],
+      departments: [], // 部门数据
       total: 100,
       attendanceRecord: '',
       monthOfReport: '',
@@ -201,7 +199,7 @@ export default {
   // 创建完毕状态
   created() {
     this.getAttendancesList() // 获取考勤列表
-    this.getDepartments() // 获取考勤列表
+    this.getDepartments() // 获取部门数据
   },
   methods: {
     // 暂时不处理
@@ -220,14 +218,16 @@ export default {
     handleCloseModal() {
       this.$refs.set.dialogFormH()
     },
-    // 获取组织列表
+    // 获取部门数据
     async getDepartments() {
+      // console.log(await getDepartments()) // {companyId: '1', companyName: '江苏传智播客教育科技股份有限公司', companyManage: '', depts: Array(15)}
       const { depts } = await getDepartments()
       this.departments = depts
     },
 
-    // 初始化数据
+    // 获取考勤列表
     async getAttendancesList() {
+      // console.log("考勤列表i", await getAttendancesList({ ...this.page }))
       this.loading = true
       const { data, monthOfReport, tobeTaskCount } = await getAttendancesList({ ...this.page })
       this.list = data.rows // 当前记录
@@ -272,6 +272,9 @@ export default {
   }
 }
 </script>
+
+
+
 
 <style rel="stylesheet/scss" lang="scss" scoped>
   .tableInfo {

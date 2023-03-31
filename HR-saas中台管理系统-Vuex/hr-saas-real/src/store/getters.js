@@ -1,3 +1,7 @@
+
+
+
+
 const getters = {
   sidebar: state => state.app.sidebar,
   device: state => state.app.device,
@@ -8,4 +12,6 @@ const getters = {
   companyId: state => state.user.userInfo.companyId,
   routes: state => state.permission.routes
 }
+
+
 export default getters

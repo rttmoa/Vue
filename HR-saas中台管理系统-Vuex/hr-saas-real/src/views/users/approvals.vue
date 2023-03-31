@@ -1,3 +1,4 @@
+<!-- 首页 + 流程申请 + 审批列表 -->
 <template>
   <div class="usersApprovalsContainer">
     <div class="approvalsTop">
@@ -164,6 +165,8 @@
   </div>
 </template>
 
+
+
 <script>
 import {
   getApprovalList,
@@ -224,11 +227,13 @@ export default {
   },
   methods: {
     async getApprovalList() {
+      console.log(123)
       const result = await getApprovalList(this.pagination)
       this.total = result.total
       this.tableData = result.rows
     },
     async getFlowList() {
+      console.log(await getFlowList())
       this.approvalsType = await getFlowList()
     },
     async delProcess(id) {

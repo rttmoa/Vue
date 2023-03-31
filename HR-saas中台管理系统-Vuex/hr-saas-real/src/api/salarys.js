@@ -13,6 +13,7 @@ export function getTips(yearMonth) {
     url: `/salarys/tips/${yearMonth}`
   })
 }
+// 获取设置
 export function getSettings() {
   return request({
     url: '/salarys/settings'
@@ -24,11 +25,10 @@ export function getCompanySetting() {
     url: '/salarys/company-settings'
   })
 }
+// 存储设置
 export function saveSettings(data) {
-  return request({
-    url: '/salarys/settings',
-    method: 'post', data
-  })
+  console.log(data)
+  return request({ url: '/salarys/settings', method: 'post', data})
 }
 
 export function getSalaryDetail(userId) {

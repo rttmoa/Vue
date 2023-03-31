@@ -1,6 +1,8 @@
 // 引入了静态路由
 // 权限模块的目的 是提供当前用户所拥有的路由权限的数据  静态路由 + 当前用户的自身的动态路由
 import { constantRoutes, asyncRoutes } from '@/router'
+
+
 const state = {
   // routes表示当前人的路由权限
   routes: constantRoutes // 当前所有人都默认拥有静态路由

@@ -1,5 +1,7 @@
+<!-- 权限管理 -->
 <template>
   <div class="dashboard-container">
+
     <div class="app-container">
       <page-tools>
         <template #after>
@@ -8,6 +10,9 @@
           <el-button type="primary" size="small" @click="addPermission('0', 1)">添加权限</el-button>
         </template>
       </page-tools>
+
+      <h3>测试树结构</h3>
+
       <!-- 如果要用树形的话 必须给一个属性 row-key -->
       <el-table border :data="list" row-key="id">
         <el-table-column prop="name" label="名称" />
@@ -21,9 +26,9 @@
             <el-button type="text" @click="delPermission(row.id)">删除</el-button>
           </template>
         </el-table-column>
-
       </el-table>
     </div>
+
     <!-- 放置一个弹层 -->
     <el-dialog title="新增权限" :visible="showDialog" @close="btnCancel">
       <!-- 表单 -->
@@ -75,7 +80,7 @@ export default {
       },
       rules: {
         name: [{ required: true, message: '权限名称不能为空', trigger: 'blur' }],
-        code: [{ required: true, message: '权限标识不能为空', trigger: 'blur' }]
+        code: [{ required: true, message: '权限标识不能为空', trigger: 'blur' }],
       }
     }
   },
@@ -85,11 +90,15 @@ export default {
   methods: {
     // 递归算法转化树形
     async getPermissionList() {
-      this.list = transListToTreeData(await getPermissionList(), '0')
+      console.log("递归算法")
+      console.log((await getPermissionList()).map(v => { return {name: v.name, id: v.id, pid: v.pid} }))
+      console.log(transListToTreeData((await getPermissionList()).map(v => { return {name: v.name, id: v.id, pid: v.pid} }), "0"))
+      this.list = transListToTreeData(await getPermissionList(), '0')   // ———————— 递归算法转化树形
     },
+    // 删除权限
     delPermission(id) {
       this.$confirm('确认删除此权限点吗').then(() => {
-        return delPermission(id)
+        return delPermission(id);
       }).then(() => {
         this.$message.success('删除权限点成功')
         this.getPermissionList()
@@ -102,10 +111,11 @@ export default {
       this.showDialog = true
     },
     // 编辑权限点
-    async  editPermission(id) {
+    async editPermission(id) {
       this.formData = await getPermissionDetail(id)
       this.showDialog = true
     },
+    // 添加/编辑权限 确定时
     btnOK() {
       this.$refs.perForm.validate().then(async isOK => {
         if (isOK) {
@@ -121,6 +131,7 @@ export default {
         }
       })
     },
+    // 关闭弹出框事件
     btnCancel() {
       // 还原数据
       this.formData = {
@@ -133,7 +144,7 @@ export default {
       }
       this.$refs.perForm.resetFields() // 重置校验
       this.showDialog = false
-    }
+    },
   }
 }
 </script>
