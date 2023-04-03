@@ -2,15 +2,15 @@
   <div class="boxInfo">
     <!-- 数据表格 -->
     <div class="fr clearfix searchInfo">
-      <!-- <div class="serachInput">
+      <div class="serachInput">
         <el-input
           v-model="requestParameters.keyword"
           placeholder="搜索"
           clearable
           @keyup.enter.native="dataSearch(itemes,index)"
         />
-      </div> -->
-      <!-- <el-input v-model="requestParameters.keyword" placeholder="请输入姓名" @click="handleSearch"></el-input> -->
+      </div>
+      <el-input v-model="requestParameters.keyword" placeholder="请输入姓名" @click="handleSearch"></el-input>
       <a class="el-button fr el-button--primary el-button--mini" title="导出" @click="handelFileDownload">导出</a>
     </div>
     <el-table
@@ -76,7 +76,7 @@ export default {
   data() {
     return {
       // baseData: [],
-      dataList: [],
+      dataList: [], // 表格数据
       seleList: [],
       text: '', // 新增、编辑文本
       tableKey: 0,
@@ -88,7 +88,7 @@ export default {
         atteDate: ''
       },
       isArchived: '',
-      loading: false,
+      loading: false,  // 控制表格的加载状态
       centerDialogVisible: false,
       infoTip: '',
       month: this.$route.params.month
@@ -97,14 +97,13 @@ export default {
   computed: {
     // 模糊搜索
     list() {
-      const search = this.requestParameters.keyword
+      const search = this.requestParameters.keyword;
+      console.log(search)
       if (search) {
         return this.dataList.filter(data => {
           return Object.keys(data).some(key => {
             return (
-              String(data[key])
-                .toLowerCase()
-                .indexOf(search) > -1
+              String(data[key]).toLowerCase().indexOf(search) > -1
             )
           })
         })
@@ -198,14 +197,17 @@ export default {
       this.requestParameters.page = val
       this.reportFormList()
     },
-    // 下载文件
+    /***--- Excel表格导出 ---**/
     handelFileDownload() {
       try {
         import('@/vendor/Export2Excel').then(excel => {
           const tHeader = ['姓名', '工号', '手机号', '部门', '事假', '调休', '正常', '迟到次数', '早退次数', '日均时长', '旷工天数', '是否全勤', '实际出勤天数', '应出勤工作日', '计薪标准', '计薪天数'] // 表头 必填
 
           const filterVal = ['name', 'workNumber', 'mobile', 'department', 'leaveDays', 'dayOffLeaveDays', 'normalDays', 'laterTimes', 'earlyTimes', 'averageDailyNaturalDays', 'absenceDays', 'whetherItIsFullOfWork', 'actualAttendanceDaysAreOfficial', 'attendanceDay', 'salaryStandard', 'officialSalaryDays']
+          // console.log(this.dataList)
+          // return
           const data = this.formatJson(filterVal, this.dataList)
+          console.log(data)
           excel.export_json_to_excel({
             header: tHeader,
             data: data,
@@ -220,17 +222,17 @@ export default {
       }
     },
     formatJson(filterVal, jsonData) {
-      return jsonData.map(v => filterVal.map(j => {
-        return v[j]
-      }))
-    }
+      return jsonData.map(v => filterVal.map(j => v[j]))
+    },
+    handleSearch(){ },
+    dataSearch(data, index) { }
   }
 }
 </script>
 <style rel="stylesheet/scss" lang="scss">
-.el-message-box--center .el-message-box__content p {
-  text-align: left;
-}
+  .el-message-box--center .el-message-box__content p {
+    text-align: left;
+  }
 </style>
 
 <style rel="stylesheet/scss" lang="scss" scoped>

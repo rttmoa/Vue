@@ -8,7 +8,7 @@
         <!-- —————— 右侧跳转页 -->
         <template v-slot:after>
           <el-button size="mini" type="danger" @click="$router.push('/import?type=attendance')">导入</el-button>
-          <el-button size="mini" type="warning">提醒</el-button>
+          <el-button size="mini" type="warning" @click="tipsDialogVisible = true">提醒</el-button>
           <el-button size="mini" type="primary" @click="handleSet">设置</el-button>
           <el-button size="mini" type="default" @click="$router.push('/attendances/archiving/')">历史归档</el-button>
           <!-- ———— 跳转到当前目录 report.vue 文件中 -->
@@ -21,18 +21,19 @@
         <el-form ref="formData" :model="formData" label-width="120px" class="formInfo">
           <el-form-item label="部门:">
             <el-checkbox-group v-model="formData.deptID">
-              <el-checkbox v-for="item in departments" :key="item.id" :label="item.name">
+              <el-checkbox v-for="item in departments" :key="item.id" :label="item.name"> <!-- 渲染 ———— 部门数据 -->
                 {{ item.name }}
               </el-checkbox>
             </el-checkbox-group>
           </el-form-item>
           <el-form-item label="考勤状态：">
             <el-radio-group v-model="formData.stateID">
-              <el-radio v-for="item in stateData.holidayType" :key="item.id" :label="item.value" :value="item.value">
+              <el-radio v-for="item in stateData.holidayType" :key="item.id" :label="item.value" :value="item.value"> <!-- 渲染 ———— 考勤状态 -->
                 {{ item.value }}
               </el-radio>
             </el-radio-group>
           </el-form-item>
+          <el-button onclick="submit">提交</el-button>
         </el-form>
       </el-card>
 
@@ -91,7 +92,7 @@
           </div>
         </div>
 
-
+        <!-- 考勤状态 弹出框 修改状态 -->
         <el-dialog :visible.sync="centerDialogVisible" width="30%" center>
           <span slot="title" style="color:#fff;">{{ attendInfo.name }} {{ attendInfo.month }}/{{ attendInfo.getDate }}（实际工作日考勤方案）</span>
           <div class="attenInfo">
@@ -111,6 +112,7 @@
             <el-button @click="centerDialogVisible = false">取消</el-button>
           </span>
         </el-dialog>
+
         <!-- 分页组件 -->
         <el-row type="flex" align="middle" justify="center" style="height: 60px">
           <el-pagination
@@ -156,20 +158,22 @@ export default {
   name: 'Attendances',
   components: { AttendanceSet },
   data() {
+    // console.log(attendanceApi) // 自定义数组 ———— 假期类型，请假类型，部门类型...
+    // console.log(this.formData)
     return {
-      list: [],
+      list: [],  // 考勤列表数据
       selectData: [],
       stateData: attendanceApi,
       departments: [], // 部门数据
       total: 100,
-      attendanceRecord: '',
-      monthOfReport: '',
-      centerDialogVisible: false,
-      tipsDialogVisible: false,
+      attendanceRecord: '',  // 弹出框修改考勤状态
+      monthOfReport: '',  // 表头 三月份
+      centerDialogVisible: false, // 关闭弹出框
+      tipsDialogVisible: false, // 提醒组件是否显示
       month: '',
       yearMonth: '',
-      loading: false,
-      attendInfo: {
+      loading: false, // 此页面的加载事件
+      attendInfo: { // ??
         month: '',
         getDate: '',
         getInfo: '',
@@ -177,7 +181,7 @@ export default {
         counts: '',
         tobeTaskCount: ''
       },
-      formData: {
+      formData: {   // 改变的表单事件
         page: 1,
         pagesize: 10,
         keyword: this.keyword,
@@ -189,7 +193,7 @@ export default {
         pagesize: 10,
         total: 0
       },
-      modifyData: {
+      modifyData: { // 修改的数据
         userId: '',
         day: '',
         adtStatu: ''
@@ -212,10 +216,12 @@ export default {
     },
     // 设置
     handleSet() {
+      console.log("开启设置弹出框")
       this.$refs.set.dialogFormV()
     },
     // 弹框关闭
     handleCloseModal() {
+      console.log("关闭设置弹出框")
       this.$refs.set.dialogFormH()
     },
     // 获取部门数据
@@ -230,11 +236,11 @@ export default {
       // console.log("考勤列表i", await getAttendancesList({ ...this.page }))
       this.loading = true
       const { data, monthOfReport, tobeTaskCount } = await getAttendancesList({ ...this.page })
-      this.list = data.rows // 当前记录
+      this.list = data.rows // 员工数据
       this.page.total = data.total // 总条数
-      this.attendInfo.counts = data.total
-      this.attendInfo.month = monthOfReport
-      this.attendInfo.tobeTaskCount = tobeTaskCount
+      this.attendInfo.counts = data.total // 总条数
+      this.attendInfo.month = monthOfReport // 3
+      this.attendInfo.tobeTaskCount = tobeTaskCount // 0
 
       var date = new Date()
       var year = date.getFullYear()
@@ -245,9 +251,10 @@ export default {
       this.month = monthOfReport
       this.loading = false
     },
-    // 确定修改
-    async  btnOK() {
-      await updateAttendance(this.modifyData)
+    // 更新考勤状态
+    async btnOK() {
+      console.log("考勤状态", this.modifyData.adtStatu)
+      // await updateAttendance(this.modifyData)  /* 注释 ——————   不可修改 */
       this.centerDialogVisible = false
       this.getAttendancesList() // 成功之后 重新拉取数据
     },
@@ -256,12 +263,14 @@ export default {
       this.page.page = page
       this.getAttendancesList() // 获取数据
     },
+    // 弹出框修改考勤状态组件
     showChangeDialog(item, id, it) {
+      // console.log(this.modifyData)
       this.modifyData.userId = item.id
       this.modifyData.day = it.day
       this.modifyData.departmentId = item.departmentId
-      this.modifyData.adtStatu = it.adtStatu + '' // 数字转成字符串
-
+      this.modifyData.adtStatu = it.adtStatu + '';   // 数字转成字符串
+      // console.log(this.modifyData)
       if (it.adtStatu !== '') {
         this.attendInfo.getDate = parseInt(id + 1)
         this.attendInfo.getInfo = it.adtStatu

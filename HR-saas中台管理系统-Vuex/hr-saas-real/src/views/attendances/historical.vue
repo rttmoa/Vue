@@ -1,5 +1,7 @@
+<!-- 考勤 + 历史归档 + 2020年 -->
 <template>
   <div class="historicalArcBox">
+    <!-- 头部 -->
     <div class="historicalArcTop">
       <div class="title">
         <span>员工历史归档</span>
@@ -9,23 +11,27 @@
             type="year"
             format="yyyy"
             value-format="yyyy"
-            width="130px"
+            width="110px"
             placeholder="选择年"
             @change="handleChangeYear"
           />
         </div>
       </div>
     </div>
+
+    <!-- ———— 数据展示 -->
     <div v-loading="loading" class="historicalTable">
       <div v-show="showArchivig" class="archivig">该年份无归档报表</div>
+
+      <!-- 渲染外壳 -->
       <div v-for="( itemes, index) in tableData" :key="index" class="itemes">
         <div class="itemTopLab" :class="{act: itemes.act}">
-          <div class="lab" @click="openTable(itemes,index)">
+          <div class="lab" @click="openTable(itemes, index)">
             >
           </div>
           <div>
             <p ref="sheelName" class="title">{{ itemes.archiveYear }}-{{ itemes.archiveMonth }}月员工报表</p>
-            <p class="labTit" @click="openTable(itemes,index)">考勤统计</p>
+            <p class="labTit" @click="openTable(itemes, index)">考勤统计</p>
           </div>
           <div class="fr">
             <div>
@@ -42,6 +48,7 @@
             </div>
           </div>
         </div>
+
         <div v-show="itemes.act" class="itemDropDown">
           <el-alert
             title="迟到、早退和补签的统计单位为“次”；所有假期类型、外出、旷工的统计单位均为“天”。"
@@ -78,17 +85,17 @@
             <el-table-column prop="normalDays" label="正常" width="100" />
             <el-table-column prop="laterTimes" label="迟到次数" width="100" />
             <el-table-column prop="earlyTimes" label="早退次数" width="100" />
-            <!--
-            <el-table-column prop="hoursPerDays" label="日均时长（自然日）" width="150"></el-table-column>
+
+            <!-- <el-table-column prop="hoursPerDays" label="日均时长（自然日）" width="150"></el-table-column>
             <el-table-column prop="hoursPerWorkDay" label="日均时长（工作日）" width="150"></el-table-column>
             <el-table-column prop="hoursPerRestDay" label="日均时长（休息日）" width="150"></el-table-column>
-            <el-table-column prop="clockRate" label="打卡率（%）" width="120"></el-table-column>
-            -->
+            <el-table-column prop="clockRate" label="打卡率（%）" width="120"></el-table-column> -->
+
             <el-table-column prop="absenceDays" label="旷工天数" width="100" />
             <el-table-column prop="isFullAttendanceint" :formatter="fStandards" label="是否全勤" width="100" />
-            <!--
-            <el-table-column prop="actualAtteUnofficialDays" label="实际出勤天数（非正式）" width="180"></el-table-column>
-            -->
+
+            <!-- <el-table-column prop="actualAtteUnofficialDays" label="实际出勤天数（非正式）" width="180"></el-table-column> -->
+
             <el-table-column prop="actualAtteOfficialDays" label="实际出勤天数（正式）" width="180" />
             <el-table-column prop="workingDays" label="应出勤工作日" width="120" />
             <!--
@@ -108,7 +115,7 @@
               layout="total, prev, pager, next"
               :total="Number(counts)">
             </el-pagination>
-          </div>-->
+          </div> -->
           <!-- end -->
         </div>
       </div>
@@ -116,12 +123,12 @@
   </div>
 </template>
 
+
+
+
 <script>
 import { getDepartments } from '@/api/departments'
-import {
-  getArchivingList,
-  getArchivingCont
-} from '@/api/attendances'
+import { getArchivingList, getArchivingCont } from '@/api/attendances'
 export default {
   name: 'HistoricalArchiving',
   components: {
@@ -130,13 +137,13 @@ export default {
   data() {
     return {
       num: 0,
-      yearVal: '',
+      yearVal: '2020',
       tableData: [],
       showArchivig: false,
       counts: '',
       requestParameters: {
         departmentId: '',
-        year: ''
+        year: '2020'
       },
       baseData: {
         atteArchiveMonthlyId: ''
@@ -144,22 +151,22 @@ export default {
       loading: false,
       showHeight: 40,
       boxHeight: '',
-      departmentData: [],
-      contentData: []
+      departmentData: [], // 部门数据
+      contentData: [], // 归档列表数据
     }
   },
+  // 计算属性不错 ————————————————————————————————————————
   computed: {
     // 模糊搜索
     tables() {
-      const search = this.baseData.keyword
+      const search = this.baseData.keyword;
+      console.log(this.tableData)
       for (var i = 0; i < this.tableData.length; i++) {
         if (search) {
           this.tableData[i].contentData.filter(data => {
             return Object.keys(data).some(key => {
               return (
-                String(data[key])
-                  .toLowerCase()
-                  .indexOf(search) > -1
+                String(data[key]).toLowerCase().indexOf(search) > -1
               )
             })
           })
@@ -170,18 +177,23 @@ export default {
       return null
     }
   },
+  // 创建时，处理日期
   created() {
     const { preDates, preYear } = this.getMonth()
-    this.yearVal = preDates
-    this.requestParameters.year = preYear
+    // console.log(preDates) // 2023-03
+    // console.log(preYear) // 2023
+    // this.yearVal = preDates
+    // this.requestParameters.year = preYear // 原：preYear
+    this.yearVal = "2020-03";
+    this.requestParameters.year = 2020;
     this.getDepartments()
   },
   methods: {
     getMonth: function() {
     /* 默认显示上个月的日期 */
       var nowdays = new Date()
-      var year = nowdays.getFullYear()
-      var month = nowdays.getMonth()
+      var year = nowdays.getFullYear() // 2023
+      var month = nowdays.getMonth() // 4
       if (month === 0) {
         month = 12
         year = year - 1
@@ -189,10 +201,11 @@ export default {
       if (month < 10) {
         month = '0' + month
       }
-      var preYear = year // 年
+      var preYear = year // 年 - 2023
       var preDates = year + '-' + month // 上个月
       var preMonth = month // 上个月
-      month++
+      month++;
+      // debugger
       return {
         preDates: preDates,
         preYear: preYear,
@@ -202,7 +215,9 @@ export default {
     fStandards(state) {
       return state === 0 ? '是' : '否'
     },
+    /***--- 获取历史归档数据 ---**/
     async getArchivingList(params) {
+      // console.log("获取历史归档数据", await getArchivingList(params))
       this.tableData = await getArchivingList(params)
       if (this.tableData.length === 0) {
         this.showArchivig = true
@@ -211,17 +226,20 @@ export default {
       }
       this.loading = false
     },
-    // 部门
-    async  getDepartments() {
-      const { depts } = await getDepartments()
-      this.departmentData = depts
-      this.requestParameters.departmentId = depts[0].id
-      this.getArchivingList(this.requestParameters)
+    /***--- 获取部门数据 ---**/
+    async getDepartments() {
+      const { depts } = await getDepartments();
+      this.departmentData = depts;
+      this.requestParameters.departmentId = depts[0].id;
+      this.getArchivingList(this.requestParameters);
     },
     // 获取列表
     async openTable(obj, index) {
+      // console.log(obj)
+      // console.log(index)
       this.baseData.atteArchiveMonthlyId = obj.id
       if (!obj.act) {
+        console.log("获取归档列表数据", await getArchivingCont(this.baseData))
         this.contentData = await getArchivingCont(this.baseData)
         this.loading = false
         this.$set(this.tableData[index], 'act', true)
@@ -231,7 +249,7 @@ export default {
     },
     // 下载文件
     handleExport(index) {
-
+      console.log("导出excel未实现")
     },
     // 选择部门
     handleChange(val) {
@@ -239,9 +257,9 @@ export default {
       this.init(this.requestParameters)
     },
     // 选择年份
-    handleChangeYear() {
+    async handleChangeYear() {
       this.requestParameters.year = this.yearVal
-      this.getArchivingList(this.requestParameters)
+      await this.getArchivingList(this.requestParameters)
       if (this.tableData.length === 0) {
         this.showArchivig = true
       } else {

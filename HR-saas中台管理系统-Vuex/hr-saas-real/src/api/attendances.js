@@ -15,6 +15,7 @@ export function getAtteArchiveDetail(data) {
     url: `/attendances/archive/${data.userId}/${data.yearMonth}`
   })
 }
+/***--- 更新考勤状态 ---**/
 export function updateAttendance(data) {
   return request({
     url: `/attendances/${data.userId}`,
@@ -22,6 +23,7 @@ export function updateAttendance(data) {
     data
   })
 }
+/***--- 历史归档 考勤数据 ---**/
 export function getArchivingList(params) {
   return request({
     url: '/attendances/reports/year',

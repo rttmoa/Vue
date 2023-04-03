@@ -101,6 +101,7 @@ export default {
   }
 
   ],
+  // 请假类型
   type: [{
     leaveType: '60000',
     name: '年假',
@@ -177,6 +178,7 @@ export default {
     isEnable: false
   }
   ],
+  // 部门类型
   departmentType: [{
     dedTypeCode: '51000',
     name: '迟到扣款',
@@ -223,6 +225,7 @@ export default {
     absenceTimesUpperLimt: '0' // 旷工次数上限
   }
   ],
+  // 加班类型
   overtimeType: [{
     // id: '1',
     departmentId: '', // 部门ID

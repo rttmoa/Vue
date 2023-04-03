@@ -19,18 +19,19 @@
   </div>
 </template>
 
+<!-- 202303月人事报表 -- 导出功能 -->
 
 
 <script>
 import { fileUpdate } from '@/api/attendances'
-import allList from './components/refort-list'
+import allList from './components/refort-list' // 父子组件传值 ———— 导出excel
 export default {
   name: 'RefortList',
   components: { allList },
   data() {
     return {
       allList: 'allList',
-      activeName: 'first',
+      activeName: 'first', // tab name 必须对应上
       showHeight: 40
     }
   },
@@ -40,7 +41,9 @@ export default {
     // 归档报表
     archivingReportForm() {
       this.$confirm('报表归档将覆盖上一次归档记录，无法恢复。',  '归档确认').then(async() => {
-          await fileUpdate({ month: this.$route.params.month })
+          // await fileUpdate({ month: this.$route.params.month })
+          console.log("this.$route", this.$route.params.month)
+          console.log(123)
           this.$message.success('归档报表成功')
         })
     }
