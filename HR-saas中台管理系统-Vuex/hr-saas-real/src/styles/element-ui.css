@@ -12,11 +12,7 @@
 }
 
 .el-dialog {
-  -webkit-transform: none;
-     -moz-transform: none;
-      -ms-transform: none;
-       -o-transform: none;
-          transform: none;
+  transform: none;
   left: 0;
   position: relative;
   margin: 0 auto;
@@ -35,6 +31,5 @@
 }
 
 .el-range-separator {
-  -moz-box-sizing: content-box;
-       box-sizing: content-box;
-}
+  box-sizing: content-box;
+}/*# sourceMappingURL=element-ui.css.map */

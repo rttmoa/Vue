@@ -13,9 +13,6 @@
 /* fade */
 .fade-enter-active,
 .fade-leave-active {
-  -webkit-transition: opacity 0.28s;
-  -o-transition: opacity 0.28s;
-  -moz-transition: opacity 0.28s;
   transition: opacity 0.28s;
 }
 
@@ -27,53 +24,32 @@
 /* fade-transform */
 .fade-transform-leave-active,
 .fade-transform-enter-active {
-  -webkit-transition: all 0.5s;
-  -o-transition: all 0.5s;
-  -moz-transition: all 0.5s;
   transition: all 0.5s;
 }
 
 .fade-transform-enter {
   opacity: 0;
-  -webkit-transform: translateX(-30px);
-     -moz-transform: translateX(-30px);
-      -ms-transform: translateX(-30px);
-       -o-transform: translateX(-30px);
-          transform: translateX(-30px);
+  transform: translateX(-30px);
 }
 
 .fade-transform-leave-to {
   opacity: 0;
-  -webkit-transform: translateX(30px);
-     -moz-transform: translateX(30px);
-      -ms-transform: translateX(30px);
-       -o-transform: translateX(30px);
-          transform: translateX(30px);
+  transform: translateX(30px);
 }
 
 /* breadcrumb transition */
 .breadcrumb-enter-active,
 .breadcrumb-leave-active {
-  -webkit-transition: all 0.5s;
-  -o-transition: all 0.5s;
-  -moz-transition: all 0.5s;
   transition: all 0.5s;
 }
 
 .breadcrumb-enter,
 .breadcrumb-leave-active {
   opacity: 0;
-  -webkit-transform: translateX(20px);
-     -moz-transform: translateX(20px);
-      -ms-transform: translateX(20px);
-       -o-transform: translateX(20px);
-          transform: translateX(20px);
+  transform: translateX(20px);
 }
 
 .breadcrumb-move {
-  -webkit-transition: all 0.5s;
-  -o-transition: all 0.5s;
-  -moz-transition: all 0.5s;
   transition: all 0.5s;
 }
 
@@ -95,11 +71,7 @@
 }
 
 .el-dialog {
-  -webkit-transform: none;
-     -moz-transform: none;
-      -ms-transform: none;
-       -o-transform: none;
-          transform: none;
+  transform: none;
   left: 0;
   position: relative;
   margin: 0 auto;
@@ -118,23 +90,16 @@
 }
 
 .el-range-separator {
-  -moz-box-sizing: content-box;
-       box-sizing: content-box;
+  box-sizing: content-box;
 }
 
 #app .main-container {
   min-height: 100%;
-  -webkit-transition: margin-left 0.28s;
-  -o-transition: margin-left 0.28s;
-  -moz-transition: margin-left 0.28s;
   transition: margin-left 0.28s;
   margin-left: 210px;
   position: relative;
 }
 #app .sidebar-container {
-  -webkit-transition: width 0.28s;
-  -o-transition: width 0.28s;
-  -moz-transition: width 0.28s;
   transition: width 0.28s;
   width: 210px !important;
   background-color: transparent;
@@ -149,9 +114,6 @@
   background: -webkit-linear-gradient(bottom, #3d6df8, #5b8cff);
 }
 #app .sidebar-container .horizontal-collapse-transition {
-  -webkit-transition: 0s width ease-in-out, 0s padding-left ease-in-out, 0s padding-right ease-in-out;
-  -o-transition: 0s width ease-in-out, 0s padding-left ease-in-out, 0s padding-right ease-in-out;
-  -moz-transition: 0s width ease-in-out, 0s padding-left ease-in-out, 0s padding-right ease-in-out;
   transition: 0s width ease-in-out, 0s padding-left ease-in-out, 0s padding-right ease-in-out;
 }
 #app .sidebar-container .scrollbar-wrapper {
@@ -165,8 +127,6 @@
   height: 100%;
 }
 #app .sidebar-container.has-logo .el-scrollbar {
-  height: -webkit-calc(100% - 50px);
-  height: -moz-calc(100% - 50px);
   height: calc(100% - 50px);
 }
 #app .sidebar-container .is-horizontal {
@@ -268,29 +228,16 @@
   margin-left: 0px;
 }
 #app .mobile .sidebar-container {
-  -webkit-transition: -webkit-transform 0.28s;
-  transition: -webkit-transform 0.28s;
-  -o-transition: -o-transform 0.28s;
-  -moz-transition: transform 0.28s, -moz-transform 0.28s;
   transition: transform 0.28s;
-  transition: transform 0.28s, -webkit-transform 0.28s, -moz-transform 0.28s, -o-transform 0.28s;
   width: 210px !important;
 }
 #app .mobile.hideSidebar .sidebar-container {
   pointer-events: none;
-  -webkit-transition-duration: 0.3s;
-     -moz-transition-duration: 0.3s;
-       -o-transition-duration: 0.3s;
-          transition-duration: 0.3s;
-  -webkit-transform: translate3d(-210px, 0, 0);
-     -moz-transform: translate3d(-210px, 0, 0);
-          transform: translate3d(-210px, 0, 0);
+  transition-duration: 0.3s;
+  transform: translate3d(-210px, 0, 0);
 }
 #app .withoutAnimation .main-container,
 #app .withoutAnimation .sidebar-container {
-  -webkit-transition: none;
-  -o-transition: none;
-  -moz-transition: none;
   transition: none;
 }
 
@@ -647,25 +594,16 @@
 }
 
 .quitApproval {
-  display: -webkit-flex;
-  display: -moz-box;
-  display: -ms-flexbox;
   display: flex;
   padding: 15px;
 }
 .quitApproval .contLeft {
-  -webkit-flex: 4;
-     -moz-box-flex: 4;
-      -ms-flex: 4;
-          flex: 4;
+  flex: 4;
   background: #fff;
   margin-right: 10px;
   padding: 20px;
 }
 .quitApproval .contLeft .topTit {
-  display: -webkit-flex;
-  display: -moz-box;
-  display: -ms-flexbox;
   display: flex;
   border-bottom: solid 1px #ccc;
 }
@@ -753,10 +691,7 @@
   vertical-align: top;
 }
 .quitApproval .contRit {
-  -webkit-flex: 1;
-     -moz-box-flex: 1;
-      -ms-flex: 1;
-          flex: 1;
+  flex: 1;
   background: #fff;
   padding: 0 20px;
 }
@@ -769,9 +704,6 @@
   padding: 20px 0;
 }
 .quitApproval .contRit .Items li {
-  display: -webkit-flex;
-  display: -moz-box;
-  display: -ms-flexbox;
   display: flex;
   min-height: 70px;
 }
@@ -780,10 +712,7 @@
   text-align: center;
   line-height: 24px;
   padding: 0 0 10px 0;
-  -webkit-flex: 3;
-     -moz-box-flex: 3;
-      -ms-flex: 3;
-          flex: 3;
+  flex: 3;
   border-right: solid 1px #ccc;
 }
 .quitApproval .contRit .Items li .name:after {
@@ -802,10 +731,7 @@
   text-align: center;
   line-height: 24px;
   padding: 0 0 10px 0;
-  -webkit-flex: 3;
-     -moz-box-flex: 3;
-      -ms-flex: 3;
-          flex: 3;
+  flex: 3;
   border-right: solid 1px #ccc;
 }
 .quitApproval .contRit .Items li .stName:after {
@@ -820,10 +746,7 @@
   background: #fff;
 }
 .quitApproval .contRit .Items li .act {
-  -webkit-flex: 2;
-     -moz-box-flex: 2;
-      -ms-flex: 2;
-          flex: 2;
+  flex: 2;
   text-align: center;
 }
 
@@ -845,8 +768,7 @@ label {
 
 html {
   height: 100%;
-  -moz-box-sizing: border-box;
-       box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 #app {
@@ -856,8 +778,7 @@ html {
 *,
 *:before,
 *:after {
-  -moz-box-sizing: inherit;
-       box-sizing: inherit;
+  box-sizing: inherit;
 }
 
 a:focus,
@@ -888,4 +809,4 @@ div:focus {
 
 .app-container {
   padding: 20px;
-}
+}/*# sourceMappingURL=index.css.map */
