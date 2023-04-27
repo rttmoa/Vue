@@ -1,18 +1,21 @@
 <template>
   <el-color-picker
     v-model="theme"
-    :predefine="['#409EFF', '#1890ff', '#304156','#212121','#11a983', '#13c2c2', '#6959CD', '#f5222d', ]"
+    :predefine="['#409EFF', '#1890ff', '#304156','#212121','#11a983', '#13c2c2', '#6959CD', '#f5222d', 'red', 'pink']"
     class="theme-picker"
     popper-class="theme-picker-dropdown"
   />
-
 </template>
 
+
+
+<!-- ！TODO: Navbar 切换主题颜色 -->
 <script>
 const version = require('element-ui/package.json').version // element-ui version from node_modules
 const ORIGINAL_THEME = '#409EFF' // default color
 export default {
   data() {
+    // console.log("Store中主题颜色", this.$store.state.settings) // 无theme属性
     return {
       chalk: '', // content of theme-chalk css
       theme: ''

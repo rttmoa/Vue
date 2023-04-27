@@ -1,0 +1,30 @@
+
+
+
+
+
+
+
+element-ui: https://element.eleme.cn/#/zh-CN
+
+生命周期函数：beforeCreate created  beforeMount  mounted  beforeUpdate updated  beforeDestory  destoryed
+
+Vuex：
+  methods: {...mapActions(['user/login'])}
+  computed: {
+    ...mapGetters(['sidebar','name','staffPhoto']), getters中的属性可以直接用在template中
+    ...mapState(['userInfo'])
+  },
+  this.$store.dispatch('app/toggleSideBar')   方法中直接dispatch
+  this.$store  获取Store中所有的内容
+
+
+父子之间传值：传递到子组件中回调this.$emit()给父亲中处理 -- /layout/index.vue (展开/关闭侧边栏)
+
+
+全局挂载的属性
+  this.$message.warning('当前全局组件不可用')
+  this.$store.dispatch('app/closeSideBar', { withoutAnimation: false })
+  this.$i18n.locale
+  this.$emit('toggleClick')
+  this.$router.push('/login')

@@ -2,12 +2,13 @@ import Cookies from 'js-cookie'
 
 const state = {
   sidebar: {
-    opened: Cookies.get('sidebarStatus') ? !!+Cookies.get('sidebarStatus') : true,
+    opened: Cookies.get('sidebarStatus') ? (!!+Cookies.get('sidebarStatus')) : true,
     withoutAnimation: false
   },
   device: 'desktop'
 }
 
+// reducers
 const mutations = {
   TOGGLE_SIDEBAR: state => {
     state.sidebar.opened = !state.sidebar.opened
@@ -28,13 +29,19 @@ const mutations = {
   }
 }
 
+// action
 const actions = {
+  // desktop时+mobile时
   toggleSideBar({ commit }) {
+    // console.log("toggleSideBar")
     commit('TOGGLE_SIDEBAR')
   },
+  // mobile时，
   closeSideBar({ commit }, { withoutAnimation }) {
+    // console.log("closeSideBar")
     commit('CLOSE_SIDEBAR', withoutAnimation)
   },
+  // 切换 desktop / mobile
   toggleDevice({ commit }, device) {
     commit('TOGGLE_DEVICE', device)
   }

@@ -73,7 +73,7 @@ export default {
     const validateMobile = (rule, value, callback) => {
       validMobile(value) ? callback() : callback(new Error('手机号格式不正确'))
     }
-
+    // console.log("mapActions", mapActions(['user/login']))
     return {
       loginForm: {
         mobile: '13800000002',
@@ -91,13 +91,14 @@ export default {
         }]
       },
       loading: false,
-      passwordType: 'password',
+      passwordType: '',   // 默认改成password就可以隐藏掉了
       redirect: undefined
     }
   },
   watch: {
     $route: {
       handler: function(route) {
+        // console.log("监听路由", route)
         this.redirect = route.query && route.query.redirect
       },
       immediate: true
@@ -111,6 +112,7 @@ export default {
       } else {
         this.passwordType = 'password'
       }
+      // TODO: dom元素更新后执行，因此这里能正确打印更改之后的值
       this.$nextTick(() => {
         this.$refs.password.focus() // 鼠标聚焦事件
       })
@@ -118,19 +120,21 @@ export default {
     // 登录
     handleLogin() {
       this.$refs.loginForm.validate(async isOK => {
+        // console.log(this.$router)
+        // return
         if (isOK) {
           console.log("可以登陆")
           // return
           // 表示校验通过
           this.loading = true
           try {
-            console.log(this['user/login']) //     res[key] = function mappedAction () {}
-            console.log(this.loginForm) // {__ob__: Observer}
+            // console.log(this['user/login']) //     res[key] = function mappedAction () {}
+            // console.log(this.loginForm) // {__ob__: Observer}
             await this['user/login'](this.loginForm)
             // 只要进行到这个位置 说明登录成功了 跳到主页
             this.$router.push('/')
           } catch (error) {
-            //
+            console.log("登陆错误", error) // FIXME: 在requestjs中 响应的结果 Promise.reject(new Error(Message))
           } finally {
             // finally是和trycatch配套的 不论你执行不执行catch都会执行finally
             this.loading = false

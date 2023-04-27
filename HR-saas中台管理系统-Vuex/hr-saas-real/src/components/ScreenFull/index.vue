@@ -10,6 +10,9 @@
   </div>
 </template>
 
+
+
+<!-- TODO: Navbar 全屏图标 -->
 <script>
 import ScreenFull from 'screenfull'
 export default {
@@ -17,14 +20,14 @@ export default {
     changeScreen() {
       // js的方式
       // esc退出
-      //  document.documentElement.requestFullscreen()
       if (!ScreenFull.isEnabled) {
         //   如果不可用  就提示 并且返回
         this.$message.warning('当前全局组件不可用')
         return
       }
-      //  document.documentElement.requestFullscreen()   document.exitFullscreen 退出
-      ScreenFull.toggle() // 执行全屏 展开 关闭
+      // document.documentElement.requestFullscreen()  // DOM打开
+      // document.exitFullscreen() // DOM退出
+      ScreenFull.toggle() // 执行全屏  展开/关闭
     }
   }
 }

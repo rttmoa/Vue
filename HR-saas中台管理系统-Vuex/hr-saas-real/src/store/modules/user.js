@@ -27,16 +27,19 @@ const mutations = {
   }
 }
 const actions = {
+  
   // 封装一个登录的action
   // data认为是 { mobile,password }
   // 只要用async标记了函数 那么这个函数本身就是promise对象
   async login(context, data) {
-    // 调用登录接口
-    // login(data).then(result => {
 
-    // })
+    // console.log(context) // TODO: {getters: {…}, state: {…}, rootGetters: {…}, dispatch: ƒ, commit: ƒ, …}
+
+    // login(data).then(result => {})
+
     // await下方永远都是 reslove成功执行的逻辑
     const result = await login(data)
+    // console.log("result", result) //  6b9a489e-61bc-4b06-8fd4-1c9cb886e76a
     // result就是token
     context.commit('setToken', result)
 

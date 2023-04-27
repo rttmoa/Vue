@@ -156,6 +156,8 @@
   </div>
 </template>
 
+
+<!-- TODO: 一进入页面要做的哪些事情 -->
 <script>
 import { mapGetters, createNamespacedHelpers } from 'vuex'
 import { startProcess } from '@/api/approvals'
@@ -166,7 +168,8 @@ import Radar from './components/radar'
 export default {
   name: 'Dashboard',
   components: {
-    WorkCalendar, Radar
+    WorkCalendar,
+    Radar
   },
 
   data() {
@@ -185,9 +188,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
-      'name'
-    ]),
+    ...mapGetters(['name']),
     ...mapState(['userInfo'])
   },
   methods: {

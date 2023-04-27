@@ -1,17 +1,28 @@
 <template>
   <div :class="classObj" class="app-wrapper">
-    <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside" />
+
+    <div v-if="device === 'mobile' && sidebar.opened" class="drawer-bg" @click="handleClickOutside" />
+
+    <!-- TODO: 侧边栏 -->
     <sidebar class="sidebar-container" />
+
     <div class="main-container">
+      <!-- TODO: 侧边栏 -->
       <div :class="{'fixed-header':fixedHeader}">
         <navbar />
       </div>
-      <!-- 放置tagview -->
+
+      <!-- TODO: TagsView 放置tagview -->
       <tags-view />
+
+      <!-- TODO: 内容 -->
       <app-main />
     </div>
+
   </div>
 </template>
+
+
 
 <script>
 import { Navbar, Sidebar, AppMain } from './components'
@@ -20,20 +31,26 @@ import ResizeMixin from './mixin/ResizeHandler'
 export default {
   name: 'Layout',
   components: {
-    Navbar,
-    Sidebar,
-    AppMain
+    Navbar, // 头
+    Sidebar, // 侧边
+    AppMain // 内容
   },
   mixins: [ResizeMixin],
+  data() {
+    // console.log(this.$store.state)
+    return {
+
+    }
+  },
   computed: {
     sidebar() {
-      return this.$store.state.app.sidebar
+      return this.$store.state.app.sidebar // sidebar: {opened: true, withoutAnimation: false}
     },
     device() {
-      return this.$store.state.app.device
+      return this.$store.state.app.device // desktop
     },
     fixedHeader() {
-      return this.$store.state.settings.fixedHeader
+      return this.$store.state.settings.fixedHeader // false
     },
     classObj() {
       return {
@@ -46,6 +63,7 @@ export default {
   },
   methods: {
     handleClickOutside() {
+      // console.log("展开/关闭侧边栏")
       this.$store.dispatch('app/closeSideBar', { withoutAnimation: false })
     }
   }

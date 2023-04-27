@@ -1,12 +1,13 @@
 import store from '@/store'
 
-const { body } = document
+const { body } = document;
 const WIDTH = 992 // refer to Bootstrap's responsive design
 
 export default {
   watch: {
     $route(route) {
       if (this.device === 'mobile' && this.sidebar.opened) {
+        // console.log(this.device) // mobile  当窗口缩小时
         store.dispatch('app/closeSideBar', { withoutAnimation: false })
       }
     }
@@ -28,7 +29,7 @@ export default {
     // use $_ for mixins properties
     // https://vuejs.org/v2/style-guide/index.html#Private-property-names-essential
     $_isMobile() {
-      const rect = body.getBoundingClientRect()
+      const rect = body.getBoundingClientRect();
       return rect.width - 1 < WIDTH
     },
     $_resizeHandler() {

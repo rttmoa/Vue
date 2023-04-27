@@ -1,8 +1,10 @@
 <template>
   <section class="app-main">
+
     <transition name="fade-transform" mode="out-in">
       <router-view :key="key" />
     </transition>
+
   </section>
 </template>
 
@@ -11,7 +13,8 @@ export default {
   name: 'AppMain',
   computed: {
     key() {
-      return this.$route.path
+      // console.log("AppMain-router", this.$route.path)
+      return this.$route.path; // TODO: 在这里根据地址栏路径切换具体的页面的内容
     }
   }
 }

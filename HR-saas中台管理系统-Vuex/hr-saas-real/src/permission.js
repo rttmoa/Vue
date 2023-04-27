@@ -4,6 +4,8 @@ import store from '@/store'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css' // 引入进度条样式
 
+
+
 // 前置守卫
 const whileList = ['/login', '/404'];
 router.beforeEach(async(to, from, next) => {

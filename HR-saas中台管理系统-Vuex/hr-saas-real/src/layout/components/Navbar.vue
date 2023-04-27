@@ -1,6 +1,8 @@
 <template>
   <div class="navbar">
+
     <hamburger :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
+
     <div class="app-breadcrumb">
       江苏传智播客教育科技股份有限公司
       <span class="breadBtn">体验版</span>
@@ -14,6 +16,7 @@
       <screen-full class="right-menu-item" />
       <!-- 放置一个更换主题插件 -->
       <theme-picker class="right-menu-item" />
+
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <img v-imageerror="defaultImg" :src="staffPhoto" class="user-avatar">
@@ -22,9 +25,7 @@
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
           <router-link to="/">
-            <el-dropdown-item>
-              首页
-            </el-dropdown-item>
+            <el-dropdown-item>首页</el-dropdown-item>
           </router-link>
           <a target="_blank" href="https://gitee.com/shuiruohanyu/hrsaas111">
             <el-dropdown-item>项目地址</el-dropdown-item>
@@ -34,6 +35,7 @@
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
+
     </div>
   </div>
 </template>
@@ -47,6 +49,7 @@ export default {
     Hamburger
   },
   data() {
+    // console.log("store.getters", this.$store.getters)
     return {
       // 源代码   => 编译 => vue-cli来控制  => 浏览器
       // 当相对图片地址不确定的时候 需要用requrie来包裹
@@ -54,11 +57,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
-      'sidebar',
-      'name',
-      'staffPhoto'
-    ])
+    ...mapGetters(['sidebar','name','staffPhoto']) // TODO: 这个getters中的数据可以直接在template中使用
   },
   methods: {
     toggleSideBar() {
@@ -68,7 +67,6 @@ export default {
       await this.$store.dispatch('user/lgout') // 调用登出的action
       // 必须等到删除完token之后 才去跳转到登录页面
       this.$router.push('/login')
-      //
     }
   }
 }

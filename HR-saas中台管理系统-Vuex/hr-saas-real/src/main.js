@@ -19,6 +19,7 @@ import checkPermission from '@/mixin/checkPermission'
 import i18n from '@/lang' // 引入i18n实例
 import '@/icons' // icon
 import '@/permission' // permission control
+
 // directives是所有指令的一个集合
 Object.keys(directives).forEach(key => {
 // key就是指令名称

@@ -7,15 +7,18 @@ import router from '@/router'
 
 const TimeOut = 5400 // 定义超时时间
 const service = axios.create({
-//    设置基础地址
-// 环境变量 npm run dev  /api   /生产环境 npm run build  /prod-api
+  //    设置基础地址
+  // 环境变量 npm run dev  /api   /生产环境 npm run build  /prod-api
   baseURL: process.env.VUE_APP_BASE_API,
   timeout: 10000 // 认为只要超过5秒钟不响应 就超时
 })
+
+
 // 请求拦截器
 service.interceptors.request.use(async config => {
-  // 请求接口  config是请求配置
-  // 取token
+
+  // console.log("store", store)
+  // console.log("config", config) // 请求中的属性
   if (store.getters.token) {
     // 只要有token 就要检查token时效性
     if (CheckIsTimeOut()) {
@@ -25,8 +28,7 @@ service.interceptors.request.use(async config => {
       return Promise.reject(new Error('您的token已经失效'))
     }
     // 如果存在token
-    config.headers.Authorization = `Bearer ${store.getters.token}`
-    // return config
+    config.headers.Authorization = `Bearer ${store.getters.token}`;
   }
   // 这里一定要注意
   // 一定要return config
@@ -34,16 +36,20 @@ service.interceptors.request.use(async config => {
 }, error => {
   return Promise.reject(error)
 })
+
+
 // 响应拦截器
 service.interceptors.response.use(response => {
   // 成功执行
   // axios默认加了一层data的包裹
-  const { success, message, data } = response.data
+  const { success, message, data } = response.data;
   if (success) {
+    console.log("requestjs响应", data) // TODO: 响应的数据结果
     // 此时认为业务执行成功了
     return data // 返回用户所需要的数据
   } else {
     // 当业务失败的时候
+    // console.log("响应失败", message)
     Message.error(message) // 提示消息
     return Promise.reject(new Error(message))
   }

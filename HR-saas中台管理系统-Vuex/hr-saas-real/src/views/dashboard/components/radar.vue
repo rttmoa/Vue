@@ -12,9 +12,13 @@ require('echarts/lib/chart/radar')
 // // 引入提示框和标题组件
 require('echarts/lib/component/tooltip')
 require('echarts/lib/component/title')
+require('echarts/lib/component/legend')
+
+
 export default {
-//  组件中获取组件的dom元素
-// beforeCreate created  beforeMount  mounted  beforeUpdate updated  beforeDestory  destoryed
+  //  组件中获取组件的dom元素
+  // beforeCreate created  beforeMount  mounted  beforeUpdate updated  beforeDestory  destoryed
+  //  TODO: 挂载
   mounted() {
     var myEchart = echarts.init(this.$refs.myDiv)
     // 图表的元素一定要有高和宽
