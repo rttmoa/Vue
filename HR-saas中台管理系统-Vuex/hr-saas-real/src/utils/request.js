@@ -44,7 +44,7 @@ service.interceptors.response.use(response => {
   // axios默认加了一层data的包裹
   const { success, message, data } = response.data;
   if (success) {
-    console.log("requestjs响应", data) // TODO: 响应的数据结果
+    // console.log("requestjs响应", data) // TODO: 响应的数据结果
     // 此时认为业务执行成功了
     return data // 返回用户所需要的数据
   } else {

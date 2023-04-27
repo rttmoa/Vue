@@ -90,9 +90,9 @@ export default {
   methods: {
     // 递归算法转化树形
     async getPermissionList() {
-      console.log("递归算法")
-      console.log((await getPermissionList()).map(v => { return {name: v.name, id: v.id, pid: v.pid} }))
-      console.log(transListToTreeData((await getPermissionList()).map(v => { return {name: v.name, id: v.id, pid: v.pid} }), "0"))
+      // console.log("递归算法")
+      // console.log((await getPermissionList()).map(v => { return {name: v.name, id: v.id, pid: v.pid} }))
+      // console.log(transListToTreeData((await getPermissionList()).map(v => { return {name: v.name, id: v.id, pid: v.pid} }), "0"))
       this.list = transListToTreeData(await getPermissionList(), '0')   // ———————— 递归算法转化树形
     },
     // 删除权限

@@ -1,28 +1,33 @@
 <template>
   <div id="tags-view-container" class="tags-view-container">
+
+    <!-- TODO: 自己封装ScrollPane组件 -->
     <scroll-pane ref="scrollPane" class="tags-view-wrapper" @scroll="handleScroll">
       <router-link
         v-for="tag in visitedViews"
         ref="tag"
         :key="tag.path"
-        :class="isActive(tag)?'active':''"
+        :class=" isActive(tag) ? 'active' : '' "
         :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
         tag="span"
         class="tags-view-item"
-        @click.middle.native="!isAffix(tag)?closeSelectedTag(tag):''"
-        @contextmenu.prevent.native="openMenu(tag,$event)"
+        @click.middle.native=" !isAffix(tag) ? closeSelectedTag(tag) : '' "
+        @contextmenu.prevent.native="openMenu(tag, $event)"
       >
         <!-- 多语言设置 -->
         {{ $t('route.'+tag.name) }}
         <span v-if="!isAffix(tag)" class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)" />
       </router-link>
     </scroll-pane>
+
+    <!-- TODO: 鼠标右键有刷新，关闭，关闭其他，关闭所有 -->
     <ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
       <li @click="refreshSelectedTag(selectedTag)">{{ $t('tagsView.refresh') }}</li>
       <li v-if="!isAffix(selectedTag)" @click="closeSelectedTag(selectedTag)">{{ $t('tagsView.close') }}</li>
       <li @click="closeOthersTags">{{ $t('tagsView.closeOthers') }}</li>
       <li @click="closeAllTags(selectedTag)">{{ $t('tagsView.closeAll') }}</li>
     </ul>
+
   </div>
 </template>
 
@@ -33,11 +38,12 @@ import path from 'path'
 export default {
   components: { ScrollPane },
   data() {
+    // console.log("selectedTag", this.selectedTag)
     return {
-      visible: false,
-      top: 0,
-      left: 0,
-      selectedTag: {},
+      visible: false,  // 鼠标右键
+      top: 0, // 右键的位置
+      left: 0, // 右键的位置
+      selectedTag: {}, // /{fullPath, hash, name, params, path, query, title}
       affixTags: []
     }
   },
@@ -68,9 +74,12 @@ export default {
   },
   methods: {
     isActive(route) {
-      return route.path === this.$route.path
+      // console.log("isActive", route.path)
+      // console.log("router", this.$route.path)
+      return route.path === this.$route.path;  // 根据for循环中 与 地址栏去匹配
     },
     isAffix(tag) {
+      // console.log("tag", tag.meta)
       return tag.meta && tag.meta.affix
     },
     filterAffixTags(routes, basePath = '/') {
@@ -95,20 +104,25 @@ export default {
       return tags
     },
     initTags() {
+      // console.log("this.routes", this.routes)
       const affixTags = this.affixTags = this.filterAffixTags(this.routes)
+      // console.log("affixTags", this.affixTags)
       for (const tag of affixTags) {
+        // console.log("tag", tag)
         // Must have tag name
         if (tag.name) {
           this.$store.dispatch('tagsView/addVisitedView', tag)
         }
       }
     },
+    // 添加标签到redux
     addTags() {
-      const { name } = this.$route
+      // console.log("addTags", this.$route.name)
+      const { name } = this.$route;
       if (name) {
         this.$store.dispatch('tagsView/addView', this.$route)
       }
-      return false
+      return false;
     },
     moveToCurrentTag() {
       const tags = this.$refs.tag
@@ -125,16 +139,16 @@ export default {
         }
       })
     },
+    // 右键 -> 刷新
     refreshSelectedTag(view) {
       this.$store.dispatch('tagsView/delCachedView', view).then(() => {
-        const { fullPath } = view
+        const { fullPath } = view;
         this.$nextTick(() => {
-          this.$router.replace({
-            path: '/redirect' + fullPath
-          })
+          this.$router.replace({ path: fullPath })
         })
       })
     },
+    // 右键 -> 关闭当前
     closeSelectedTag(view) {
       this.$store.dispatch('tagsView/delView', view).then(({ visitedViews }) => {
         if (this.isActive(view)) {
@@ -142,12 +156,15 @@ export default {
         }
       })
     },
+    // 右键 -> 关闭其他
     closeOthersTags() {
+      // console.log("selectedTag", this.selectedTag); return; // /{fullPath, hash, name, params, path, query, title}
       this.$router.push(this.selectedTag)
       this.$store.dispatch('tagsView/delOthersViews', this.selectedTag).then(() => {
         this.moveToCurrentTag()
       })
     },
+    // 右键 -> 关闭所有
     closeAllTags(view) {
       this.$store.dispatch('tagsView/delAllViews').then(({ visitedViews }) => {
         if (this.affixTags.some(tag => tag.path === view.path)) {
@@ -171,7 +188,9 @@ export default {
         }
       }
     },
+    // FIXME: 鼠标右键到Tag上
     openMenu(tag, e) {
+      console.log("openMenu")
       const menuMinWidth = 105
       const offsetLeft = this.$el.getBoundingClientRect().left // container margin left
       const offsetWidth = this.$el.offsetWidth // container width

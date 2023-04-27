@@ -4,8 +4,14 @@
   </el-scrollbar>
 </template>
 
+
+<!-- TODO: 此组件已废弃 -->
+<!-- TODO: 此组件已废弃 -->
+<!-- TODO: 此组件已废弃 -->
+
+
 <script>
-const tagAndTagSpacing = 4 // tagAndTagSpacing
+const tagAndTagSpacing = 4; // tagAndTagSpacing
 
 export default {
   name: 'ScrollPane',

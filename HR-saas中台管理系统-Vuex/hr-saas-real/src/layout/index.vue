@@ -8,7 +8,7 @@
 
     <div class="main-container">
       <!-- TODO: 侧边栏 -->
-      <div :class="{'fixed-header':fixedHeader}">
+      <div :class="{'fixed-header': fixedHeader}">
         <navbar />
       </div>
 

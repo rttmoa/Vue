@@ -4,10 +4,12 @@ import VueI18n from 'vue-i18n'
 import Cookie from 'js-cookie'
 import elementZH from 'element-ui/lib/locale/lang/zh-CN'
 import elementEN from 'element-ui/lib/locale/lang/en'
-// import elementRU from 'element-ui/lib/locale/lang/ru-RU'
-// import elementJA from 'element-ui/lib/locale/lang/ja'
+import elementRU from 'element-ui/lib/locale/lang/ru-RU'
+import elementJA from 'element-ui/lib/locale/lang/ja'
 import customZH from './zh'
 import customEN from './en'
+
+
 
 Vue.use(VueI18n) // 注册国际化对象
 // 有elementUI的语言包
@@ -26,7 +28,6 @@ export default new VueI18n({
     'en': {
       ...elementEN,
       ...customEN
-      // 表示是en的语言包
     }
     // 'ru': {
     //   //  ru表示是俄语的语言包

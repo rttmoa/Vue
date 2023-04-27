@@ -1,33 +1,39 @@
 <template>
   <div id="tags-view-container" class="tags-view-container">
+
     <scroll-pane ref="scrollPane" class="tags-view-wrapper" @scroll="handleScroll">
       <router-link
         v-for="tag in visitedViews"
         ref="tag"
         :key="tag.path"
-        :class="isActive(tag)?'active':''"
+        :class=" isActive(tag) ? 'active' : '' "
         :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
         tag="span"
         class="tags-view-item"
-        @click.middle.native="!isAffix(tag)?closeSelectedTag(tag):''"
-        @contextmenu.prevent.native="openMenu(tag,$event)"
+        @click.middle.native = "!isAffix(tag) ? closeSelectedTag(tag) : '' "
+        @contextmenu.prevent.native="openMenu(tag, $event)"
       >
         <!-- 多语言设置 -->
-        {{ $t('route.'+tag.name) }}
+        {{ $t('route.' + tag.name) }}
         <span v-if="!isAffix(tag)" class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)" />
       </router-link>
     </scroll-pane>
-    <ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
+
+    <ul v-show="visible" :style="{left: left+'px', top: top+'px'}" class="contextmenu">
       <li @click="refreshSelectedTag(selectedTag)">{{ $t('tagsView.refresh') }}</li>
       <li v-if="!isAffix(selectedTag)" @click="closeSelectedTag(selectedTag)">{{ $t('tagsView.close') }}</li>
       <li @click="closeOthersTags">{{ $t('tagsView.closeOthers') }}</li>
       <li @click="closeAllTags(selectedTag)">{{ $t('tagsView.closeAll') }}</li>
     </ul>
+
   </div>
 </template>
 
 
 
+<!-- TODO: 此组件已废弃 -->
+<!-- TODO: 此组件已废弃 -->
+<!-- TODO: 此组件已废弃 -->
 
 <script>
 import ScrollPane from './ScrollPane'
@@ -38,10 +44,13 @@ export default {
     ScrollPane
   },
   data() {
+    debugger
+    // console.log("TagsView-Store", this.$store.state)
+    console.log("selectedTag", selectedTag)
     return {
-      visible: false,
-      top: 0,
-      left: 0,
+      visible: false,  // 鼠标右键
+      top: 0, // 右键的位置
+      left: 0, // 右键的位置
       selectedTag: {},
       affixTags: []
     }
@@ -56,6 +65,7 @@ export default {
   },
   watch: {
     $route() {
+      // console.log("监听Router")
       this.addTags()
       this.moveToCurrentTag()
     },
@@ -73,6 +83,7 @@ export default {
   },
   methods: {
     isActive(route) {
+      // console.log("route", route)
       return route.path === this.$route.path
     },
     isAffix(tag) {
@@ -109,7 +120,8 @@ export default {
       }
     },
     addTags() {
-      const { name } = this.$route
+      // console.log("this.$route",  this.$route)
+      const { name } = this.$route;
       if (name) {
         this.$store.dispatch('tagsView/addView', this.$route)
       }
