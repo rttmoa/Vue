@@ -43,12 +43,13 @@ export default {
       visible: false,  // 鼠标右键
       top: 0, // 右键的位置
       left: 0, // 右键的位置
-      selectedTag: {}, // /{fullPath, hash, name, params, path, query, title}
+      selectedTag: {}, // / {fullPath, hash, name, params, path, query, title}
       affixTags: []
     }
   },
   computed: {
     visitedViews() {
+      // console.log(this.$store.state.tagsView)
       return this.$store.state.tagsView.visitedViews
     },
     routes() {

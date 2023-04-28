@@ -1,15 +1,27 @@
+<!-- 父组件 -->
+<!-- <sidebar-item v-for="route in routes" :key="route.path" :item="route" :base-path="route.path" /> -->
 <template>
   <div v-if="!item.hidden">
-    <template v-if="hasOneShowingChild(item.children,item) && (!onlyOneChild.children||onlyOneChild.noShowingChildren)&&!item.alwaysShow">
+    <template v-if="hasOneShowingChild(item.children, item) && (!onlyOneChild.children || onlyOneChild.noShowingChildren) && !item.alwaysShow">
+
       <app-link v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path)">
-        <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown':!isNest}">
+
+        <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown': !isNest}">
+
           <!-- onlyOneChild.meta.title是写死的 -->
-          <item :icon="onlyOneChild.meta.icon||(item.meta&&item.meta.icon)" :title="$t('route.' + onlyOneChild.name)" />
+          <item :icon="onlyOneChild.meta.icon || (item.meta && item.meta.icon)" :title="$t('route.' + onlyOneChild.name)" />
+
         </el-menu-item>
+
       </app-link>
+
     </template>
   </div>
 </template>
+
+
+
+
 
 <script>
 import path from 'path'
@@ -20,10 +32,13 @@ import FixiOSBug from './FixiOSBug'
 
 export default {
   name: 'SidebarItem',
-  components: { Item, AppLink },
+  components: {
+    Item,
+    AppLink
+  },
   mixins: [FixiOSBug],
   props: {
-    // route object
+    // 父组件传递过来的 item、base-path
     item: {
       type: Object,
       required: true
@@ -62,13 +77,18 @@ export default {
 
       // Show parent if there are no child router to display
       if (showingChildren.length === 0) {
-        this.onlyOneChild = { ... parent, path: '', noShowingChildren: true }
+        this.onlyOneChild = {...parent, path: '', noShowingChildren: true }
         return true
       }
 
       return false
     },
     resolvePath(routePath) {
+      // console.log("routePath", routePath)
+      // console.log("basePath", this.basePath)
+      // console.log("routePath", isExternal(routePath))
+      // console.log("basePath", isExternal(this.basePath))
+
       if (isExternal(routePath)) {
         return routePath
       }

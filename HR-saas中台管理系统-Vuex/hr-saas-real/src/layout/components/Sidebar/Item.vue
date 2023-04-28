@@ -1,35 +1,37 @@
+<!-- <item :icon="onlyOneChild.meta.icon || (item.meta && item.meta.icon)" :title="$t('route.' + onlyOneChild.name)" /> -->
 <script>
-export default {
-  name: 'MenuItem',
-  functional: true,
-  props: {
-    icon: {
-      type: String,
-      default: ''
-    },
-    title: {
-      type: String,
-      default: ''
-    }
-  },
-  render(h, context) {
-    const { icon, title } = context.props
-    const vnodes = []
-
-    if (icon) {
-      if (icon.includes('el-icon')) {
-        vnodes.push(<i class={[icon, 'sub-el-icon']} />)
-      } else {
-        vnodes.push(<svg-icon icon-class={icon}/>)
+  export default {
+    name: 'MenuItem',
+    functional: true,
+    props: {
+      icon: {
+        type: String,
+        default: ''
+      },
+      title: {
+        type: String,
+        default: ''
       }
-    }
+    },
+    render(h, context) {
+      // console.log(context) // FunctionalRenderContext {data: {…}, props: {…}, children: undefined, parent: VueComponent, listeners: {…}, …}
+      const { icon, title } = context.props;
+      const vnodes = []
 
-    if (title) {
-      vnodes.push(<span slot='title'>{(title)}</span>)
+      if (icon) {
+        if (icon.includes('el-icon')) {
+          vnodes.push(<i class={[icon, 'sub-el-icon']} />)
+        } else {
+          vnodes.push(<svg-icon icon-class={icon}/>)
+        }
+      }
+
+      if (title) {
+        vnodes.push(<span slot='title'>{(title)}</span>)
+      }
+      return vnodes
     }
-    return vnodes
   }
-}
 </script>
 
 <style scoped>

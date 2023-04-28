@@ -1,11 +1,14 @@
+
 const state = {
-  visitedViews: [],
-  cachedViews: []
+  visitedViews: [], // 存储的 每个{fullPath,query,path} 路由的信息
+  cachedViews: []   //// cachedViews: ["permissions", "salarys", "employees", "attendances"]
 }
 
+// reducers
 const mutations = {
   ADD_VISITED_VIEW: (state, view) => {
-    if (state.visitedViews.some(v => v.path === view.path)) return
+    // console.log("ADD_VISITED_VIEW", state)
+    if (state.visitedViews.some(v => v.path === view.path)) return;
     state.visitedViews.push(
       Object.assign({}, view, {
         title: view.meta.title || 'no-name'
@@ -13,7 +16,7 @@ const mutations = {
     )
   },
   ADD_CACHED_VIEW: (state, view) => {
-    if (state.cachedViews.includes(view.name)) return
+    if (state.cachedViews.includes(view.name)) return;
     if (!view.meta.noCache) {
       state.cachedViews.push(view.name)
     }
@@ -66,7 +69,9 @@ const mutations = {
   }
 }
 
+// FIXME: action
 const actions = {
+  // TODO: 添加Tag
   addView({ dispatch }, view) {
     dispatch('addVisitedView', view)
     dispatch('addCachedView', view)
@@ -77,7 +82,7 @@ const actions = {
   addCachedView({ commit }, view) {
     commit('ADD_CACHED_VIEW', view)
   },
-
+  // TODO: 关闭当前
   delView({ dispatch, state }, view) {
     return new Promise(resolve => {
       dispatch('delVisitedView', view)
@@ -94,13 +99,14 @@ const actions = {
       resolve([...state.visitedViews])
     })
   },
+  // TODO: 刷新
   delCachedView({ commit, state }, view) {
     return new Promise(resolve => {
       commit('DEL_CACHED_VIEW', view)
       resolve([...state.cachedViews])
     })
   },
-
+  // TODO: 关闭其他
   delOthersViews({ dispatch, state }, view) {
     return new Promise(resolve => {
       dispatch('delOthersVisitedViews', view)
@@ -123,7 +129,7 @@ const actions = {
       resolve([...state.cachedViews])
     })
   },
-
+  // TODO: 关闭所有
   delAllViews({ dispatch, state }, view) {
     return new Promise(resolve => {
       dispatch('delAllVisitedViews', view)
@@ -146,7 +152,7 @@ const actions = {
       resolve([...state.cachedViews])
     })
   },
-
+  // TODO: moveToCurrentTag
   updateVisitedView({ commit }, view) {
     commit('UPDATE_VISITED_VIEW', view)
   }

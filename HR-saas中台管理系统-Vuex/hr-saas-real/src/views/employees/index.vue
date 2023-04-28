@@ -1,6 +1,7 @@
 <template>
   <div class="dashboard-container">
     <div class="app-container">
+
       <page-tools :show-before="true">
         <!-- 插槽 -->
         <!-- <template slot="after"> -->
@@ -15,8 +16,9 @@
           <el-button size="small" type="success" @click="$router.push('/import?type=user')">excel导入</el-button>
           <el-button size="small" type="primary" @click="showDialog = true">新增员工</el-button>
         </template>
-
       </page-tools>
+
+
       <!-- 放置表格和分页 -->
       <el-card>
         <el-table v-loading="loading" :data="list" border stripe>
@@ -59,6 +61,7 @@
             </template>
           </el-table-column>
         </el-table>
+
         <!-- 分页 -->
         <el-row type="flex" justify="end" align="middle" style="height: 60px">
           <el-pagination
@@ -86,6 +89,11 @@
     </el-dialog>
   </div>
 </template>
+
+
+
+
+
 
 <script>
 import { getEmployeeList, delEmployee } from '@/api/employees'

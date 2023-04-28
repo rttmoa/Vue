@@ -12,7 +12,7 @@ import salarysRouter from './modules/salarys'
 import settingRouter from './modules/setting'
 import socialRouter from './modules/social'
 import userRouter from './modules/user'
-/* Layout */
+
 import Layout from '@/layout'
 
 /**

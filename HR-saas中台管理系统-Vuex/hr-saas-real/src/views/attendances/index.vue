@@ -1,6 +1,7 @@
 <template>
   <div v-loading="loading" class="dashboard-container">
     <div class="app-container">
+
       <!-- 工具栏 -->
       <page-tools :show-before="true">
         <!-- 前面内容 -->
@@ -124,6 +125,7 @@
           />
         </el-row>
       </el-card>
+
     </div>
 
     <el-card>
@@ -138,7 +140,7 @@
         </span>
       </el-dialog>
 
-      <!-- 设置组件 —— 弹出框 -->
+      <!-- 设置按钮 —— 弹出框 -->
       <attendance-set ref="set" @handleCloseModal="handleCloseModal" />
     </el-card>
 
@@ -156,7 +158,9 @@ import AttendanceSet from './components/attendance-set'
 import { getDepartments } from '@/api/departments'
 export default {
   name: 'Attendances',
-  components: { AttendanceSet },
+  components: {
+    AttendanceSet
+  },
   data() {
     // console.log(attendanceApi) // 自定义数组 ———— 假期类型，请假类型，部门类型...
     // console.log(this.formData)

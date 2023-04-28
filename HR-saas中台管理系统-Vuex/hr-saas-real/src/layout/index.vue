@@ -12,7 +12,7 @@
         <navbar />
       </div>
 
-      <!-- TODO: TagsView 放置tagview -->
+      <!-- TODO: TagsView - /component -->
       <tags-view />
 
       <!-- TODO: 内容 -->

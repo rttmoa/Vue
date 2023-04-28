@@ -6,6 +6,9 @@ import ThemePicker from './ThemePicker'
 import Lang from './Lang'
 import TagsView from './TagsView'
 
+
+
+// TODO: 全局注册：组件内部可以随意注册使用
 export default {
   install(Vue) {
     Vue.component('PageTools', PageTools)

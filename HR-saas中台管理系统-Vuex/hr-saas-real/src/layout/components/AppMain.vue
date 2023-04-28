@@ -1,12 +1,19 @@
 <template>
   <section class="app-main">
 
+    <!-- TODO: router-view -->
+    <!-- https://blog.csdn.net/m0_46309087/article/details/119701254 -->
+    <!-- https://router.vuejs.org/zh/guide/#html -->
     <transition name="fade-transform" mode="out-in">
       <router-view :key="key" />
     </transition>
 
   </section>
 </template>
+
+
+
+
 
 <script>
 export default {

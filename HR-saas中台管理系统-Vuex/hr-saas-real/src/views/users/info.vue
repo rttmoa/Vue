@@ -37,6 +37,11 @@
   </div>
 </template>
 
+
+
+
+
+
 <script>
 import { getUserDetailById } from '@/api/user'
 import { updateUser } from '@/api/approvals'
@@ -61,7 +66,7 @@ export default {
   },
   methods: {
     async onSubmit() {
-      console.log(this.myInfo); return;
+      // console.log(this.myInfo); return;
       const user = this.myInfo;
       await updateUser(user) // 更新用户信息
       await updatePersonal(user) // 更新用户详情的基础信息
@@ -71,9 +76,9 @@ export default {
       this.$router.back(-1);
     },
     async getUserInfo() {
-      console.log(this.userId) // 1063705989926227968
-      console.log(await getUserDetailById(this.userId)) // 获取用户详情信息
-      console.log(await getPersonalDetail(this.userId)) // 读取用户详情的基础信息
+      // console.log(this.userId) // 1063705989926227968
+      // console.log(await getUserDetailById(this.userId)) // 获取用户详情信息
+      // console.log(await getPersonalDetail(this.userId)) // 读取用户详情的基础信息
 
       this.loading = true
       const detailData = await getUserDetailById(this.userId)

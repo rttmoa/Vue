@@ -388,6 +388,12 @@
   </div>
 </template>
 
+
+
+
+
+
+
 <script>
 import { addEmployee } from '@/api/employees'
 import { getInteger, getIntegerPoint } from '@/filters'
