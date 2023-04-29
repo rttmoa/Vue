@@ -2,6 +2,7 @@
   <div class="user-info">
     <!-- 个人信息 -->
     <el-form label-width="220px">
+      <div class="title">basic</div>
       <!-- 工号 入职时间 -->
       <el-row class="inline-info">
         <el-col :span="12">
@@ -20,6 +21,7 @@
           </el-form-item>
         </el-col>
       </el-row>
+
       <!-- 姓名 部门 -->
       <el-row class="inline-info">
         <el-col :span="12">
@@ -33,6 +35,7 @@
           </el-form-item>
         </el-col>
       </el-row>
+
       <!--手机 聘用形式  -->
       <el-row class="inline-info">
         <el-col :span="12">
@@ -53,6 +56,7 @@
           </el-form-item>
         </el-col>
       </el-row>
+
       <!-- 员工照片 -->
       <el-row class="inline-info">
         <el-col :span="12">
@@ -62,19 +66,28 @@
           </el-form-item>
         </el-col>
       </el-row>
+
       <!-- 保存个人信息 -->
       <el-row class="inline-info" type="flex" justify="center">
         <el-col :span="12">
           <el-button type="primary" @click="saveUser">保存更新</el-button>
           <el-button @click="$router.back()">返回</el-button>
-
         </el-col>
       </el-row>
     </el-form>
+    <br />
+    <br />
+    <br />
+
+
+
+
     <!-- 基础信息 -->
     <el-form label-width="220px">
       <div class="block">
+
         <div class="title">基础信息</div>
+
         <el-form-item label="最高学历">
           <el-select v-model="formData.theHighestDegreeOfEducation" class="inputW2">
             <el-option
@@ -85,14 +98,13 @@
             />
           </el-select>
         </el-form-item>
-        <!-- 个人头像 -->
-        <!-- 员工照片 -->
 
+        <!-- 员工照片 -->
         <el-form-item label="员工照片">
           <!-- 放置上传图片 -->
           <image-upload ref="myStaffPhoto" :limit="5" />
-
         </el-form-item>
+
         <el-form-item label="国家/地区">
           <el-select v-model="formData.nationalArea" class="inputW2">
             <el-option
@@ -103,6 +115,7 @@
             />
           </el-select>
         </el-form-item>
+
         <el-form-item label="护照号">
           <el-input v-model="formData.passportNo" placeholder="正规护照格式" class="inputW" />
         </el-form-item>
@@ -115,6 +128,7 @@
         <el-form-item label="民族">
           <el-input v-model="formData.nation" placeholder="请输入民族" class="inputW2" />
         </el-form-item>
+
         <el-form-item label="婚姻状况">
           <el-select v-model="formData.maritalStatus" class="inputW2">
             <el-option
@@ -125,12 +139,14 @@
             />
           </el-select>
         </el-form-item>
+
         <el-form-item label="生日">
           <el-input v-model="formData.birthday" placeholder="示例 0323" class="inputW" />
         </el-form-item>
         <el-form-item label="年龄">
           <el-input v-model="formData.age" type="number" class="inputW2" />
         </el-form-item>
+
         <el-form-item label="星座">
           <el-select v-model="formData.constellation" class="inputW2">
             <el-option
@@ -141,6 +157,7 @@
             />
           </el-select>
         </el-form-item>
+
         <el-form-item label="血型">
           <el-select v-model="formData.bloodType" class="inputW2">
             <el-option
@@ -172,12 +189,14 @@
         <el-form-item label="子女状态">
           <el-input v-model="formData.stateOfChildren" placeholder="请输入" />
         </el-form-item>
+
         <el-form-item label="子女有无商业险">
           <el-radio-group v-model="formData.doChildrenHaveCommercialInsurance">
             <el-radio label="1">有</el-radio>
             <el-radio label="2">无</el-radio>
           </el-radio-group>
         </el-form-item>
+
         <el-form-item label="有无违法违纪状态">
           <el-input v-model="formData.isThereAnyViolationOfLawOrDiscipline" placeholder="请输入" />
         </el-form-item>
@@ -185,6 +204,9 @@
           <el-input v-model="formData.areThereAnyMajorMedicalHistories" placeholder="请输入" />
         </el-form-item>
       </div>
+
+
+
       <!-- 通讯信息 -->
       <div class="block">
         <div class="title">通讯信息</div>
@@ -213,6 +235,9 @@
           <el-input v-model="formData.emergencyContactNumber" placeholder="11位字符" class="inputW" />
         </el-form-item>
       </div>
+
+
+
       <!-- 账号信息 -->
       <div class="block">
         <div class="title">账号信息</div>
@@ -229,6 +254,9 @@
           <el-input v-model="formData.openingBank" placeholder="请输入" class="inputW" />
         </el-form-item>
       </div>
+
+
+
       <!-- 教育信息 -->
       <div class="block">
         <div class="title">教育信息</div>
@@ -255,6 +283,9 @@
           <el-input v-model="formData.major" placeholder="请输入" class="inputW" />
         </el-form-item>
       </div>
+
+
+
       <!-- 从业信息 -->
       <div class="block">
         <div class="title">从业信息</div>
@@ -270,6 +301,9 @@
         <el-form-item label="备注">
           <el-input v-model="formData.remarks" type="textarea" placeholder="请输入备注" style="width:80%" />
         </el-form-item>
+
+
+
         <!-- 保存员工信息 -->
         <el-row class="inline-info" type="flex" justify="center">
           <el-col :span="12">
@@ -278,11 +312,22 @@
           </el-col>
         </el-row>
       </div>
-    </el-form>
 
+    </el-form>
   </div>
 
 </template>
+
+
+
+
+
+
+
+
+
+
+
 <script>
 import EmployeeEnum from '@/api/constant/employees'
 import { getUserDetailById } from '@/api/user'
@@ -292,7 +337,7 @@ export default {
     return {
       userId: this.$route.params.id,
       EmployeeEnum, // 员工枚举数据
-      userInfo: {},
+      userInfo: {},  // user基本信息
       formData: {
         userId: '',
         username: '', // 用户名
@@ -363,7 +408,7 @@ export default {
     this.getPersonalDetail()
   },
   methods: {
-    async  getUserDetailById() {
+    async getUserDetailById() {
       this.userInfo = await getUserDetailById(this.userId)
       if (this.userInfo.staffPhoto.trim()) {
         // 如果它存在值
@@ -389,7 +434,7 @@ export default {
       await saveUserDetailById({ ...this.userInfo, staffPhoto: fileList.length ? fileList[0].url : ' ' })
       this.$message.success('保存用户基本信息成功')
     },
-    async  savePersonal() {
+    async savePersonal() {
       const fileList = this.$refs.myStaffPhoto.fileList // 读取上传组件的数据
       if (fileList.some(item => !item.upload)) {
         //  此时说明 fileList中存在 没有上传完毕的图片

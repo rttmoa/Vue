@@ -3,8 +3,9 @@
     <!-- 内容 -->
     <el-checkbox-group v-model="roleIds">
       <!-- 放置当前所有的角色内容 -->
-      <el-checkbox v-for="item in list" :key="item.id" :label="item.id">{{ item.name }}</el-checkbox>
+      <el-checkbox v-for="item in list" :key="item.id" :label="item.id">{{ item.name}}</el-checkbox>
     </el-checkbox-group>
+
     <template #footer>
       <el-row type="flex" justify="center">
         <el-col :span="6">
@@ -12,10 +13,15 @@
           <el-button size="small" @click="btnCancel">取消</el-button>
         </el-col>
       </el-row>
+
     </template>
   </el-dialog>
 </template>
 
+
+
+
+<!-- TODO: 弹窗：分配角色 -->
 <script>
 import { getRoleList } from '@/api/setting'
 import { assignRoles } from '@/api/employees'
@@ -33,8 +39,8 @@ export default {
   },
   data() {
     return {
-      list: [],
-      roleIds: []
+      list: [],   // 复选框中所有的角色
+      roleIds: [] // 当前的用户角色
     }
   },
   created() {
@@ -44,12 +50,12 @@ export default {
     async getRoleList() {
       // 这里只查前十条 因为目前没有相应的获取 所有数据的接口
       // total 1
-      const { rows } = await getRoleList()
+      const { rows } = await getRoleList() // (7) [{…}, {…}, {…}, {…}, {…}, {…}, {…}]
       this.list = rows
     },
     // props的传值时异步的
-    async  getUserDetailById(id) {
-      const { roleIds } = await getUserDetailById(id)
+    async getUserDetailById(id) {
+      const { roleIds } = await getUserDetailById(id) // ['1062944989845262336']
       this.roleIds = roleIds // 将当前的用户角色赋值
     },
     // 分配角色

@@ -1,8 +1,10 @@
 <template>
   <div class="dashboard-container">
     <div class="app-container">
+
       <el-card>
         <el-tabs>
+
           <el-tab-pane label="登录账户设置">
             <!-- 放置表单 -->
             <el-form ref="loginForm" :model="formData" :rules="rules" label-width="120px" style="margin-left: 120px; margin-top:30px">
@@ -17,7 +19,9 @@
               </el-form-item>
             </el-form>
           </el-tab-pane>
+
           <el-tab-pane label="个人详情">
+            <!-- TODO: 打印个人：http://localhost:8888/hrsaas/employees/print/1063705989926227968?type=personal -->
             <el-row type="flex" justify="end">
               <el-tooltip content="打印个人基本信息">
                 <router-link :to="`/employees/print/${userId}?type=personal`">
@@ -25,11 +29,14 @@
                 </router-link>
               </el-tooltip>
             </el-row>
+
             <!-- <user-info /> -->
-            <!-- component中的is必须是动态变量 -->
+            <!-- TODO: 自定义组件 component中的is必须是动态变量 -->
             <component :is="userInfo" />
           </el-tab-pane>
+
           <el-tab-pane label="岗位信息">
+            <!-- TODO: 打印岗位：http://localhost:8888/hrsaas/employees/print/1063705989926227968?type=job -->
             <el-row type="flex" justify="end">
               <el-tooltip content="打印个人基本信息">
                 <router-link :to="`/employees/print/${userId}?type=job`">
@@ -37,14 +44,21 @@
                 </router-link>
               </el-tooltip>
             </el-row>
+
             <component :is="jobInfo" />
           </el-tab-pane>
+
         </el-tabs>
       </el-card>
+
     </div>
   </div>
 </template>
 
+
+
+
+<!-- TODO: 个人详情页中有 打印，个人详情，岗位信息组件  -->
 <script>
 import { getUserDetailById } from '@/api/user'
 import { saveUserDetailById } from '@/api/employees'
@@ -53,7 +67,8 @@ import JobInfo from './components/job-info'
 
 export default {
   components: {
-    UserInfo, JobInfo
+    UserInfo,
+    JobInfo
   },
   data() {
     return {
@@ -61,6 +76,7 @@ export default {
       userInfo: 'user-info',
       jobInfo: 'job-info',
       userId: this.$route.params.id,
+      // 表单账户：用户名，密码
       formData: {
         username: '',
         password2: ''
@@ -76,6 +92,7 @@ export default {
   },
   methods: {
     async getUserDetailById() {
+      // userId的属性信息：{id: '1063705989926227968', mobile: '13800000002', username: '管理员', password: 'c8b7722b1139bb9b346409e503302e82', enableState: 1, …}
       this.formData = await getUserDetailById(this.userId)
     },
     saveUser() {

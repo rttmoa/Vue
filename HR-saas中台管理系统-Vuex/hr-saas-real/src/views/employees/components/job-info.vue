@@ -1,20 +1,22 @@
 <template>
   <div class="job-info">
+
     <!-- 基础信息 -->
     <el-form label-width="220px">
+
       <div class="block">
         <div class="title">基础信息</div>
         <el-form-item label="岗位">
           <el-input v-model="formData.post" placeholder="请输入" class="inputW" />
         </el-form-item>
-        <!-- <el-form-item label="转正日期">
+        <el-form-item label="转正日期">
           <el-date-picker
             v-model="formData.dateOfCorrection"
             type="date"
             placeholder="选择日期"
             value-format="yyyy-MM-dd"
           />
-        </el-form-item> -->
+        </el-form-item>
         <el-form-item label="转正状态">
           <el-select v-model="formData.stateOfCorrection" placeholder="请选择" disabled>
             <el-option
@@ -55,6 +57,8 @@
           <el-input v-model="formData.adjustmentOfLengthOfService" placeholder="0.00年" class="inputW" disabled />
         </el-form-item>
       </div>
+
+
       <!-- 合同信息 -->
       <div class="block">
         <div class="title">合同信息</div>
@@ -111,6 +115,8 @@
           </el-select>
         </el-form-item>
       </div>
+
+
       <!-- 招聘信息 -->
       <div class="block">
         <div class="title">招聘信息</div>
@@ -148,24 +154,32 @@
           <el-input v-model="formData.recommenderBusinessPeople" placeholder="请输入" class="infoPosition inputW" />
         </el-form-item>
       </div>
+
+
       <!-- 从业信息 -->
       <el-form-item>
         <el-button type="primary" @click="saveJob">保存更新</el-button>
         <el-button @click="$router.back()">返回</el-button>
       </el-form-item>
+
     </el-form>
   </div>
 
 </template>
+
+
+
+
+
+<!-- 岗位信息 -->
 <script>
 import EmployeeEnum from '@/api/constant/employees'
 import { getJobDetail, updateJob, getEmployeeSimple } from '@/api/employees'
-
 export default {
   data() {
     return {
       userId: this.$route.params.id,
-      depts: [],
+      depts: [], // 部门人员
       EmployeeEnum,
       formData: {
         adjustmentAgedays: '', // 调整司龄天
@@ -203,14 +217,14 @@ export default {
   },
   methods: {
     async getJobDetail() {
-      this.formData = await getJobDetail(this.userId)
+      this.formData = await getJobDetail(this.userId) // {userId: '1063705989926227968', companyId: '1', post: '文员', workMailbox: null, rank: null, …}
     },
     async saveJob() {
       await updateJob(this.formData)
       this.$message.success('保存岗位信息成功')
     },
-    async getEmployeeSimple() {
-      this.depts = await getEmployeeSimple()
+    async getEmployeeSimple() { 
+      this.depts = await getEmployeeSimple() // (17) [{id:"1063705989926227968", username:"管理员"}, {{id: '1066370498633486336', username: '孙财'}}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
     }
   }
 }

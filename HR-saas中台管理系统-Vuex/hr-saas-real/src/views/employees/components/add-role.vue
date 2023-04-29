@@ -3,9 +3,7 @@
     <!-- 分配角色 -->
     <el-checkbox-group v-model="roleIds">
       <el-checkbox v-for="item in list" :key="item.id" :label="item.id">
-        {{
-          item.name
-        }}
+        {{item.name}}
       </el-checkbox>
     </el-checkbox-group>
     <template slot="footer">
@@ -46,6 +44,7 @@ export default {
   methods: {
     //  获取所有角色
     async getRoleList() {
+      console.log("add-role --- 添加角色组件渲染")
       const { rows } = await getRoleList()
       this.list = rows
     },

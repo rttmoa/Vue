@@ -116,6 +116,8 @@ export function param2Obj(url) {
   return obj
 }
 
+
+// TODO: 位置：员工 - 新增员工 - 选择部门
 // 将列表转化成树形结构数据的方法
 // 递归方法 自己调用自己, 每次调用自己时 需要传入不同的参数  而且要有跳出条件
 // list  [] => [{children: [{ chilrenr= }]}]

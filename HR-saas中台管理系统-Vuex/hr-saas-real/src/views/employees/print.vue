@@ -1,10 +1,13 @@
 <template>
   <div id="myPrint" class="dashboard-container">
+
     <div class="app-container">
+
       <el-row type="flex" justify="end">
         <!-- v-print用到按钮上 -->
         <el-button v-print="{ id: 'myPrint' }" size="mini" type="primary">打印</el-button>
       </el-row>
+
       <el-card>
         <el-breadcrumb separator="/" class="titInfo ">
           <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
@@ -327,19 +330,30 @@
           <div class="foot">签字：___________日期:___________</div>
         </div>
       </el-card>
+
     </div>
+
   </div>
 </template>
+
+
+
+
+
+
+
+
 
 <script>
 import { getPersonalDetail, getJobDetail } from '@/api/employees'
 import { getUserDetailById } from '@/api/user'
 export default {
   data() {
+    // http://localhost:8888/hrsaas/employees/print/1063705989926227968?type=personal
     return {
       formData: {},
-      userId: this.$route.params.id,
-      type: this.$route.query.type // 打印类型
+      userId: this.$route.params.id,  // userId
+      type: this.$route.query.type    // 打印类型
     }
   },
   // 创建完毕状态
@@ -348,9 +362,11 @@ export default {
   },
   // 组件更新
   methods: {
+    // 打印个人信息
     async getPersonalDetail() {
       this.formData = await getPersonalDetail(this.userId) // 获取个人基本信息
     },
+    // 打印岗位信息
     async getJobDetail() {
       const userInfo = await getUserDetailById(this.userId)
       const jobInfo = await getJobDetail(this.userId) // 获取个人基本信息

@@ -45,6 +45,9 @@ export function importEmployee(data) {
  *  保存员工的基本信息
  * ***/
 export function saveUserDetailById(data) {
+  // console.log(data) // {id: '1063705989926227968', mobile: '13800000002', username: '管理员', password: '123456', enableState: 1, …}
+  // await saveUserDetailById({ ...this.formData, password: this.formData.password2 })
+
   return request({
     url: `/sys/user/${data.id}`,
     method: 'put',
@@ -95,7 +98,9 @@ export function updateJob(data) {
 /** *
  * 给用户分配角色
  * ***/
-export function assignRoles(data) {
+export function assignRoles(data) { // {id: '1063705989926227968', roleIds: Array(2)}
+  // page: await assignRoles({ id: this.userId, roleIds: this.roleIds })
+
   return request({
     url: '/sys/user/assignRoles',
     data,

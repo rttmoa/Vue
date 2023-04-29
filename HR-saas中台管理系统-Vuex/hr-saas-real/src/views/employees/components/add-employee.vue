@@ -5,6 +5,7 @@
       sync修饰符作用的属性 后面的变量不能是props变量
    -->
   <el-dialog title="新增员工" :visible="showDialog" @close="btnCancel">
+
     <!-- 放置内容 -->
     <el-form ref="addEmployee" :model="formData" :rules="rules" label-width="120px">
       <el-form-item label="姓名" prop="username">
@@ -40,6 +41,7 @@
         <el-date-picker v-model="formData.correctionTime" class="wp50" placeholder="请选择转正时间" />
       </el-form-item>
     </el-form>
+
     <!-- 放置确定取消按钮 -->
     <template v-slot:footer>
       <el-row type="flex" justify="center">
@@ -49,9 +51,17 @@
         </el-col>
       </el-row>
     </template>
+
   </el-dialog>
 </template>
 
+
+
+
+
+
+
+<!-- TODO: 按钮：添加员工 -->
 <script>
 import { getDepartments } from '@/api/departments'
 import { addEmployee } from '@/api/employees'
@@ -82,7 +92,6 @@ export default {
           min: 1, max: 4, message: '姓名为1-4位'
         }],
         mobile: [{ required: true, message: '请输入手机号', trigger: 'blur' }, {
-        //   pattern 正则表达式
           pattern: /^1[3-9]\d{9}$/,
           message: '手机号格式不正确',
           trigger: 'blur'
@@ -101,14 +110,14 @@ export default {
       loading: false // 树形加载进度条
     }
   },
-  //   created() {
-  //     this.getDepartments()
-  //   },
+  // created() {
+  //   this.getDepartments()
+  // },
   methods: {
     async getDepartments() {
       this.loading = true // 打开进度条
       this.showTree = true // 显示树形
-      const { depts } = await getDepartments()
+      const { depts } = await getDepartments() // (17) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
       // 展示树形
       this.treeData = transListToTreeData(depts, '') // 转化树形数据
       this.loading = false
@@ -118,11 +127,9 @@ export default {
       this.showTree = false
     },
     async btnOK() {
-      // 调用新增接口
-
       try {
         await this.$refs.addEmployee.validate()
-        await addEmployee(this.formData)
+        await addEmployee(this.formData) // {correctionTime: ""departmentName: ""formOfEmployment: ""mobile: ""timeOfEntry: ""username: ""workNumber: ""}
         this.$message.success('新增员工成功')
         // $parent 当前的父组件实例 用this.$parent的前提条件是 该组件不能位于 非原生组件内部 也就是 插槽内容
         // $children 当前的子组件集合
@@ -130,7 +137,7 @@ export default {
         this.$parent.getEmployeeList && this.$parent.getEmployeeList()
         this.$parent.showDialog = false // 直接关闭弹层
       } catch (error) {
-        console.log(error)
+        console.log("添加新员工错误", error)
       }
     },
     btnCancel() {
@@ -144,6 +151,7 @@ export default {
         timeOfEntry: '',
         correctionTime: ''
       }
+      this.treeData = [];
       // 设置数据 写也行 ，不写也行
       // resetFields() 可以移除所有的校验效果 并且将数据重置为空字段 => resetField只能清空 目前在表单中定义的字段
       // 回写数据 会导致 formData中存在一些原来没有的字段 id  resetField不能清空多出来的字段

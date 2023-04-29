@@ -7,12 +7,13 @@
         <!-- <template slot="after"> -->
         <template v-slot:before>
           <span>共{{ page.total }}条记录 </span>
+          <span> -- 操作->查看</span>
         </template>
         <!-- v-bind: => :  v-on: => @  v-slot:  => # -->
+        <!-- TODO: 表头按钮 -->
         <template #after>
           <el-button size="small" type="danger" @click="exportData">普通excel导出</el-button>
           <el-button size="small" type="info" @click="exportMutiData">复杂表头excel导出</el-button>
-
           <el-button size="small" type="success" @click="$router.push('/import?type=user')">excel导入</el-button>
           <el-button size="small" type="primary" @click="showDialog = true">新增员工</el-button>
         </template>
@@ -23,9 +24,9 @@
       <el-card>
         <el-table v-loading="loading" :data="list" border stripe>
           <el-table-column align="center" type="index" label="序号" sortable width="80" />
-          <el-table-column prop="username" label="姓名" sortable />
+          <el-table-column align="center" prop="username" label="姓名" sortable />
           <el-table-column label="头像" align="center">
-            <!-- 自定义内容 -->
+            <!-- FIXME: 自定义内容 -->
             <template slot-scope="{ row }">
               <img
                 v-imageerror="require('@/assets/common/head.jpg')"
@@ -52,12 +53,12 @@
           </el-table-column>
           <el-table-column label="操作" sortable="" fixed="right" width="280">
             <template v-slot="{ row }">
-              <el-button type="text" size="small" @click="$router.push(`/employees/detail/${row.id}`)">查看</el-button>
-              <el-button type="text" size="small">转正</el-button>
-              <el-button type="text" size="small">调岗</el-button>
-              <el-button type="text" size="small">离职</el-button>
-              <el-button type="text" size="small" @click="assignRole(row.id)">角色</el-button>
-              <el-button type="text" size="small" @click="delEmployee(row.id)">删除</el-button>
+              <el-button type="text" size="large" @click="$router.push(`/employees/detail/${row.id}`)">查看</el-button>
+              <el-button type="text" size="small" disabled>转正</el-button>
+              <el-button type="text" size="small" disabled>调岗</el-button>
+              <el-button type="text" size="small" disabled>离职</el-button>
+              <el-button type="text" size="large" @click="assignRole(row.id)">角色</el-button>
+              <el-button type="text" size="large" @click="delEmployee(row.id)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -74,19 +75,22 @@
         </el-row>
       </el-card>
     </div>
+
     <!-- 使用组件 -->
     <!-- 这里为什么可以用sync 因为后面的变量是来源于data -->
     <!-- 子组件 this.$emit("update:showDialog", false) -->
+    <!-- TODO: 按钮：新增员工 -->
     <add-employee :show-dialog.sync="showDialog" />
-    <!-- 放置分配弹层的组件 -->
+    <!-- TODO: 操作：角色：分配角色 弹窗 -->
     <assign-role ref="assignRole" :show-role-dialog.sync="showRoleDialog" :user-id="userId" />
-    <!-- 放置一个二维码弹层 -->
+    <!-- TODO: 点击头像，弹出二维码 -->
     <el-dialog title="图片二维码" :visible.sync="showCodeDialog">
       <!-- 放置canvas -->
       <el-row type="flex" justify="center">
         <canvas ref="myCanvas" />
       </el-row>
     </el-dialog>
+
   </div>
 </template>
 
@@ -106,11 +110,11 @@ export default {
   components: { AddEmployee, AssignRole },
   data() {
     return {
-      showDialog: false,
-      showCodeDialog: false, // 显示二维码的弹层
-      showRoleDialog: false, // 分配角色弹层
+      showDialog: false,     // 弹窗：新增员工
+      showCodeDialog: false, // 弹窗：头像二维码
+      showRoleDialog: false, // 弹窗：分配角色
       userId: null, // 记录当前点击的id
-      loading: false,
+      loading: false, // 控制table表格的加载
       page: {
         total: 0,
         page: 1,
@@ -130,13 +134,15 @@ export default {
       this.list = rows
       this.loading = false
     },
-    // 格式化聘用形式的属性方法
+    // Table 格式化聘用形式的属性方法
     formatEmployment(row, column, cellValue, index) {
+      // console.log(cellValue) // 1
       const obj = EmployeeEnum.hireType.find(item => item.id === cellValue)
       return obj ? obj.value : '未知'
       // cellValue是当前单元格的值
       // row 是当前行的数据的对象
     },
+    // Table 操作 删除用户
     delEmployee(id) {
       this.$confirm('确定删除该用户？').then(() => {
         return delEmployee(id)
@@ -145,7 +151,7 @@ export default {
         this.getEmployeeList()
       })
     },
-    // 导出数据
+    // 按钮：普通excel导出
     exportData() {
       // 懒加载模块 => 只有当点击按钮的时候才去加载这个模块
       const headers = {
@@ -194,6 +200,7 @@ export default {
       })
       // return rows.map(item => Object.keys(headers).map(key => item[headers[key]]))
     },
+    // 按钮：复杂表头excel导出
     exportMutiData() {
       // 懒加载模块 => 只有当点击按钮的时候才去加载这个模块
       const headers = {
@@ -222,10 +229,11 @@ export default {
         })
       })
     },
-    // 显示二维码方法
+    // Table 头像：显示二维码方法
     showQrCode(url) {
+      // console.log(url) // http://q6cu3t6jv.bkt.clouddn.com/1063705989926227968?t=1582797590950
       if (url && url.trim()) {
-        this.showCodeDialog = true // 打开二维码弹层
+        this.showCodeDialog = true;  // 让 dialog 组件显示
         // 页面的渲染是异步的  状态变了 页面会立刻变化吗  页面立刻能得到dom？  ！！！ no
         // nextTick总是会等到当前的数据更新完毕 并且渲染完毕之后 执行
 
@@ -234,17 +242,18 @@ export default {
         this.$nextTick(() => {
           // 此时该函数执行时 一定是上一次的更新执行完毕了
           // 此时一定能保证拿到canvas
-          QrCode.toCanvas(this.$refs.myCanvas, url) // 转化二维码
+          QrCode.toCanvas(this.$refs.myCanvas, url) // FIXME: 转化二维码 - canvas ref=myCanvas
         })
       } else {
         this.$message.warning('当前用户没有头像')
       }
     },
-    async  assignRole(id) {
+    // Table 操作：分配角色
+    async assignRole(id) {
       this.userId = id // 记住当前点击的user-id  props传值是异步的 props异步渲染传值
       // 同步和异步相遇  会先执行同步
       // 立刻调用获取数据的方法
-      await this.$refs.assignRole.getUserDetailById(id)
+      await this.$refs.assignRole.getUserDetailById(id) // FIXME: 去调用 子组件中的方法
       this.showRoleDialog = true
     }
     // changePage(newPage) {
