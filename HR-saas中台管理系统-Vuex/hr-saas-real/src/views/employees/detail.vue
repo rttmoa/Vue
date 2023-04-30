@@ -31,7 +31,7 @@
             </el-row>
 
             <!-- <user-info /> -->
-            <!-- TODO: 自定义组件 component中的is必须是动态变量 -->
+            <!-- TODO: 动态组件 component中的is必须是动态变量 -->
             <component :is="userInfo" />
           </el-tab-pane>
 

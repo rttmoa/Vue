@@ -25,7 +25,7 @@
         <el-table v-loading="loading" :data="list" border stripe>
           <el-table-column align="center" type="index" label="序号" sortable width="80" />
           <el-table-column align="center" prop="username" label="姓名" sortable />
-          <el-table-column label="头像" align="center">
+          <el-table-column label="头像(二维码)" align="center">
             <!-- FIXME: 自定义内容 -->
             <template slot-scope="{ row }">
               <img
@@ -69,7 +69,7 @@
             :total="page.total"
             :page-size="page.size"
             :current-page.sync="page.page"
-            layout="total, prev,pager, next"
+            layout="total, prev, pager, next"
             @current-change="getEmployeeList"
           />
         </el-row>
@@ -81,8 +81,10 @@
     <!-- 子组件 this.$emit("update:showDialog", false) -->
     <!-- TODO: 按钮：新增员工 -->
     <add-employee :show-dialog.sync="showDialog" />
+
     <!-- TODO: 操作：角色：分配角色 弹窗 -->
     <assign-role ref="assignRole" :show-role-dialog.sync="showRoleDialog" :user-id="userId" />
+
     <!-- TODO: 点击头像，弹出二维码 -->
     <el-dialog title="图片二维码" :visible.sync="showCodeDialog">
       <!-- 放置canvas -->

@@ -12,7 +12,7 @@
           <el-button size="mini" type="primary" @click="$router.push(`/social_securitys/monthStatement?yearMonth=${yearMonth}`)">{{ yearMonth }}报表</el-button>
         </template>
       </page-tools>
-      <!-- 筛选组件 -->
+      <!-- TODO: 筛选组件(点击复选框可直接搜索内容) -->
       <social-tool />
       <el-card class="hr-block">
         <el-table :data="list" style="width: 100%" :default-sort="{prop: 'date', order: 'descending'}">
@@ -27,9 +27,11 @@
           <el-table-column prop="providentFundCity" label="公积金城市" width="180" />
           <el-table-column prop="socialSecurityBase" label="社保基数" />
           <el-table-column prop="providentFundBase" label="公积金基数" />
-          <el-table-column label="操作">
+          <el-table-column label="操作" width="250" >
             <template v-slot:default="obj">
-              <el-button type="text" size="mini" @click="$router.push(`/social_securitys/detail/${obj.row.id}`)">查看详情</el-button>
+              <el-button type="text" size="mini" @click="$router.push(`/social_securitys/detail/${obj.row.id}`)" style="font-size: large;">
+                查看详情
+              </el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -48,13 +50,20 @@
   </div>
 </template>
 
+
+
+
+
+<!-- TODO: url: http://localhost:8888/hrsaas/social_securitys -->
 <script>
 import { getSocialList, getSettings } from '@/api/social'
 import SocialTool from './components/social-tool'
 
 export default {
   name: 'SocialTableIndex',
-  components: { SocialTool },
+  components: {
+    SocialTool
+  },
   data() {
     return {
       list: [],

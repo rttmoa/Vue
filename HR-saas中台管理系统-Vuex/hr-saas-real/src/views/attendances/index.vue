@@ -9,32 +9,31 @@
         <!-- —————— 右侧跳转页 -->
         <template v-slot:after>
           <el-button size="mini" type="danger" @click="$router.push('/import?type=attendance')">导入</el-button>
-          <el-button size="mini" type="warning" @click="tipsDialogVisible = true">提醒</el-button>
-          <el-button size="mini" type="primary" @click="handleSet">设置</el-button>
+          <el-button size="mini" type="warning" @click="tipsDialogVisible = true || handleTip">提醒Dialog</el-button>
+          <el-button size="mini" type="primary" @click="handleSet">设置Dialog</el-button>
           <el-button size="mini" type="default" @click="$router.push('/attendances/archiving/')">历史归档</el-button>
-          <!-- ———— 跳转到当前目录 report.vue 文件中 -->
           <el-button size="mini" type="primary" @click="$router.push({'path':'/attendances/report/'+ yearMonth})">{{ yearMonth }}报表</el-button>
         </template>
       </page-tools>
 
-      <!-- 渲染 ———— 部门和考勤状态 -->
+      <!-- 渲染 ———— 部门和考勤状态(复选框+单选框) -->
       <el-card class="hr-block">
         <el-form ref="formData" :model="formData" label-width="120px" class="formInfo">
-          <el-form-item label="部门:">
+          <el-form-item label="部门:" prop="dept">
             <el-checkbox-group v-model="formData.deptID">
-              <el-checkbox v-for="item in departments" :key="item.id" :label="item.name"> <!-- 渲染 ———— 部门数据 -->
+              <el-checkbox v-for="item in departments" :key="item.id" :label="item.name">
                 {{ item.name }}
               </el-checkbox>
             </el-checkbox-group>
           </el-form-item>
-          <el-form-item label="考勤状态：">
+          <el-form-item label="考勤状态：" prop="state">
             <el-radio-group v-model="formData.stateID">
-              <el-radio v-for="item in stateData.holidayType" :key="item.id" :label="item.value" :value="item.value"> <!-- 渲染 ———— 考勤状态 -->
+              <el-radio v-for="item in stateData.holidayType" :key="item.id" :label="item.value" :value="item.value">
                 {{ item.value }}
               </el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-button onclick="submit">提交</el-button>
+          <el-button type="primary"  @click="submitFormData">提交</el-button>
         </el-form>
       </el-card>
 
@@ -129,18 +128,18 @@
     </div>
 
     <el-card>
-      <!-- 提醒组件 -->
+      <!-- 提醒  -->
       <el-dialog title="提醒" :visible.sync="tipsDialogVisible" width="280px" center>
         <div class="attenInfo">
           <p>系统将通过邮件与短信的形式，对全体员工中存在旷工的考勤进行提醒，该提醒每月仅可发送 1 次。</p>
         </div>
         <span slot="footer" class="dialog-footer">
           <el-button type="primary" @click="handleSub">我知道了</el-button>
-          <el-button @click="centerDialogVisible = false">取消</el-button>
+          <el-button @click="tipsDialogVisible = false">取消</el-button>
         </span>
       </el-dialog>
 
-      <!-- 设置按钮 —— 弹出框 -->
+      <!-- 设置  -->
       <attendance-set ref="set" @handleCloseModal="handleCloseModal" />
     </el-card>
 
@@ -167,17 +166,17 @@ export default {
     return {
       list: [],  // 考勤列表数据
       selectData: [],
-      stateData: attendanceApi,
-      departments: [], // 部门数据
+      stateData: attendanceApi, // 考勤状态(单选框) - 固定值
+      departments: [],          // 部门数据(复选框)
       total: 100,
-      attendanceRecord: '',  // 弹出框修改考勤状态
+      attendanceRecord: '',     // 弹出框修改考勤状态
       monthOfReport: '',  // 表头 三月份
       centerDialogVisible: false, // 关闭弹出框
       tipsDialogVisible: false, // 提醒组件是否显示
       month: '',
       yearMonth: '',
       loading: false, // 此页面的加载事件
-      attendInfo: { // ??
+      attendInfo: { // 考勤信息数据
         month: '',
         getDate: '',
         getInfo: '',
@@ -189,8 +188,8 @@ export default {
         page: 1,
         pagesize: 10,
         keyword: this.keyword,
-        deptID: [], // 性别
-        stateID: ''
+        deptID: [], // 部门Id
+        stateID: '' // 考勤Id
       },
       page: {
         page: 1,
@@ -210,7 +209,11 @@ export default {
     this.getDepartments() // 获取部门数据
   },
   methods: {
-    // 暂时不处理
+    // 部门和考勤状态的数据
+    submitFormData() {
+      console.log(this.$refs.formData.prop)
+    },
+    // 提醒Dialog
     handleSub() {
       this.tipsDialogVisible = false
       this.$message.success('提醒成功')
@@ -235,7 +238,7 @@ export default {
       this.departments = depts
     },
 
-    // 获取考勤列表
+    // TODO: 获取考勤列表
     async getAttendancesList() {
       // console.log("考勤列表i", await getAttendancesList({ ...this.page }))
       this.loading = true
@@ -255,9 +258,10 @@ export default {
       this.month = monthOfReport
       this.loading = false
     },
-    // 更新考勤状态
+    // 更新Table中的考勤状态 (旷工 -> 迟到...)
     async btnOK() {
-      console.log("考勤状态", this.modifyData.adtStatu)
+      console.log("modifyData", this.modifyData)
+      console.log("modifyData.adtStatu", this.modifyData.adtStatu)
       // await updateAttendance(this.modifyData)  /* 注释 ——————   不可修改 */
       this.centerDialogVisible = false
       this.getAttendancesList() // 成功之后 重新拉取数据

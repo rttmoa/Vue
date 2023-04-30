@@ -1,6 +1,7 @@
 <!-- 考勤 + 历史归档 + 2020年 -->
 <template>
   <div class="historicalArcBox">
+
     <!-- 头部 -->
     <div class="historicalArcTop">
       <div class="title">
@@ -21,9 +22,10 @@
 
     <!-- ———— 数据展示 -->
     <div v-loading="loading" class="historicalTable">
+      <!-- TODO: v-show 控制HTML显示 -->
       <div v-show="showArchivig" class="archivig">该年份无归档报表</div>
 
-      <!-- 渲染外壳 -->
+      <!-- TODO: 渲染每一个盒子的结构(渲染外壳)  -->
       <div v-for="( itemes, index) in tableData" :key="index" class="itemes">
         <div class="itemTopLab" :class="{act: itemes.act}">
           <div class="lab" @click="openTable(itemes, index)">
@@ -155,7 +157,7 @@ export default {
       contentData: [], // 归档列表数据
     }
   },
-  // 计算属性不错 ————————————————————————————————————————
+  // TODO:  计算属性不错 ————————————————————————————————————————
   computed: {
     // 模糊搜索
     tables() {
@@ -189,7 +191,7 @@ export default {
     this.getDepartments()
   },
   methods: {
-    getMonth: function() {
+    getMonth: function() {  // TODO: 处理月份
     /* 默认显示上个月的日期 */
       var nowdays = new Date()
       var year = nowdays.getFullYear() // 2023
@@ -254,7 +256,7 @@ export default {
     // 选择部门
     handleChange(val) {
       this.requestParameters.departmentId = val
-      this.init(this.requestParameters)
+      this.init(this.requestParameters) // TODO: 初始化参数
     },
     // 选择年份
     async handleChangeYear() {

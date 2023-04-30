@@ -30,3 +30,5 @@ Vuex：
   this.$router.push('/login')
 
 看看页面请求了哪些内容：requestjs中响应成功的data，consolelog(data)
+
+<!-- v-bind: => :  v-on: => @  v-slot:  => # -->

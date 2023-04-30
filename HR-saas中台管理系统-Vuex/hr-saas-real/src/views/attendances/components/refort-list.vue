@@ -7,7 +7,7 @@
           v-model="requestParameters.keyword"
           placeholder="搜索"
           clearable
-          @keyup.enter.native="dataSearch(itemes,index)"
+          @keyup.enter.native="dataSearch(itemes, index)"
         />
       </div>
       <el-input v-model="requestParameters.keyword" placeholder="请输入姓名" @click="handleSearch"></el-input>
@@ -73,6 +73,9 @@ import { archives, newReports, reportFormList } from '@/api/attendances'
 
 export default {
   name: 'RefortList',
+  props: {
+
+  },
   data() {
     return {
       // baseData: [],
@@ -119,7 +122,7 @@ export default {
   // 组件更新
   methods: {
     // 业务方法
-    async  reportFormList(params) {
+    async reportFormList(params) {
       this.loading = true
       this.dataList = await reportFormList(this.requestParameters)
       this.loading = false
@@ -151,8 +154,7 @@ export default {
           this.month +
           '月报表不能修改，且您上一次归档之后的修改将不会被保存。您确定现在就开始做下月考勤吗？',
         '新建' + parseInt(Number(this.month) + Number(1)) + '报表'
-      )
-        .then(async() => {
+      ).then(async() => {
           // const nextMonth = this.getNextMonth(this.yearMonth)
           var atteTime = this.month.substring(0, 4) + '-' + this.month.substring(4)
           atteTime = this.getNextMonth(atteTime).datas.replace('-', '')

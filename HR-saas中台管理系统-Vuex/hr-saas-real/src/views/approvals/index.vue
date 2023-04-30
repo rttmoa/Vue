@@ -89,14 +89,15 @@ export default {
     async  getApprovalList() {
       this.loading = true;
       try {
+        console.log(await getApprovalList({ year: 2020, ...this.page }))
         const { rows, total } = await getApprovalList({ year: 2018, ...this.page })
-        this.page.total = total
+        this.page.total = total;
         this.list = rows
       } catch (Exception) {
         console.log("审批页", Exception)
       } finally {
         this.loading = false
-      } 
+      }
     },
     toDetail(obj) {
       var name = obj.processName

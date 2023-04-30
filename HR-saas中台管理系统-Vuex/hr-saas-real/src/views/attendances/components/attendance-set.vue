@@ -1,7 +1,10 @@
 <template>
   <div class="add-form">
+
     <el-dialog title="设置" :visible.sync="dialogFormVisible">
+
       <el-tabs v-model="activeName" style="margin-left:20px" @tab-click="handleClick">
+
         <el-tab-pane label="出勤设置" name="first">
           <el-form
             ref="dataForm"
@@ -70,6 +73,8 @@
             <el-button @click="handleClose">取消</el-button>
           </div>
         </el-tab-pane>
+
+
         <el-tab-pane label="请假设置" name="second">
           <el-form
             ref="leaveForm"
@@ -120,7 +125,10 @@
             </template>
           </el-alert>
         </el-tab-pane>
+
+
         <el-tab-pane label="扣款设置" name="third">
+          <!-- 表单 -->
           <el-form
             ref="deductionsForm"
             :rules="rules"
@@ -144,6 +152,7 @@
               </el-select>
             </el-form-item>
           </el-form>
+          <!-- 表格 -->
           <el-table ref="singleTable" :data="stateData.departmentType" style="width: 100%">
             <el-table-column>
               <template slot-scope="scope">
@@ -153,7 +162,7 @@
                     v-model="scope.row.isEnable"
                     active-color="#13ce66"
                     inactive-color="#ff4949"
-                    @change="handleStatus($event,scope.row)"
+                    @change="handleStatus($event, scope.row)"
                   />
                 </div>
 
@@ -288,6 +297,8 @@
             <el-button @click="handleClose">取消</el-button>
           </div>
         </el-tab-pane>
+
+
         <el-tab-pane label="加班设置" name="fourth">
           <el-form
             ref="overtimeForm"
@@ -295,7 +306,6 @@
             :rules="overtimeRule"
             label-width="110px"
           >
-
             <el-form-item label="部门：" prop="departmentId">
               <el-select
                 v-model="overtimeBase.departmentId"
@@ -372,8 +382,7 @@
             <el-form-item label prop="unit">
               <div class="ruleInfo">
                 <p>
-                  请假最小单位
-                  <el-input v-model="overtimeBase.unit" style="width:50px" />天
+                  请假最小单位<el-input v-model="overtimeBase.unit" style="width:50px" />天
                 </p>
               </div>
             </el-form-item>
@@ -387,6 +396,8 @@
     </el-dialog>
   </div>
 </template>
+
+
 
 
 
@@ -513,7 +524,7 @@ export default {
     // 界面交互
     // 表单提交
     createData() {
-      this.formBase.formOfEmployment = this.formOfEmployment
+      this.formBase.formOfEmployment = this.formOfEmployment;
       this.$refs.dataForm.validate(async valid => {
         if (valid) {
           await addEmployee(this.formBase)
@@ -551,26 +562,31 @@ export default {
     },
     // 扣款选择部门
     async  handleChangeDeductions(val) {
-      this.deductionsBase.departmentId = val
-      this.stateData.departmentType.forEach(item => {
+      this.deductionsBase.departmentId = val;
+      this.stateData && this.stateData.departmentType && this.stateData.departmentType.forEach(item => {
         item.departmentId = val
         item.isEnable = false
       })
-      const res = await getDeductions({ departmentId: val }).then(res => {
-
-      })
-      res.forEach(item => {
-        if (item.isEnable === 0) {
-          item.isEnable = true
-        } else {
-          item.isEnable = false
+      try {
+        const result = await getDeductions({ departmentId: val }).then(res => res).catch(error => error);
+        if(result.length){
+          result.forEach(item => {
+            if (item.isEnable === 0) {
+              item.isEnable = true
+            } else {
+              item.isEnable = false
+            }
+            this.stateData.departmentType.forEach(val => {
+              if (val.dedTypeCode === item.dedTypeCode) {
+                val.isEnable = item.isEnable
+              }
+            })
+          })
         }
-        this.stateData.departmentType.forEach(val => {
-          if (val.dedTypeCode === item.dedTypeCode) {
-            val.isEnable = item.isEnable
-          }
-        })
-      })
+      } catch (error) {
+        console.log("扣款选择部门 错误", error)
+      }
+
     },
     // 加班选择部门
     async handleChangeovertime(val) {
@@ -623,7 +639,7 @@ export default {
     async  handleAttendance() {
       this.$refs.dataForm.validate(async valid => {
         if (valid) {
-          await attendanceSave(this.formBase)
+          await attendanceSave(this.formBase) // this.formBase: {afternoonEndTime: "08:30"afternoonStartTime: "08:45"companyId: "1"createBy: null id: 123}
           this.$emit('dataSearch')
           this.handleClose()
         }

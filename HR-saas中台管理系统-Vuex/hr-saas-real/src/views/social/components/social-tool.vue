@@ -1,6 +1,9 @@
 <template>
   <div class="cont-top-box">
     <el-form label-width="100px">
+      <el-form-item label="筛选">
+        此筛选组件（点击复选框可直接搜索内容）
+      </el-form-item>
       <el-form-item label="部门">
         <el-checkbox-group v-model="departmentChecks" style="display:inline-block">
           <el-checkbox v-for="item in departmentList" :key="item.id" :label="item.id" @change="checkChange">{{ item.name }}</el-checkbox>

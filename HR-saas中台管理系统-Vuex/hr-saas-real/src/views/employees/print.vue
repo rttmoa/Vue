@@ -16,6 +16,7 @@
           </el-breadcrumb-item>
           <el-breadcrumb-item>打印</el-breadcrumb-item>
         </el-breadcrumb>
+
         <div v-if="type === 'personal'">
           <h2 class="centInfo">员工信息表</h2>
           <table cellspacing="0" width="100%" class="tableList">
@@ -329,6 +330,7 @@
           </table>
           <div class="foot">签字：___________日期:___________</div>
         </div>
+        
       </el-card>
 
     </div>
@@ -370,7 +372,10 @@ export default {
     async getJobDetail() {
       const userInfo = await getUserDetailById(this.userId)
       const jobInfo = await getJobDetail(this.userId) // 获取个人基本信息
-      this.formData = { ...userInfo, ...jobInfo }
+      this.formData = {
+        ...userInfo,
+        ...jobInfo
+      }
     }
   }
 }
