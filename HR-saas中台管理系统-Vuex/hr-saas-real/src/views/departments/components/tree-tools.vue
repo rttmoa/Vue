@@ -41,10 +41,9 @@ export default {
   },
   methods: {
     operateDepts(type) {
+      console.log("添加?编辑?删除 节点", this.treeNode)
       if (type === 'add') {
-        // 新增
         // 告诉父组件弹层去
-        // console.log(this.treeNode)
         this.$emit('addDepts', this.treeNode) // 传出要添加子部门的节点
       } else if (type === 'edit') {
         // 编辑

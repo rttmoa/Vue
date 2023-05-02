@@ -28,6 +28,10 @@
   </el-dialog>
 </template>
 
+
+
+
+
 <script>
 import { getDepartments, addDepartments, getDepartDetail, updateDepartments } from '@/api/departments'
 import { getEmployeeSimple } from '@/api/employees'
@@ -44,6 +48,7 @@ export default {
     }
   },
   data() {
+    // 部门名称 校验
     const checkNameRepeat = async(rule, value, callback) => {
       // 校验逻辑 同级部门不能出现重复的名称
       // 获取最新的组织架构数据
@@ -61,6 +66,7 @@ export default {
       // 市场部所有的子部门的 pid 等于市场部的id  市场部的数据的treeNode.id
       isRepeat ? callback(new Error(`同级部门下已经有${value}这个部门了`)) : callback()
     }
+    // 部门编码 校验
     const checkCodeRepeat = async(rule, value, callback) => {
       // 获取最新的组织架构数据
       const { depts } = await getDepartments()
@@ -75,16 +81,16 @@ export default {
     }
     return {
       formData: {
-        name: '', // 部门名称
-        code: '', // 部门编码
-        manager: '', // 部门管理者
+        // id
+        name: '',     // 部门名称
+        code: '',     // 部门编码
+        manager: '',  // 部门管理者
         introduce: '' // 部门介绍
       },
       rules: {
         name: [{ required: true, message: '部门名称不能为空', trigger: 'blur' },
+          {min: 1, max: 50, message: '部门名称为1-50个字符', trigger: 'blur'},
           {
-            min: 1, max: 50, message: '部门名称为1-50个字符', trigger: 'blur'
-          }, {
             // 同级部门不能出现重复的部门名称
             trigger: 'blur',
             validator: checkNameRepeat
@@ -100,7 +106,7 @@ export default {
           min: 1, max: 300, message: '部门介绍为1-300个字符', trigger: 'blur'
         }] // 部门介绍
       },
-      peoples: []
+      peoples: []     // 部门负责人(单选框)
     }
   },
   computed: {
@@ -109,10 +115,12 @@ export default {
     }
   },
   methods: {
+    // 部门负责人(单选框)
     async getEmployeeSimple() {
-      this.peoples = await getEmployeeSimple()
+      this.peoples = await getEmployeeSimple() // (20) [{id: "1063705989926227968",username: "管理员"}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
     },
     btnOK() {
+      // console.log("提交表单数据", this.formData) // {name: "北京事业部",pid:'231523',manager:"管理员",id:"1235398917619130368",managerId:null }
       this.$refs.deptForm.validate().then(() => {
         // 如果进入then表示校验成功
         // 子部门的pid 等于父部门的id
@@ -135,8 +143,8 @@ export default {
       this.$refs.deptForm.resetFields() // 重置方法
       this.$emit('update:showDialog', false)
     },
-    async  getDepartDetail(id) {
-      this.formData = await getDepartDetail(id)
+    async getDepartDetail(id) {
+      this.formData = await getDepartDetail(id) // 父组件调用此方法
     }
   }
 }

@@ -12,7 +12,6 @@
           <slot name="after" />
         </el-row>
       </el-col>
-
     </el-row>
   </el-card>
 </template>

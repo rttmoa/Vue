@@ -19,10 +19,10 @@
     <div v-loading="loading" class="historicalTable">
       <div v-for="( itemes, index) in tableData" :key="index" class="itemes">
         <div class="itemTopLab" :class="{act: itemes.act}">
-          <div class="lab" @click="openTable(itemes,index)"> > </div>
+          <div class="lab" @click="openTable(itemes,index)"  style="color: blue;"> > </div>
           <div>
             <p class="title">{{ itemes.month }}社保报表 <span>{{ itemes.creationTime }}</span></p>
-            <p class="labTit" @click="openTable(itemes,index)">社保报表</p>
+            <p class="labTit" @click="openTable(itemes,index)" style="color: blue;">社保报表</p>
           </div>
           <div>
             <p class="itemTit"><span>企业缴纳</span></p>
@@ -145,7 +145,7 @@ export default {
     return {
       loading: false,
       num: 0,
-      yearVal: '2020',
+      yearVal: '2018', // 18,19,20
       tableData: []
     }
   },

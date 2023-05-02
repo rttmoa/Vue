@@ -11,7 +11,7 @@ const whileList = ['/login', '/404'];
 router.beforeEach(async(to, from, next) => {
   NProgress.start() // 开启进度条
   // next是一个必须执行的钩子 不执行就卡主了
-  if (store.getters.token) {
+  if (store.getters.token) { // token: f5b969aa-320c-4e57-ac59-3e013b9e9ed3
     if (to.path === '/login') {
       // next() 放行
       // next(false) 终止

@@ -119,7 +119,7 @@ export default {
       this.showTree = true // 显示树形
       const { depts } = await getDepartments() // (17) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
       // 展示树形
-      this.treeData = transListToTreeData(depts, '') // 转化树形数据
+      this.treeData = transListToTreeData(depts, "") // 转化树形数据
       this.loading = false
     },
     selectNode(data) {

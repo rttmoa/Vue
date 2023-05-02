@@ -1,33 +1,31 @@
 <template>
   <div class="detailBox">
+
     <div class="detailTop">
       <div>
         <img src="@/assets/common/img.jpeg" width="100" height="100" alt>
       </div>
       <div>
-        <b>{{ sizeForm.user.username }}</b>
-        <span :class="dutyStatus?'job-txt-green':'job-txt-red'">{{ dutyStatusTxt }}</span>
+        br、<b>{{ sizeForm.user.username }}</b>
+        <span :class="dutyStatus ? 'job-txt-green':'job-txt-red'">{{ dutyStatusTxt }}</span>
         <br>
         <p>
-          <span>最新工资基数 {{ sizeForm.salaryBase }}  </span>
+          p<span>最新工资基数 {{ sizeForm.salaryBase }}  </span>
           &emsp;&emsp;
-          <span>入职时间   {{ sizeForm.user.timeOfEntry | formatDate }}</span>
+          <span>入职时间 {{ sizeForm.user.timeOfEntry | formatDate }}</span>
           &emsp;&emsp;
           <span>联系电话 {{ sizeForm.user.mobile }}</span>
         </p>
         <br>
         <p>
-          本月不缴纳社保
+          p本月不缴纳社保
           <el-switch v-model="isPaySocialInMonth" active-color="#13ce66" inactive-color="#ff4949" />&emsp;&emsp;
           本月不缴纳公积金
-          <el-switch
-            v-model="isPayProvidentInMonth"
-            active-color="#13ce66"
-            inactive-color="#ff4949"
-          />
+          <el-switch v-model="isPayProvidentInMonth" active-color="#13ce66" inactive-color="#ff4949"/>
         </p>
       </div>
     </div>
+
     <div class="detailContentBox">
       <el-form ref="sizeForm.userSocialSecurity" :model="sizeForm.userSocialSecurity" :rules="rules" label-width="100px" size="mini">
         <el-form-item label="参保城市" prop="participatingInTheCity">
@@ -80,6 +78,7 @@
               :disabled="true"
             />
           </el-form-item>
+
           <el-table :data="computePaymentItemList">
             <el-table-column label="缴费项目" prop="name" />
             <el-table-column label="企业基数">
@@ -121,6 +120,7 @@
               </template>
             </el-table-column>
           </el-table>
+
         </el-form-item>
         <el-form-item label="社保备注">
           <el-input
@@ -158,6 +158,7 @@
             type="number"
           />（比例范围是5％ ~ 12％，推荐12％ ）
         </el-form-item>
+        <!-- FIXME: 让 el-form-item组件在一行上 -->
         <el-form-item label="公积金缴纳">
           <el-form-item
             label="个人"
@@ -209,9 +210,16 @@
         </el-form-item>
       </el-form>
     </div>
+
   </div>
 </template>
 
+
+
+
+
+
+<!-- TODO: Function部分 -->
 <script>
 import { getCityList } from '@/api/common'
 import { saveContent, getContent, getPaymentItemList } from '@/api/social'
@@ -219,6 +227,8 @@ import { saveContent, getContent, getPaymentItemList } from '@/api/social'
 export default {
   name: 'DetailSocial',
   data() {
+    // FIXME: 以下函数中校验在prop属性中
+    // 社保基数
     var validateSocialSecurityBase = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('请输入社保基数'))
@@ -228,6 +238,7 @@ export default {
         callback()
       }
     }
+    // 工伤比例
     var validateIndustrialInjuryRatio = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('请输入工伤比例'))
@@ -237,6 +248,7 @@ export default {
         callback()
       }
     }
+    // 公积金基数
     var validateProvidentFundBase = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('请输入公积金基数'))
@@ -246,6 +258,7 @@ export default {
         callback()
       }
     }
+    // 企业比例
     var validateEnterpriseProportion = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('请输入企业比例'))
@@ -255,6 +268,7 @@ export default {
         callback()
       }
     }
+    // 个人比例
     var validatePersonalProportion = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('请输入个人比例'))
@@ -267,17 +281,19 @@ export default {
     return {
       sizeForm: {
         user: {},
+        userId: 0,
         userSocialSecurity: {
-          socialSecurityBase: 3387,
-          industrialInjuryRatio: 0.2
+          socialSecurityBase: 3387,   // 社保基数
+          industrialInjuryRatio: 0.2  // 工伤比例
         }
       },
-      cityList: [],
-      paymentItemList: [],
+      cityList: [], // 参保城市 ? 公积金城市
+      paymentItemList: [], // 缴费项目   (6) [{{id: '1',name: "养老", cityId: '108484256', paymentItemId: '1', switchCompany: true …}}, {…}, {…}, {…}, {…}, {…}]
       personalPayment: 0.0,
       companyPayment: 0.0,
-      isPaySocialInMonth: false,
-      isPayProvidentInMonth: false,
+      isPaySocialInMonth: false,  // 缴纳社保 switch
+      isPayProvidentInMonth: false, // 缴纳公积金 switch
+      // FIXME: 表单校验规则
       rules: {
         participatingInTheCity: [
           { required: true, message: '请选择参保城市1234', trigger: 'change' }
@@ -288,15 +304,15 @@ export default {
         householdRegistrationType: [
           { required: true, message: '请选择户籍类型', trigger: 'change' }
         ],
-        socialSecurityBase: [
-          {
+        // 社保基数校验
+        socialSecurityBase: [{
             required: true,
             validator: validateSocialSecurityBase,
             trigger: 'blur'
           }
         ],
-        industrialInjuryRatio: [
-          {
+        // 工伤比例
+        industrialInjuryRatio: [{
             required: true,
             validator: validateIndustrialInjuryRatio,
             trigger: 'blur'
@@ -305,36 +321,34 @@ export default {
         providentFundCity: [
           { required: true, message: '请选择公积金城市', trigger: 'change' }
         ],
-        providentFundBase: [
-          {
+        // 公积金基数
+        providentFundBase: [{
             required: true,
             validator: validateProvidentFundBase,
             trigger: 'blur'
           }
         ],
-        enterpriseProportion: [
-          {
+        // 企业比例
+        enterpriseProportion: [{
             required: true,
             validator: validateEnterpriseProportion,
             trigger: 'blur'
           }
         ],
-        personalProportion: [
-          {
+        // 个人比例
+        personalProportion: [{
             required: true,
             validator: validatePersonalProportion,
             trigger: 'blur'
           }
         ],
-        enterpriseProvidentFundPayment: [
-          {
+        enterpriseProvidentFundPayment: [{
             required: true,
             message: '请输入公司公积金缴纳数额',
             trigger: 'change'
           }
         ],
-        personalProvidentFundPayment: [
-          {
+        personalProvidentFundPayment: [{
             required: true,
             message: '请输入个人公积金缴纳数额',
             trigger: 'change'
@@ -344,29 +358,32 @@ export default {
     }
   },
   computed: {
+    // Context 在职 ? 离职
     dutyStatusTxt() {
       return this.sizeForm.user.inServiceStatus === 1 ? '在职' : '离职'
     },
+    // Class  在职 ? 离职
     dutyStatus() {
       return this.sizeForm.user.inServiceStatus === 1
     },
+    // 中间Table表格缴费项目数据
     computePaymentItemList() {
       let personalTotal = Number(0)
       let companyTotal = Number(0)
       this.paymentItemList.forEach(item => {
         if (item.name === '工伤' && item.switchCompany) {
-          item.scaleCompany = this.sizeForm.userSocialSecurity.industrialInjuryRatio
+          item.scaleCompany = this.sizeForm.userSocialSecurity.industrialInjuryRatio  // 如果为工伤，企业比例为xxx
         }
         if (item.switchCompany) {
+          // Table 企业缴纳
           item.companyPay = parseFloat(
-            (this.sizeForm.userSocialSecurity.socialSecurityBase * item.scaleCompany) / 100
-          ).toFixed(2)
+            (this.sizeForm.userSocialSecurity.socialSecurityBase * item.scaleCompany) / 100 ).toFixed(2)
           companyTotal = Number(companyTotal + Number(item.companyPay))
         }
         if (item.switchPersonal) {
+          // Table 个人缴纳
           item.personalPay = parseFloat(
-            (this.sizeForm.userSocialSecurity.socialSecurityBase * item.scalePersonal) / 100
-          ).toFixed(2)
+            (this.sizeForm.userSocialSecurity.socialSecurityBase * item.scalePersonal) / 100 ).toFixed(2)
           personalTotal = Number(personalTotal + Number(item.personalPay))
         }
       })
@@ -377,25 +394,25 @@ export default {
     },
     computeEnterpriseProvidentFundPayment() {
       return parseFloat(
-        (this.sizeForm.userSocialSecurity.enterpriseProportion * this.sizeForm.userSocialSecurity.providentFundBase) /
-          100
-      ).toFixed(2)
+        (this.sizeForm.userSocialSecurity.enterpriseProportion * this.sizeForm.userSocialSecurity.providentFundBase) / 100).toFixed(2)
     },
     computePersonalProvidentFundPayment() {
       return parseFloat(
-        (this.sizeForm.userSocialSecurity.personalProportion * this.sizeForm.userSocialSecurity.providentFundBase) /
-          100
-      ).toFixed(2)
+        (this.sizeForm.userSocialSecurity.personalProportion * this.sizeForm.userSocialSecurity.providentFundBase) / 100).toFixed(2)
     }
   },
   watch: {
+    // 公积金基数
     'sizeForm.userSocialSecurity.providentFundBase': function() {
+      console.log("公积金基数-Change")
       this.changeProvidentFundPayment()
     },
     'sizeForm.userSocialSecurity.enterpriseProportion': function() {
+      console.log("企业比例-Change")
       this.changeProvidentFundPayment()
     },
     'sizeForm.userSocialSecurity.personalProportion': function() {
+      console.log("个人比例-Change")
       this.changeProvidentFundPayment()
     },
     'sizeForm.userSocialSecurity.enterprisesPaySocialSecurityThisMonth': function() {
@@ -406,16 +423,19 @@ export default {
     }
   },
   created() {
+    // this.$route.params:  {id: "1063705482939731968"}
     this.sizeForm.userId = this.$route.params.id
-    this.getCityList()
-    this.getContent()
+    this.getCityList()  // 根据城市获取个人 ？ 企业 缴纳的公积金数额
+    this.getContent()   // 获取用户 社保信息
   },
   methods: {
     onSubmit() {
       this.saveData()
     },
+    // 选择参保城市
     socialSecurityCityChange(obj) {
-      this.sizeForm.userSocialSecurity.participatingInTheCity = obj
+      // obj: createTime: null，id: "1084825908823904256"，name: "北京"
+      this.sizeForm.userSocialSecurity.participatingInTheCity = obj.name // 参保城市
       this.initPaymentItem(obj)
     },
     async saveData() {
@@ -431,12 +451,14 @@ export default {
       await saveContent(this.sizeForm.userSocialSecurity)
       this.$message.success('保存成功')
     },
+    // 参保城市 ? 公积金城市
     async getCityList() {
       this.cityList = await getCityList()
     },
     async getContent() {
       // 城市列表获取
       const data = await getContent(this.$route.params.id)
+      // console.log(data) // TODO: 个人社保数据： {userSocialSecurity: {…}, user: {…}}
       if (data.userSocialSecurity) {
         this.sizeForm = data
         this.sizeForm.userId = this.$route.params.id
@@ -448,18 +470,18 @@ export default {
         this.sizeForm.user = data.user
       }
     },
+    // 获取缴费项目(table)
     async initPaymentItem(city) {
+      // console.log(city) // {name: '北京', id: '1084825908823904256'}
       this.paymentItemList = await getPaymentItemList(city.id)
+      // this.paymentItemLsit: (6) [{{id: '1',name: "养老", cityId: '108484256', paymentItemId: '1', switchCompany: true …}}, {…}, {…}, {…}, {…}, {…}]
     },
     changeProvidentFundPayment() {
       this.sizeForm.userSocialSecurity.enterpriseProvidentFundPayment = parseFloat(
-        (this.sizeForm.userSocialSecurity.enterpriseProportion * this.sizeForm.userSocialSecurity.providentFundBase) /
-          100
-      ).toFixed(2)
+        (this.sizeForm.userSocialSecurity.enterpriseProportion * this.sizeForm.userSocialSecurity.providentFundBase) / 100).toFixed(2)
+
       this.sizeForm.userSocialSecurity.personalProvidentFundPayment = parseFloat(
-        (this.sizeForm.userSocialSecurity.personalProportion * this.sizeForm.userSocialSecurity.providentFundBase) /
-          100
-      ).toFixed(2)
+        (this.sizeForm.userSocialSecurity.personalProportion * this.sizeForm.userSocialSecurity.providentFundBase) / 100).toFixed(2)
     }
   }
 }

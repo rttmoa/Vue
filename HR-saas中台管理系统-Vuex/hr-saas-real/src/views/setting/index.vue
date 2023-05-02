@@ -5,11 +5,10 @@
 <template>
   <div class="dashboard-container">
 
-    <h3 style="padding-left: 20px">需 测试 分配权限(树结构)</h3>
-
     <div class="app-container">
       <!-- 公司页面结构  ———— 角色管理+公司信息 -->
       <el-tabs>
+
         <el-tab-pane label="角色管理">
           <el-row style="height: 60px">
             <el-button type="primary" size="small" @click="showDialog = true">新增角色</el-button>
@@ -40,6 +39,7 @@
             />
           </el-row>
         </el-tab-pane>
+
         <el-tab-pane label="公司信息">
           <el-alert
             title="对公司名称、公司地址、营业执照、公司地区的更新，将使得公司资料被重新审核，请谨慎修改"
@@ -76,7 +76,9 @@
             </el-form-item>
           </el-form>
         </el-tab-pane>
+
         <el-tab-pane label="需 测试 分配权限(树结构)" ></el-tab-pane>
+
       </el-tabs>
     </div>
 
@@ -204,10 +206,12 @@ export default {
         await this.$refs.roleForm.validate()
         if (this.roleForm.id) {
           // 编辑场景
-          await updateRole(this.roleForm) // 修改数据库数据
+          await updateRole(this.roleForm)
+          this.showDialog = false
         } else {
           // 新增场景
           await addRole(this.roleForm)
+          this.showDialog = false
         }
         this.getRoleList() // 获取角色列表
       } catch (error) {
@@ -221,10 +225,7 @@ export default {
       this.showDialog = false;
     },
     // 分配权限 —————————————— 树结构(utils)
-    async  assignRole(id) {
-      console.log("分配权限")
-      console.log((await getPermissionList()).map(v => { return {name: v.name, id: v.id, pid: v.pid} }))
-      console.log(transListToTreeData((await getPermissionList()).map(v => { return {name: v.name, id: v.id, pid: v.pid} }), "0"))
+    async assignRole(id) {
       this.roleId = id;
       this.permData = transListToTreeData(await getPermissionList(), '0') // 将树形转化
       const { permIds } = await getRoleDetail(id) // permIds就是当前点击的角色的权限数据
@@ -234,11 +235,11 @@ export default {
     },
     /***--- 确定分配权限 ---**/
     async btnPermOK() {
-      console.log(this)
-      console.log(this.roleId)
-      console.log(this.$refs.permTree)
-      console.log(this.$refs.permTree.getCheckedKeys())
-      //  this.$refs.permTree.getCheckedKeys()得到的是一个字符串数组 数组中id的值
+      // console.log(this)
+      // console.log(this.roleId)
+      // console.log(this.$refs.permTree)
+      // console.log(this.$refs.permTree.getCheckedKeys())
+      // TODO: this.$refs.permTree.getCheckedKeys()得到的是一个字符串数组 数组中id的值
       await assignPerm({ id: this.roleId, permIds: this.$refs.permTree.getCheckedKeys() });
       this.$message.success('分配权限成功');
       this.showPermDialog = false;

@@ -29,7 +29,7 @@ Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 })
 Vue.use(Components) // 注册自己的自定义组件
-Vue.mixin(checkPermission) // 全局混入  会让所有的组件都自动拥有该混入组件的方法和属性
+Vue.mixin(checkPermission) // TODO: 全局混入  会让所有的组件都自动拥有该混入组件的方法和属性
 Vue.use(VuePrint) // 注册打印插件
 // set ElementUI lang to EN
 Vue.use(ElementUI, {

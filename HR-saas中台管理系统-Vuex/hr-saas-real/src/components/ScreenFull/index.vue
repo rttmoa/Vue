@@ -14,7 +14,7 @@
 
 <!-- TODO: Navbar 全屏图标 -->
 <script>
-import ScreenFull from 'screenfull'
+import ScreenFull from 'screenfull';
 export default {
   methods: {
     changeScreen() {

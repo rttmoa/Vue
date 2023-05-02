@@ -2,6 +2,7 @@
 <template>
   <div v-loading="loading" class="dashboard-container">
     <div class="app-container">
+
       <!-- 工具栏 -->
       <page-tools :show-before="true">
         <template v-slot:before>
@@ -12,9 +13,12 @@
           <el-button size="mini" type="primary" @click="$router.push(`/social_securitys/monthStatement?yearMonth=${yearMonth}`)">{{ yearMonth }}报表</el-button>
         </template>
       </page-tools>
+
       <!-- TODO: 筛选组件(点击复选框可直接搜索内容) -->
       <social-tool />
+
       <el-card class="hr-block">
+        <h3>查看详情+个人信息表单</h3>
         <el-table :data="list" style="width: 100%" :default-sort="{prop: 'date', order: 'descending'}">
           <el-table-column type="index" width="50" label="序号" />
           <el-table-column prop="username" label="姓名" sortable />
@@ -54,7 +58,8 @@
 
 
 
-<!-- TODO: url: http://localhost:8888/hrsaas/social_securitys -->
+<!-- 筛选数据主页: http://localhost:8888/hrsaas/social_securitys -->
+<!-- 个人详情页：http://localhost:8888/hrsaas/social_securitys/detail/1063705482939731968 -->
 <script>
 import { getSocialList, getSettings } from '@/api/social'
 import SocialTool from './components/social-tool'
@@ -66,14 +71,14 @@ export default {
   },
   data() {
     return {
-      list: [],
+      list: [],  // Table 列表数据
       yearMonth: '',
       page: {
         page: 1,
         pageSize: 10,
         total: 0
       },
-      selectParams: {},
+      selectParams: {}, // 筛选数据： { 'departmentChecks': this.departmentChecks, 'socialSecurityChecks': this.socialSecurityChecks, 'providentFundChecks': this.providentFundChecks }
       tips: {},
       loading: false
     }
@@ -88,13 +93,11 @@ export default {
       const { dataMonth } = await getSettings()
       this.yearMonth = dataMonth
     },
-    goDetail(row, event, column) {
-      this.$router.push({ path: 'detail' })
-    },
-    async  getSocialList() {
+    // TODO: 获取列表数据
+    async getSocialList() {
       try {
         const { rows, total } = await getSocialList({ ...this.page, ...this.selectParams })
-        this.list = rows // 列表数据
+        this.list = rows        // 列表数据
         this.page.total = total // 总数
       } catch (error) {
         console.log(error)
@@ -102,6 +105,10 @@ export default {
         this.loading = false
       }
     },
+    goDetail(row, event, column) {
+      this.$router.push({ path: 'detail' })
+    },
+    // TODO: 由子组件调用此函数
     changeSelectParams(selectParams) {
       this.selectParams.departmentChecks = selectParams.departmentChecks
       this.selectParams.providentFundChecks = selectParams.providentFundChecks
@@ -109,6 +116,7 @@ export default {
       this.page.page = 1
       this.getSocialList()
     },
+    // 改变页码
     pageChange(page) {
       this.page.page = page // 当前
       this.getSocialList() // 获取列表数据

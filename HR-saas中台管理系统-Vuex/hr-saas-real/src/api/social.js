@@ -70,6 +70,7 @@ export function getContent(userId) {
     url: `/social_securitys/${userId}`
   })
 }
+// 缴费项目数据
 export function getPaymentItemList(id) {
   return request({
     url: `/social_securitys/payment_item/${id}`
