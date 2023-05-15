@@ -1,5 +1,5 @@
 <template>
-  <el-dropdown trigger="click" @command="setAssemblySize">
+  <el-dropdown trigger="hover" @command="setAssemblySize">
     <i :class="'iconfont icon-contentright'" class="toolBar-icon"></i>
     <template #dropdown>
       <el-dropdown-menu>

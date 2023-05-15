@@ -107,6 +107,7 @@ export function randomNum(min: number, max: number): number {
  * @description 获取当前时间对应的提示语
  * @returns {String}
  */
+// TODO: 处理时间
 export function getTimeState() {
   let timeNow = new Date();
   let hours = timeNow.getHours();

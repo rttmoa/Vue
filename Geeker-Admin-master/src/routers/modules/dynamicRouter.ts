@@ -10,6 +10,7 @@ const modules = import.meta.glob("@/views/**/*.vue");
 /**
  * @description 初始化动态路由
  */
+// TODO: 登陆成功后 初始化动态路由
 export const initDynamicRouter = async () => {
   const userStore = useUserStore();
   const authStore = useAuthStore();

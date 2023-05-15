@@ -1,6 +1,6 @@
 <template>
   <div class="message">
-    <el-popover placement="bottom" :width="310" trigger="click">
+    <el-popover placement="bottom" :width="310" trigger="hover">
       <template #reference>
         <el-badge :value="5" class="item">
           <i :class="'iconfont icon-xiaoxi'" class="toolBar-icon"></i>
