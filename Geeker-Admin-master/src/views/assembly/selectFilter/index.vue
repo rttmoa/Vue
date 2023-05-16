@@ -1,8 +1,19 @@
+<!-- eslint-disable prettier/prettier -->
 <template>
   <div class="card content-box">
+
     <span class="text"> 分类筛选器 🍓🍇🍈🍉</span>
+    <el-alert
+      title="SelectIcon组件中：SelectFilter自定义组件"
+      type="success"
+      :closable="false"
+    />
+    <br />
+
     <SelectFilter :data="filterData" @change="changeFilter" :default-values="filterResult" />
+
     <span class="result">返回值: {{ filterResult }}</span>
+
     <el-descriptions title="配置项 📚" :column="1" border>
       <el-descriptions-item label="data"> 需要筛选的数据列表，详情请查看代码 </el-descriptions-item>
       <el-descriptions-item label="defaultValues"> 默认选中的值 </el-descriptions-item>
@@ -17,6 +28,7 @@ import SelectFilter from "@/components/SelectFilter/index.vue";
 const filterResult = ref({ state: "1", type: ["1", "3"] });
 
 const changeFilter = (val: typeof filterResult.value) => {
+  // console.log(filterResult.value); // {state: '1', type: Array(3)}
   filterResult.value = val;
 };
 
@@ -82,6 +94,11 @@ const filterData = [
         value: "4"
       }
     ]
+  },
+  {
+    title: "测试",
+    key: "test",
+    options: []
   }
 ];
 </script>

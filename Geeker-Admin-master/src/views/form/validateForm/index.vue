@@ -1,5 +1,19 @@
+<!-- eslint-disable prettier/prettier -->
 <template>
   <div class="card content-box">
+    <el-alert 
+      title="此页面：组件{el-form}+{el-form-item}+{el-input}+{el-select}={el-option}={el-date-picker}={el-col}={el-switch}={el-checkbox-group}={el-checkbox}={el-radio-group}={}"
+      type="success"
+      :closable="false"
+    />
+    <br />
+    <el-alert 
+      title="此页面：校验 -> +rules / +ref / ruleFormRef.validate((valid, fields) => {}"
+      type="success"
+      :closable="false"
+    />
+    <br />
+    
     <el-form ref="ruleFormRef" :model="ruleForm" :rules="rules" label-width="140px">
       <el-form-item label="Activity name" prop="name">
         <el-input v-model="ruleForm.name" />
@@ -50,7 +64,9 @@ import { checkPhoneNumber } from "@/utils/eleValidate";
 import type { FormInstance, FormRules } from "element-plus";
 import { ElMessage } from "element-plus";
 
+// ref挂载Form表单
 const ruleFormRef = ref<FormInstance>();
+// 动态绑定表单
 const ruleForm = reactive({
   name: "Geeker-Admin",
   phone: "",
@@ -61,11 +77,11 @@ const ruleForm = reactive({
   resource: "",
   desc: ""
 });
-
+// 表单规则
 const rules = reactive<FormRules>({
   name: [
     { required: true, message: "Please input Activity name", trigger: "blur" },
-    { min: 3, max: 5, message: "Length should be 3 to 5", trigger: "blur" }
+    { min: 3, max: 6, message: "Length should be 3 to 6", trigger: "blur" }
   ],
   phone: [{ required: true, validator: checkPhoneNumber, trigger: "blur" }],
   region: [
@@ -100,18 +116,31 @@ const rules = reactive<FormRules>({
   ],
   desc: [{ required: true, message: "Please input activity form", trigger: "blur" }]
 });
-
+// 提交
 const submitForm = async (formEl: FormInstance | undefined) => {
+  // ruleFromRef 表单ref
   if (!formEl) return;
   await formEl.validate((valid, fields) => {
     if (valid) {
+      console.log(ruleForm);
       ElMessage.success("提交的数据为 : " + JSON.stringify(ruleForm));
+      // {
+      //     "name": "Geeker",
+      //     "phone": "15303663375",
+      //     "region": "beijing",
+      //     "date1": "2023-05-02T16:00:00.000Z",
+      //     "date2": "2023-05-16T04:48:32.000Z",
+      //     "delivery": true,
+      //     "resource": "Sponsorship",
+      //     "desc": "文本域"
+      // }
     } else {
       console.log("error submit!", fields);
+      // error：{name: [{message: 'Length should be 3 to 5', fieldValue: 'Geeker-Admin', field: 'name'}], phone: Array(1), region: Array(1), date1: Array(1), date2: Array(1), …}
     }
   });
 };
-
+// reset
 const resetForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return;
   formEl.resetFields();

@@ -1,9 +1,17 @@
+<!-- eslint-disable prettier/prettier -->
 <template>
+    <el-alert
+      title="此页：使用npm-vuedraggable可拖拽组件  +  <template #item='{ element }'></template>自定义模板   "
+      type="success"
+      :closable="false"
+    />
+    <!-- <br /> -->
+
   <draggable
     class="card grid-container"
     v-model="gridList"
     item-key="id"
-    animation="300"
+    animation="1000"
     chosenClass="chosen"
     forceFallback="true"
   >

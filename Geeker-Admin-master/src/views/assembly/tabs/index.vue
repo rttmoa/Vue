@@ -1,10 +1,17 @@
+<!-- eslint-disable prettier/prettier -->
 <template>
   <div class="card content-box">
     <span class="text"> 标签页操作 🍓🍇🍈🍉</span>
+    <el-alert
+      title="此页：未完成 keepAliveStore + tabStore"
+      type="error"
+      :closable="false"
+    />
+    <br />
     <div class="mb30">
       <el-input placeholder="请输入内容" v-model="tabsTitle" style="width: 500px">
         <template #append>
-          <el-button type="primary" @click="editTabsTitle">设置 Tab 标题</el-button>
+          <el-button type="primary" @click="editTabsTitle">设置 Tabs 中 Tab 标题</el-button>
         </template>
       </el-input>
     </div>
@@ -46,6 +53,7 @@ const refresh = () => {
   setTimeout(() => {
     keepAliveStore.removeKeepAliveName(route.name as string);
     refreshCurrentPage(false);
+    // TODO: nextTick所指定的回调会在浏览器更新DOM完毕之后再执行
     nextTick(() => {
       keepAliveStore.addKeepAliveName(route.name as string);
       refreshCurrentPage(true);
@@ -55,8 +63,9 @@ const refresh = () => {
 
 // 设置 Tab 标题
 const tabsTitle = ref("");
-const editTabsTitle = () => {
-  tabStore.setTabsTitle(tabsTitle.value);
+const editTabsTitle = async () => {
+  console.log(tabsTitle.value);
+  await tabStore.setTabsTitle(tabsTitle.value);
 };
 
 // 当前页全屏
@@ -67,6 +76,7 @@ const maximize = () => {
 // 关闭当前页
 const closeCurrentTab = () => {
   if (route.meta.isAffix) return;
+  console.log(route.fullPath); //:  /assembly/tabs
   tabStore.removeTabs(route.fullPath);
   keepAliveStore.removeKeepAliveName(route.name as string);
 };
@@ -84,7 +94,7 @@ const closeAllTab = () => {
   router.push(HOME_URL);
 };
 
-// 打开详情页
+// NOTE: 打开详情页
 const handleToDetail = (id: string) => {
   router.push(`/assembly/tabs/detail/${id}`);
 };

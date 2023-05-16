@@ -1,4 +1,9 @@
+<!-- eslint-disable prettier/prettier -->
 <template>
+  <el-alert 
+    title="此节：和React一样ref=echartsRef，useEcharts中传入myChart和option"
+    type="success"
+  />
   <div ref="echartsRef" class="card content-box"></div>
 </template>
 
@@ -6,7 +11,9 @@
 import { ref, onMounted } from "vue";
 import * as echarts from "echarts";
 import { useEcharts } from "@/hooks/useEcharts";
-const echartsRef = ref<HTMLElement>();
+const echartsRef = ref<HTMLElement>(); // ref 挂载
+
+// 生命周期函数：https://blog.csdn.net/qq_49723651/article/details/123937553
 onMounted(() => {
   let myChart: echarts.ECharts = echarts.init(echartsRef.value as HTMLElement);
   let option: echarts.EChartsOption = {

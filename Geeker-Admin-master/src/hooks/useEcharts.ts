@@ -6,6 +6,7 @@ import * as echarts from "echarts";
  * @param {Element} myChart Echarts实例 (必传)
  * @param {Object} options 绘制Echarts的参数 (必传)
  * */
+// TODO: Echarts都走这个函数
 export const useEcharts = (myChart: echarts.ECharts, options: echarts.EChartsCoreOption) => {
   if (options && typeof options === "object") {
     myChart.setOption(options);

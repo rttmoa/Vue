@@ -1,13 +1,24 @@
+<!-- eslint-disable prettier/prettier -->
 <template>
   <div class="card content-box">
     <el-alert
       title="通过 component :is 组件属性 && v-bind 属性透传，可以将 template 中的 html 代码全部改变为 columns 配置项，具体配置请看代码。"
-      type="warning"
+      type="success"
       :closable="false"
     />
+    <br />
+    <el-alert
+      title="自定义模板：component  ———  循环component:is形式"
+      type="success"
+      :closable="false"
+    />
+    <br />
+    <!-- el-form -->
     <component :is="'el-form'" v-bind="options.form" ref="proFormRef" :model="model">
       <template v-for="item in options.columns" :key="item.prop">
+        <!-- el-form-item -->
         <component :is="'el-form-item'" v-bind="item.formItem">
+          <!-- el-input -->
           <component :is="`el-${item.attrs.typeName}`" v-bind="item.attrs" v-model="model[item.formItem.prop]" />
         </component>
       </template>

@@ -1,7 +1,16 @@
+<!-- eslint-disable prettier/prettier -->
 <template>
   <div class="card content-box">
+    <el-alert 
+      title="此页面：动态表单校验  添加Domain - 删除Domain - 重新设置 - 提交"
+      type="success"
+      :closable="false"
+    />
+    <br />
     <el-button class="add" type="primary" @click="addDomain" plain>Add Input</el-button>
+
     <el-form ref="formRef" :model="dynamicValidateForm" label-width="100px" class="demo-dynamic">
+      
       <el-form-item
         prop="email"
         label="Email"
@@ -20,6 +29,7 @@
       >
         <el-input v-model="dynamicValidateForm.email" />
       </el-form-item>
+
       <el-form-item
         v-for="(domain, index) in dynamicValidateForm.domains"
         :key="domain.key"
@@ -35,8 +45,10 @@
           <template #append>
             <el-button type="danger" plain class="mt-2" @click.prevent="removeDomain(domain)"> Delete </el-button>
           </template>
+          <!-- <template #prefix>前缀</template> -->
         </el-input>
       </el-form-item>
+
       <el-form-item>
         <el-button type="primary" @click="submitForm(formRef)">Submit</el-button>
         <el-button @click="resetForm(formRef)">Reset</el-button>
@@ -70,8 +82,10 @@ interface DomainItem {
 
 const removeDomain = (item: DomainItem) => {
   const index = dynamicValidateForm.domains.indexOf(item);
+  console.log(item); // item：{key: 1684214313648, value: 'zhangan'}
+  console.log(index); // 索引：4
   if (index !== -1) {
-    dynamicValidateForm.domains.splice(index, 1);
+    dynamicValidateForm.domains.splice(index, 1); // 找到该条数据 并删除掉
   }
 };
 
@@ -82,9 +96,9 @@ const addDomain = () => {
   });
 };
 
-const submitForm = (formEl: FormInstance | undefined) => {
+const submitForm = async (formEl: FormInstance | undefined) => {
   if (!formEl) return;
-  formEl.validate(valid => {
+  await formEl.validate(valid => {
     if (valid) {
       console.log("submit!");
     } else {

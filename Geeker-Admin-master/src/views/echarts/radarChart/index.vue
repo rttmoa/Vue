@@ -1,4 +1,9 @@
+<!-- eslint-disable prettier/prettier -->
 <template>
+  <el-alert 
+    title="此节：和React一样ref=echartsRef，useEcharts中传入myChart和option"
+    type="success"
+  />
   <div ref="echartsRef" class="card content-box"></div>
 </template>
 

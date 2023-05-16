@@ -1,17 +1,31 @@
+<!-- eslint-disable prettier/prettier -->
 <template>
   <div>
     <div class="card mb10">
+      <h4 class="title">此页面</h4>
+      <el-alert
+        title="<el-alert title='11' type='success' :closable='false'/> " 
+        type="success"
+        :closable="false"
+      />
+      <span class="text">
+        npm包使用：__APP_INFO__ -> 获取Build时间，包版本，生产依赖，开发依赖项
+        <br />
+        组件使用：{el-descriptions} + {el-descriptions-item} + {el-tag} + {el-link}
+      </span>
+    </div>
+    <div class="card mb10">
       <h4 class="title">简介</h4>
       <span class="text">
-        <el-link type="primary" href="https://docs.spicyboy.cn" target="_blank">Geeker-Admin</el-link>
+        <el-link type="primary" href="https://docs.spicyboy.cn" target="_blank" style="color: red">Geeker-Admin</el-link>
         一款基于 Vue3.2、TypeScript、Vite4、Pinia、Element-Plus 开源的后台管理框架，使用目前最新技术栈开发。项目提供强大的
-        <el-link type="primary" href="https://juejin.cn/post/7166068828202336263" target="_blank">ProTable 组件</el-link>
+        <el-link type="primary" href="https://juejin.cn/post/7166068828202336263" target="_blank" style="color: red">ProTable 组件</el-link>
         在一定程度上节省您的开发效率。另外本项目还封装了一些常用组件、Hooks、指令、动态路由、按钮级别权限控制等功能。
       </span>
     </div>
     <div class="card mb10">
       <h4 class="title">项目信息</h4>
-      <el-descriptions :column="2" border>
+      <el-descriptions :column="1" border>
         <el-descriptions-item label="版本号" label-align="left">
           <el-tag>{{ version }}</el-tag>
         </el-descriptions-item>
@@ -19,16 +33,16 @@
           <el-tag>{{ lastBuildTime }}</el-tag>
         </el-descriptions-item>
         <el-descriptions-item label="Gitee" label-align="left">
-          <el-link type="primary" href="https://gitee.com/HalseySpicy/Geeker-Admin" target="_blank">Gitee</el-link>
+          <el-link type="primary" href="https://gitee.com/HalseySpicy/Geeker-Admin" target="_blank" style="color: red">Gitee</el-link>
         </el-descriptions-item>
         <el-descriptions-item label="Github" label-align="left">
-          <el-link type="primary" href="https://github.com/HalseySpicy/Geeker-Admin" target="_blank">Github</el-link>
+          <el-link type="primary" href="https://github.com/HalseySpicy/Geeker-Admin" target="_blank" style="color: red">Github</el-link>
         </el-descriptions-item>
         <el-descriptions-item label="文档地址" label-align="left">
-          <el-link type="primary" href="https://docs.spicyboy.cn" target="_blank">文档地址</el-link>
+          <el-link type="primary" href="https://docs.spicyboy.cn" target="_blank" style="color: red">文档地址</el-link>
         </el-descriptions-item>
         <el-descriptions-item label="预览地址" label-align="left">
-          <el-link type="primary" href="http://admin.spicyboy.cn" target="_blank">预览地址</el-link>
+          <el-link type="primary" href="http://admin.spicyboy.cn" target="_blank" style="color: red">预览地址</el-link>
         </el-descriptions-item>
       </el-descriptions>
     </div>
@@ -44,7 +58,7 @@
       <h4 class="title">开发环境依赖</h4>
       <el-descriptions :column="3" border>
         <el-descriptions-item width="400px" :label="key" v-for="(value, key) in devDependencies" :key="key">
-          <el-tag type="info">{{ value }}</el-tag>
+          <el-tag type="warning">{{ value }}</el-tag>
         </el-descriptions-item>
       </el-descriptions>
     </div>
