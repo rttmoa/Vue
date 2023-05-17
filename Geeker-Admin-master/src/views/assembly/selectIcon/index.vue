@@ -3,7 +3,7 @@
   <div class="card content-box">
     <span class="text"> 图标选择器 🍓🍇🍈🍉</span>
     <el-alert
-      title="此页：组件： {el-descriptions} + {SelectIcon}自定义组件"
+      title="此页：组件： {el-descriptions} + {SelectIcon}自定义组件！！！！！！"
       type="success"
       :closable="false"
     />
@@ -32,6 +32,7 @@
   </div>
 </template>
 
+<!-- TODO: SelectIcon组件中处理图标，控制输入框搜索到图标的值 -->
 <script setup lang="ts" name="selectIcon">
 import { ref } from "vue";
 import SelectIcon from "@/components/SelectIcon/index.vue";

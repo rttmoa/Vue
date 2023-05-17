@@ -5,6 +5,7 @@
       type="warning"
       :closable="false"
     />
+
     <div class="icon-list">
       <SvgIcon name="xianxingdaoyu" />
       <SvgIcon name="xianxingdiqiu" />
@@ -18,6 +19,7 @@
       <SvgIcon name="xianxingyoulun" />
       <SvgIcon name="xianxingxiarilengyin" />
     </div>
+
     <el-descriptions title="配置项 📚" :column="1" border>
       <el-descriptions-item label="name"> 图标的名称，svg 图标必须存储在 src/assets/icons 目录下 </el-descriptions-item>
       <el-descriptions-item label="prefix"> 图标的前缀，默认为 "icon" </el-descriptions-item>

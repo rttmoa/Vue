@@ -31,7 +31,7 @@ const changeFilter = (val: typeof filterResult.value) => {
   // console.log(filterResult.value); // {state: '1', type: Array(3)}
   filterResult.value = val;
 };
-
+// TODO: component组件中去处理具体的筛选数据
 const filterData = [
   {
     title: "物流状态(单)",

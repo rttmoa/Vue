@@ -1,5 +1,14 @@
+<!-- eslint-disable vue/no-parsing-error -->
+<!-- eslint-disable prettier/prettier -->
 <template>
   <div class="upload content-box">
+    <el-alert
+      title="此页：图片上传，多图，单图，禁止，拖拽 -> 封装 UploadImgs 组件 传入值去 {复用组件}"
+      type="success"
+      :closable="false"
+    />
+    <br />
+
     <!-- 多图上传 -->
     <div class="card img-box">
       <span class="text">多图片上传组件 🍓🍇🍈🍉</span>
@@ -16,7 +25,7 @@
             <el-icon><Picture /></el-icon>
             <span>请上传照片</span>
           </template>
-          <template #tip> 长方形组件（可拖拽上传）</template>
+          <template #tip> 长方形组件（可拖拽上传） </template>
         </UploadImgs>
       </div>
       <el-descriptions title="配置项 📚（其它参数和单图上传组件相同）" :column="1" border>
@@ -26,6 +35,7 @@
         <el-descriptions-item label="limit"> 最大图片上传数，默认为 5 张 </el-descriptions-item>
       </el-descriptions>
     </div>
+
     <!-- 单图上传 -->
     <div class="card img-box">
       <span class="text">单图片上传组件 🍓🍇🍈🍉</span>
@@ -83,7 +93,7 @@
           :closable="false"
           class="mb20"
         />
-        <el-form ref="ruleFormRef" label-width="100px" label-suffix=" :" :rules="rules" :model="fromModel">
+        <el-form ref="ruleFormRef" label-width="100px" label-suffix=" :"   :rules="rules" :model="fromModel">
           <el-form-item label="用户头像" prop="avatar">
             <UploadImg v-model:image-url="fromModel.avatar" width="135px" height="135px" :file-size="3">
               <template #empty>
@@ -125,7 +135,7 @@
           :closable="false"
           class="mb20"
         />
-        <el-form label-width="100px" label-suffix=" :" disabled :model="fromModel1">
+        <el-form label-width="100px" label-suffix=" :"  disabled  :model="fromModel1">
           <el-form-item label="用户头像" prop="avatar">
             <UploadImg v-model:image-url="fromModel1.avatar" width="135px" height="135px" :file-size="3">
               <template #empty>
@@ -160,6 +170,7 @@
         </el-form>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -169,15 +180,20 @@ import { FormInstance } from "element-plus";
 import UploadImg from "@/components/Upload/Img.vue";
 import UploadImgs from "@/components/Upload/Imgs.vue";
 
+// 多图片上传组件
+// 左侧圆形 ref
 const fileList = ref([{ name: "img", url: "https://i.imgtg.com/2023/01/16/QRBHS.jpg" }]);
+// 右侧长方形 ref
 const fileList1 = ref([]);
 
+// 单图片上传组件
 const avatar1 = ref("");
 const avatar2 = ref("");
 const avatar3 = ref("");
 const avatar4 = ref("");
 const avatar5 = ref("https://i.imgtg.com/2023/01/16/QRqMK.jpg");
 
+// Form表单
 const rules = reactive({
   avatar: [{ required: true, message: "请上传用户头像" }],
   photo: [{ required: true, message: "请上传用户照片" }],
@@ -185,7 +201,6 @@ const rules = reactive({
   idCard: [{ required: true, message: "请填写身份证号" }],
   email: [{ required: true, message: "请填写邮箱" }]
 });
-
 const fromModel = ref({
   avatar: "",
   photo: [{ name: "img", url: "https://i.imgtg.com/2023/01/16/QR57a.jpg" }],
@@ -201,8 +216,8 @@ const fromModel1 = ref({
   email: ""
 });
 const ruleFormRef = ref<FormInstance>();
-const submit = () => {
-  ruleFormRef.value!.validate(valid => {
+const submit = async () => {
+  await ruleFormRef.value!.validate(valid => {
     console.log(valid);
   });
 };

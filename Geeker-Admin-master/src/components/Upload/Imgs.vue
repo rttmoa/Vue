@@ -1,3 +1,4 @@
+<!-- eslint-disable prettier/prettier -->
 <template>
   <div class="upload-box">
     <el-upload
@@ -43,6 +44,7 @@
   </div>
 </template>
 
+<!-- TODO: 图片上传组件复用 -> 常用组件-文件上传(http://localhost:8848/#/assembly/uploadFile) -->
 <script setup lang="ts" name="UploadImgs">
 import { ref, computed, inject, watch } from "vue";
 import { Plus } from "@element-plus/icons-vue";
@@ -63,6 +65,7 @@ interface UploadFileProps {
   borderRadius?: string; // 组件边框圆角 ==> 非必传（默认为 8px）
 }
 
+// 指定Props的默认值
 const props = withDefaults(defineProps<UploadFileProps>(), {
   fileList: () => [],
   drag: true,
@@ -76,19 +79,20 @@ const props = withDefaults(defineProps<UploadFileProps>(), {
 });
 
 // 获取 el-form 组件上下文
-const formContext = inject(formContextKey, void 0);
+const formContext = inject(formContextKey, void 0); // TODO: 组件上下文
 // 获取 el-form-item 组件上下文
 const formItemContext = inject(formItemContextKey, void 0);
 // 判断是否禁用上传和删除
-const self_disabled = computed(() => {
-  return props.disabled || formContext?.disabled;
-});
+const self_disabled = computed(() => props.disabled || formContext?.disabled); // 是否传入了 disabled
 
 const fileList = ref<UploadUserFile[]>(props.fileList);
 
 // 监听 props.fileList 列表默认值改变
 watch(
-  () => props.fileList,
+  () => {
+    // console.log(props.fileList);
+    return props.fileList;
+  },
   (n: UploadUserFile[]) => {
     fileList.value = n;
   }
@@ -99,12 +103,13 @@ watch(
  * @param rawFile 选择的文件
  * */
 const beforeUpload: UploadProps["beforeUpload"] = rawFile => {
+  // console.log(rawFile);
   const imgSize = rawFile.size / 1024 / 1024 < props.fileSize;
   const imgType = props.fileType.includes(rawFile.type as File.ImageMimeType);
   if (!imgType)
     ElNotification({
       title: "温馨提示",
-      message: "上传图片不符合所需的格式！",
+      message: `上传图片不符合所需的格式！${rawFile!.type}`,
       type: "warning"
     });
   if (!imgSize)
@@ -123,10 +128,21 @@ const beforeUpload: UploadProps["beforeUpload"] = rawFile => {
  * @param options upload 所有配置项
  * */
 const handleHttpUpload = async (options: UploadRequestOptions) => {
+  // console.log(options);
+  // {
+  //   "headers": {},
+  //   "withCredentials": false,
+  //   "file": {"uid": 168431},
+  //   "data": {},
+  //   "method": "post",
+  //   "filename": "file",
+  //   "action": "#",
+  //    onError(), onSuccess(), onProgress()
+  // }
   let formData = new FormData();
   formData.append("file", options.file);
   try {
-    const api = props.api ?? uploadImg;
+    const api = props.api ?? uploadImg; // 如果没有传入api，那么请求接口为 uploadImg
     const { data } = await api(formData);
     options.onSuccess(data);
   } catch (error) {
@@ -161,6 +177,7 @@ const uploadSuccess = (response: { fileUrl: string } | undefined, uploadFile: Up
  * @param file 删除的文件
  * */
 const handleRemove = (file: UploadFile) => {
+  // console.log(fileList.value); // 过滤掉 文件名||文件地址
   fileList.value = fileList.value.filter(item => item.url !== file.url || item.name !== file.name);
   emit("update:fileList", fileList.value);
 };

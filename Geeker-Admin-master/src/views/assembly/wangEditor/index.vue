@@ -2,7 +2,12 @@
 <template>
   <div class="card content-box">
     <span class="text">富文本编辑器 🍓🍇🍈🍉</span>
-
+    <el-alert
+      title="此页：富文本编辑器组件WangEditor -> 上传图片、上传视频、Ref、文本域HTML"
+      type="success"
+      :closable="false"
+    />
+    <br />
     <WangEditor height="400px" v-model:value="content" />
 
     <el-button type="primary" @click="dialogVisible = true">内容预览</el-button>
@@ -23,6 +28,7 @@
       <el-descriptions-item label="disabled"> 禁用富文本编辑器，默认为 false </el-descriptions-item>
     </el-descriptions>
 
+    <!-- TODO: v-html显示html内容 -->
     <el-dialog v-model="dialogVisible" title="富文本内容预览" width="1300px" top="50px">
       <div class="view" v-html="content"></div>
     </el-dialog>
@@ -34,8 +40,7 @@
 import { ref } from "vue";
 import WangEditor from "@/components/WangEditor/index.vue";
 
-const content = ref("");
-console.log("文本域值：", content);
+const content = ref("S");
 
 const dialogVisible = ref(false);
 </script>

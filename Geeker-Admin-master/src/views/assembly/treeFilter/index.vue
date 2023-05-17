@@ -1,3 +1,4 @@
+<!-- eslint-disable prettier/prettier -->
 <template>
   <div class="content-box">
     <TreeFilter
@@ -15,6 +16,7 @@
       :default-value="treeFilterValue1.departmentId"
       @change="changeTreeFilter1"
     />
+
     <div class="descriptions-box card">
       <span class="text"> 树形筛选器 🍓🍇🍈🍉</span>
       <el-descriptions title="配置项 📚" :column="1" border>
@@ -35,6 +37,13 @@ import { reactive } from "vue";
 import { ElMessage } from "element-plus";
 import { getUserDepartment } from "@/api/modules/user";
 import TreeFilter from "@/components/TreeFilter/index.vue";
+// console.log("部门Data：", await getUserDepartment());
+//  {"code": 200,
+//   "data": [{ "id": "1","name": "华东分部", "children": [ ] },
+//     { "id": "2", "name": "华南分部", "children": [ ] },
+//     { "id": "3", "name": "西北分部", "children": [ ] }
+//    ],
+//   "msg": "成功"}
 
 const treeFilterValue = reactive({ departmentId: "1" });
 const changeTreeFilter = (val: string) => {
