@@ -2,7 +2,7 @@
   <div class="card content-box">
     <el-alert
       title="SVG 图标目前使用 vite-plugin-svg-icons 插件完成，官方文档请查看 ：https://github.com/vbenjs/vite-plugin-svg-icons"
-      type="warning"
+      type="success"
       :closable="false"
     />
 

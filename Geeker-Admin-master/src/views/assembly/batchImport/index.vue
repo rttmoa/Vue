@@ -1,5 +1,13 @@
+<!-- eslint-disable prettier/prettier -->
 <template>
   <div class="card content-box">
+    <el-alert
+      title="批量添加数据"
+      type="error"
+      :closable="false"
+    />
+    <br />
+
     <span class="text">批量添加数据 🍓🍇🍈🍉</span>
 
     <el-button type="primary" :icon="Upload" @click="batchAdd">批量添加数据</el-button>
