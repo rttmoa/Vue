@@ -1,5 +1,14 @@
+<!-- eslint-disable prettier/prettier -->
+<!-- eslint-disable @typescript-eslint/no-unused-vars -->
 <template>
   <div class="table-box">
+    <el-alert
+      title="此页：封装的Table复用组件"
+      type="error"
+      :closable="false"
+    />
+    <br />
+
     <ProTable
       ref="proTable"
       title="菜单列表"
@@ -13,13 +22,13 @@
       <template #tableHeader>
         <el-button type="primary" :icon="CirclePlus">新增菜单</el-button>
       </template>
-      <!-- 菜单图标 -->
+      <!-- Table -> 菜单图标 -->
       <template #icon="scope">
         <el-icon :size="18">
           <component :is="scope.row.meta.icon"></component>
         </el-icon>
       </template>
-      <!-- 菜单操作 -->
+      <!-- Table -> 菜单操作 -->
       <template #operation="scope">
         <el-button type="primary" link :icon="EditPen">编辑</el-button>
         <el-button type="primary" link :icon="Delete" @click="deleteMenu(scope.row)">删除</el-button>
@@ -38,7 +47,7 @@ import ProTable from "@/components/ProTable/index.vue";
 
 const proTable = ref();
 
-// 表格配置项
+// 表格配置项 Config
 const columns: ColumnProps[] = [
   { type: "index", label: "#", width: 150 },
   { prop: "meta.title", label: "菜单名称", align: "left", search: { el: "input" } },
@@ -51,6 +60,8 @@ const columns: ColumnProps[] = [
 
 // 删除菜单（示例、根据自己后端接口来）
 const deleteMenu = async (params: Menu.MenuOptions) => {
+  console.log(JSON.parse(JSON.stringify(params)), params.path, params.meta.title);
+  return;
   await useHandleData(getAuthMenuListApi, { path: [params.path] }, `删除【${params.meta.title}】菜单`);
   proTable.value.getTableList();
 };

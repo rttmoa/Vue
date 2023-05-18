@@ -5,7 +5,7 @@
       type="success"
       :closable="false"
     />
-    <!-- <br /> -->
+    <br />
 
   <draggable
     class="card grid-container"

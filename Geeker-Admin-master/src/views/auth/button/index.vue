@@ -16,6 +16,7 @@
       :closable="false"
     />
     <br />
+    <el-divider content-position="left">el-divider + 分隔组件</el-divider>
     <el-divider content-position="left">使用 Hooks 方式绑定权限(useAuthButtons)</el-divider>
     <el-row class="mb20">
       <el-button type="primary" :icon="CirclePlus" v-if="BUTTONS.add">新增</el-button>

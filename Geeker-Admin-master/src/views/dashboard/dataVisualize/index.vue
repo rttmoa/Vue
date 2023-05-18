@@ -1,6 +1,14 @@
+<!-- eslint-disable prettier/prettier -->
 <template>
   <div class="dataVisualize-box">
     <div class="card top-box">
+      <el-alert
+        title="此页：CSS可视 + 页面缩小 页面排布" 
+        type="success"
+        :closable="false"
+      />
+      <br />
+    
       <div class="top-title">数据可视化</div>
       <el-tabs v-model="tabActive" class="demo-tabs">
         <el-tab-pane v-for="item in tab" :key="item.name" :label="item.label" :name="item.name"></el-tab-pane>

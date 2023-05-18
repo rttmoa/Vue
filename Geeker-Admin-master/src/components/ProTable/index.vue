@@ -1,7 +1,8 @@
+<!-- eslint-disable prettier/prettier -->
 <!-- 📚📚📚 Pro-Table 文档: https://juejin.cn/post/7166068828202336263 -->
 
 <template>
-  <!-- 查询表单 card -->
+  <!-- 一、查询表单 card -->
   <SearchForm
     :search="search"
     :reset="reset"
@@ -13,11 +14,14 @@
 
   <!-- 表格内容 card -->
   <div class="card table-main">
+
     <!-- 表格头部 操作按钮 -->
     <div class="table-header">
+      <!-- 二、左侧新增按钮 -->
       <div class="header-button-lf">
         <slot name="tableHeader" :selectedListIds="selectedListIds" :selectedList="selectedList" :isSelected="isSelected" />
       </div>
+      <!-- 三、右侧：刷新，打印，搜索 -->
       <div class="header-button-ri" v-if="toolButton">
         <slot name="toolButton">
           <el-button :icon="Refresh" circle @click="getTableList" />
@@ -27,7 +31,8 @@
         </slot>
       </div>
     </div>
-    <!-- 表格主体 -->
+
+    <!-- 四、表格主体 -->
     <el-table
       ref="tableRef"
       v-bind="$attrs"
@@ -73,7 +78,8 @@
         </div>
       </template>
     </el-table>
-    <!-- 分页组件 -->
+
+    <!-- 五、分页组件 -->
     <slot name="pagination">
       <Pagination
         v-if="pagination"
@@ -83,12 +89,14 @@
       />
     </slot>
   </div>
+
   <!-- 列设置 -->
   <ColSetting v-if="toolButton" ref="colRef" v-model:col-setting="colSetting" />
+
 </template>
 
 <script setup lang="ts" name="ProTable">
-import { ref, watch, computed, provide, onMounted } from "vue";
+import { ref, watch, computed, provide, onMounted } from "vue"; // TODO: Vue3 钩子
 import { useTable } from "@/hooks/useTable";
 import { useSelection } from "@/hooks/useSelection";
 import { BreakPoint } from "@/components/Grid/interface";
@@ -100,7 +108,7 @@ import SearchForm from "@/components/SearchForm/index.vue";
 import Pagination from "./components/Pagination.vue";
 import ColSetting from "./components/ColSetting.vue";
 import TableColumn from "./components/TableColumn.vue";
-import printJS from "print-js";
+import printJS from "print-js"; // TODO: 打印npm
 
 interface ProTableProps extends Partial<Omit<TableProps<any>, "data">> {
   columns: ColumnProps[]; // 列配置项
@@ -119,26 +127,26 @@ interface ProTableProps extends Partial<Omit<TableProps<any>, "data">> {
 
 // 接受父组件参数，配置默认值
 const props = withDefaults(defineProps<ProTableProps>(), {
-  requestAuto: true,
-  columns: () => [],
-  pagination: true,
-  initParam: {},
-  border: true,
-  toolButton: true,
-  rowKey: "id",
-  searchCol: () => ({ xs: 1, sm: 2, md: 2, lg: 3, xl: 4 })
+  requestAuto: true, // 是否自动请求
+  columns: () => [], // 列配置
+  pagination: true, // 是否分页
+  initParam: {}, // 初始化参数
+  border: true, // 边框
+  toolButton: true, // 工具按钮
+  rowKey: "id", // 行Id
+  searchCol: () => ({ xs: 1, sm: 2, md: 2, lg: 3, xl: 4 }) //可搜索列
 });
 
-// 是否显示搜索模块
+// 是否显示搜索模块  &&&  控制搜索框的显示与隐藏
 const isShowSearch = ref(true);
 
-// 表格 DOM 元素
+// 表格 DOM 元素   &&&   控制表格主体的DOM
 const tableRef = ref<InstanceType<typeof ElTable>>();
 
 // 表格多选 Hooks
 const { selectionChange, selectedList, selectedListIds, isSelected } = useSelection(props.rowKey);
 
-// 表格操作 Hooks
+// TODO: 表格操作 Hooks   &&&  接收父组件传递的属性，并初始化参数，返回组件需要的数据
 const { tableData, pageable, searchParam, searchInitParam, getTableList, search, reset, handleSizeChange, handleCurrentChange } =
   useTable(props.requestApi, props.initParam, props.pagination, props.dataCallback, props.requestError);
 
@@ -148,17 +156,17 @@ const clearSelection = () => tableRef.value!.clearSelection();
 // 初始化请求
 onMounted(() => props.requestAuto && getTableList());
 
-// 监听页面 initParam 改化，重新获取表格数据
+// 监听页面 initParam 改化，重新获取表格数据   &&&  监听Params和getTableList
 watch(() => props.initParam, getTableList, { deep: true });
 
-// 接收 columns 并设置为响应式
+// 接收 columns 并设置为响应式   &&&  接收传递过来的column并循环处理column
 const tableColumns = ref<ColumnProps[]>(props.columns);
 
 // 定义 enumMap 存储 enum 值（避免异步请求无法格式化单元格内容 || 无法填充搜索下拉选择）
 const enumMap = ref(new Map<string, { [key: string]: any }[]>());
 provide("enumMap", enumMap);
 const setEnumMap = async (col: ColumnProps) => {
-  if (!col.enum) return;
+  if (!col.enum) return; // 是否有枚举属性 {enum: true}
   // 如果当前 enum 为后台数据需要请求数据，则调用该请求接口，并存储到 enumMap
   if (typeof col.enum !== "function") return enumMap.value.set(col.prop!, col.enum!);
   const { data } = await col.enum();
@@ -167,27 +175,30 @@ const setEnumMap = async (col: ColumnProps) => {
 
 // 扁平化 columns
 const flatColumnsFunc = (columns: ColumnProps[], flatArr: ColumnProps[] = []) => {
+  // console.log("列处理：", JSON.parse(JSON.stringify(columns)));
   columns.forEach(async col => {
-    if (col._children?.length) flatArr.push(...flatColumnsFunc(col._children));
+    if (col._children?.length) flatArr.push(...flatColumnsFunc(col._children)); // 如果有children属性，将children push到数组中
     flatArr.push(col);
 
-    // 给每一项 column 添加 isShow && isFilterEnum 默认属性
+    // FIXME: 给每一项 column 添加 isShow && isFilterEnum 默认属性
     col.isShow = col.isShow ?? true;
     col.isFilterEnum = col.isFilterEnum ?? true;
 
     // 设置 enumMap
     setEnumMap(col);
   });
+  // console.log("枚举Map：", enumMap); // Map(0)
+  // console.log("列结果：", JSON.parse(JSON.stringify(flatArr)));
   return flatArr.filter(item => !item._children?.length);
 };
 
-// flatColumns
+// TODO:  flatColumns   &&&   扁平化处理(处理下children + 对象下属性 + 枚举)
 const flatColumns = ref<ColumnProps[]>();
 flatColumns.value = flatColumnsFunc(tableColumns.value);
 
 // 过滤需要搜索的配置项
-const searchColumns = flatColumns.value.filter(item => item.search?.el);
-
+const searchColumns = flatColumns.value.filter(item => item.search?.el); // 对象下search：{search: {el: 'input', order: 3}}
+// console.log("搜索配置项：", searchColumns);
 // 设置搜索表单排序默认值 && 设置搜索表单项的默认值
 searchColumns.forEach((column, index) => {
   column.search!.order = column.search!.order ?? index + 2;
@@ -196,15 +207,16 @@ searchColumns.forEach((column, index) => {
     searchParam.value[column.search.key ?? handleProp(column.prop!)] = column.search?.defaultValue;
   }
 });
-
 // 排序搜索表单项
 searchColumns.sort((a, b) => a.search!.order! - b.search!.order!);
 
 // 列设置 ==> 过滤掉不需要设置的列
 const colRef = ref();
+// 列设置组件：<ColSetting />
 const colSetting = tableColumns.value!.filter(
   item => !["selection", "index", "expand"].includes(item.type!) && item.prop !== "operation" && item.isShow
 );
+// TODO: 列设置 弹框 过滤列及排序
 const openColSetting = () => colRef.value.openColSetting();
 
 // 🙅‍♀️ 不需要打印可以把以下方法删除，打印功能目前存在很多 bug（目前数据处理比较复杂 209-246 行）
@@ -228,8 +240,9 @@ const printData = computed(() => {
   });
   return printDataList;
 });
-
-// 打印表格数据（💥 多级表头数据打印时，只能扁平化成一维数组，printJs 不支持多级表头打印）
+// console.log(printData.value);
+// console.log(flatColumns.value);
+// TODO: 打印表格数据（💥 多级表头数据打印时，只能扁平化成一维数组，printJs 不支持多级表头打印）
 const handlePrint = () => {
   const header = `<div style="text-align: center"><h2>${props.title}</h2></div>`;
   const gridHeaderStyle = "border: 1px solid #ebeef5;height: 45px;color: #232425;text-align: center;background-color: #fafafa;";

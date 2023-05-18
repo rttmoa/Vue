@@ -15,6 +15,7 @@ export const useUserStore = defineStore({
       this.token = token;
     },
     // Set setUserInfo
+    // TODO: 传参userInfo类型为：UserState下userinfo属性
     setUserInfo(userInfo: UserState["userInfo"]) {
       this.userInfo = userInfo;
     }

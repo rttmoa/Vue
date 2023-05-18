@@ -1,5 +1,13 @@
+<!-- eslint-disable prettier/prettier -->
 <template>
   <div class="card content-box">
+    <el-alert
+      title="此页：使用 v-copy 复制命令 /directives/ 自定义指令"
+      type="success"
+      :closable="false"
+    />
+    <br />
+
     <span class="text">复制指令 🍇🍇🍇🍓🍓🍓</span>
     <div class="box-content">
       <el-input placeholder="请输入内容" v-model="data" style="width: 500px">
