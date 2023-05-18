@@ -157,7 +157,13 @@ const clearSelection = () => tableRef.value!.clearSelection();
 onMounted(() => props.requestAuto && getTableList());
 
 // 监听页面 initParam 改化，重新获取表格数据   &&&  监听Params和getTableList
+// eslint-disable-next-line prettier/prettier
 watch(() => props.initParam, getTableList, { deep: true });
+
+
+
+
+
 
 // 接收 columns 并设置为响应式   &&&  接收传递过来的column并循环处理column
 const tableColumns = ref<ColumnProps[]>(props.columns);

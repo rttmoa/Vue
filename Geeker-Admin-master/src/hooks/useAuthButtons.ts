@@ -19,7 +19,7 @@ export const useAuthButtons = () => {
     authButtons.forEach(item => (currentPageAuthButton[item] = true));
     return currentPageAuthButton;
   });
-  console.log(toRaw(BUTTONS.value)); // {add: true, edit: true, delete: true, import: true, export: true}
+  // console.log(toRaw(BUTTONS.value)); // {add: true, edit: true, delete: true, import: true, export: true}
   return {
     BUTTONS
   };

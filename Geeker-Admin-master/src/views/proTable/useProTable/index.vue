@@ -8,32 +8,36 @@
       :init-param="initParam"
       :data-callback="dataCallback"
     >
-      <!-- 表格 header 按钮 -->
+      <!-- 表格 header 按钮 (5个button按钮) -->
       <template #tableHeader="scope">
         <el-button type="primary" :icon="CirclePlus" @click="openDrawer('新增')" v-auth="'add'">新增用户</el-button>
         <el-button type="primary" :icon="Upload" plain @click="batchAdd" v-auth="'batchAdd'">批量添加用户</el-button>
         <el-button type="primary" :icon="Download" plain @click="downloadFile" v-auth="'export'">导出用户数据</el-button>
-        <el-button type="primary" plain @click="toDetail">To 子集详情页面</el-button>
+        <el-button type="primary" plain @click="toDetail">To 子集详情页面(跳转)</el-button>
         <el-button type="danger" :icon="Delete" plain @click="batchDelete(scope.selectedListIds)" :disabled="!scope.isSelected">
           批量删除用户
         </el-button>
       </template>
-      <!-- Expand -->
+
+      <!-- 自定义：Expand -->
       <template #expand="scope">
         {{ scope.row }}
       </template>
-      <!-- usernameHeader -->
+
+      <!-- 自定义：usernameHeader -->
       <template #usernameHeader="scope">
-        <el-button type="primary" @click="ElMessage.success('我是通过作用域插槽渲染的表头')">
+        <el-button type="primary" @click="ElMessage.success(`我是通过作用域插槽渲染的表头 - ${scope.row.label}`)">
           {{ scope.row.label }}
         </el-button>
       </template>
+
       <!-- createTime -->
       <template #createTime="scope">
-        <el-button type="primary" link @click="ElMessage.success('我是通过作用域插槽渲染的内容')">
+        <el-button type="primary" link @click="ElMessage.success(`我是通过作用域插槽渲染的内容${scope.row.createTime}`)">
           {{ scope.row.createTime }}
         </el-button>
       </template>
+
       <!-- 表格操作 -->
       <template #operation="scope">
         <el-button type="primary" link :icon="View" @click="openDrawer('查看', scope.row)">查看</el-button>
@@ -77,6 +81,9 @@ const router = useRouter();
 
 // 跳转详情页
 const toDetail = () => {
+  // http://localhost:8848/#/proTable/useProTable/detail/0.575?params=detail-page
+  // params:{ "id": "0.575" }
+  // query:{ "params": "detail-page" }
   router.push(`/proTable/useProTable/detail/${Math.random().toFixed(3)}?params=detail-page`);
 };
 
@@ -195,6 +202,21 @@ const columns: ColumnProps<User.ResUserList>[] = [
   { prop: "operation", label: "操作", fixed: "right", width: 330 }
 ];
 
+// eslint-disable-next-line prettier/prettier
+// eslint-disable-next-line prettier/prettier
+// eslint-disable-next-line prettier/prettier
+// eslint-disable-next-line prettier/prettier
+// eslint-disable-next-line prettier/prettier
+// eslint-disable-next-line prettier/prettier
+// eslint-disable-next-line prettier/prettier
+// eslint-disable-next-line prettier/prettier
+// eslint-disable-next-line prettier/prettier
+// eslint-disable-next-line prettier/prettier
+// eslint-disable-next-line prettier/prettier
+// eslint-disable-next-line prettier/prettier
+// eslint-disable-next-line prettier/prettier
+// eslint-disable-next-line prettier/prettier
+// TODO: 以下为表格功能
 // 删除用户信息
 const deleteAccount = async (params: User.ResUserList) => {
   await useHandleData(deleteUser, { id: [params.id] }, `删除【${params.username}】用户`);

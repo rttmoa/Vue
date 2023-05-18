@@ -22,18 +22,22 @@
       <template #tableHeader>
         <el-button type="primary" :icon="CirclePlus">新增菜单</el-button>
       </template>
+
       <!-- Table -> 菜单图标 -->
       <template #icon="scope">
         <el-icon :size="18">
           <component :is="scope.row.meta.icon"></component>
         </el-icon>
       </template>
+
       <!-- Table -> 菜单操作 -->
       <template #operation="scope">
         <el-button type="primary" link :icon="EditPen">编辑</el-button>
         <el-button type="primary" link :icon="Delete" @click="deleteMenu(scope.row)">删除</el-button>
       </template>
+      
     </ProTable>
+
   </div>
 </template>
 
