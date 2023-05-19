@@ -1,5 +1,7 @@
+<!-- eslint-disable prettier/prettier -->
 <template>
   <div class="main-box">
+
     <TreeFilter
       title="部门列表(多选)"
       multiple
@@ -8,6 +10,7 @@
       :default-value="treeFilterValues.departmentId"
       @change="changeTreeFilter"
     />
+    
     <div class="table-box">
       <div class="card mb10 pt0 pb0">
         <SelectFilter :data="selectFilterData" :default-values="selectFilterValues" @change="changeSelectFilter" />
@@ -25,6 +28,7 @@
           <el-button type="primary" :icon="Upload" plain @click="batchAdd">批量添加用户</el-button>
           <el-button type="primary" :icon="Download" plain @click="downloadFile">导出用户数据</el-button>
         </template>
+        
         <!-- 表格操作 -->
         <template #operation="scope">
           <el-button type="primary" link :icon="View" @click="openDrawer('查看', scope.row)">查看</el-button>
@@ -36,6 +40,7 @@
       <UserDrawer ref="drawerRef" />
       <ImportExcel ref="dialogRef" />
     </div>
+
   </div>
 </template>
 <script setup lang="ts" name="useSelectFilter">

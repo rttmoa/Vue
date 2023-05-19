@@ -1,5 +1,7 @@
+<!-- eslint-disable prettier/prettier -->
 <template>
   <div class="main-box">
+
     <TreeFilter
       label="name"
       title="部门列表(单选)"
@@ -7,6 +9,7 @@
       :default-value="initParam.departmentId"
       @change="changeTreeFilter"
     />
+
     <div class="table-box">
       <ProTable
         ref="proTable"
@@ -23,6 +26,7 @@
         <template #tableHeader>
           <el-button type="primary" :icon="CirclePlus" @click="openDrawer('新增')">新增用户</el-button>
         </template>
+        
         <!-- 表格操作 -->
         <template #operation="scope">
           <el-button type="primary" link :icon="View" @click="openDrawer('查看', scope.row)">查看</el-button>
@@ -33,6 +37,7 @@
       <UserDrawer ref="drawerRef" />
       <ImportExcel ref="dialogRef" />
     </div>
+
   </div>
 </template>
 

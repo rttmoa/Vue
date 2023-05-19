@@ -1,5 +1,7 @@
+<!-- eslint-disable prettier/prettier -->
 <template>
   <div class="main-box">
+
     <TreeFilter
       label="name"
       title="部门列表(单选)"
@@ -7,6 +9,7 @@
       :default-value="initParam.departmentId"
       @change="changeTreeFilter"
     />
+    
     <div class="table-box">
       <ProTable
         ref="proTable"
@@ -23,6 +26,7 @@
           <el-button type="primary" :icon="Download" plain @click="downloadFile">导出用户数据</el-button>
           <el-button type="primary" plain @click="toDetail">To 平级详情页面</el-button>
         </template>
+        
         <!-- 表格操作 -->
         <template #operation="scope">
           <el-button type="primary" link :icon="View" @click="openDrawer('查看', scope.row)">查看</el-button>

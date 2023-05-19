@@ -1,3 +1,4 @@
+<!-- eslint-disable prettier/prettier -->
 <template>
   <div class="table-box">
     <ProTable
@@ -20,6 +21,7 @@
           批量删除用户
         </el-button>
       </template>
+
       <!-- Expand -->
       <template #expand="scope">
         {{ scope.row }}
@@ -30,7 +32,7 @@
         <el-button type="primary" link :icon="Delete" @click="deleteAccount(scope.row)">删除</el-button>
       </template>
       <template #append>
-        <span style="color: var(--el-color-primary)">我是插入在表格最后的内容。若表格有合计行，该内容会位于合计行之上。</span>
+        <span style="color: var(--el-color-primary); font-size: 24px;">我是插入在表格最后的内容。若表格有合计行，该内容会位于合计行之上。</span>
       </template>
     </ProTable>
   </div>
