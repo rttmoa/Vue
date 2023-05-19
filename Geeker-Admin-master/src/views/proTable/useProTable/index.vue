@@ -121,7 +121,7 @@ const headerRender = (row: ColumnProps) => {
     <el-button
       type="primary"
       onClick={() => {
-        ElMessage.success("我是通过 tsx 语法渲染的表头");
+        ElMessage.success("我是通过 tsx 语法渲染的表头 + headerRender");
       }}
     >
       {row.label}
@@ -140,7 +140,7 @@ const columns: ColumnProps<User.ResUserList>[] = [
     search: { el: "input" },
     render: scope => {
       return (
-        <el-button type="primary" link onClick={() => ElMessage.success("我是通过 tsx 语法渲染的内容")}>
+        <el-button type="primary" link onClick={() => ElMessage.success(`我是通过 tsx 语法渲染的内容${scope.row.username}`)}>
           {scope.row.username}
         </el-button>
       );

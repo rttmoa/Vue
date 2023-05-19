@@ -2,7 +2,7 @@
 <!-- 📚📚📚 Pro-Table 文档: https://juejin.cn/post/7166068828202336263 -->
 
 <template>
-  <!-- 一、查询表单 card -->
+  <!-- 一、查询表单 card  TODO: /component -->
   <SearchForm
     :search="search"
     :reset="reset"
@@ -11,6 +11,7 @@
     :search-col="searchCol"
     v-show="isShowSearch"
   />
+
 
   <!-- 表格内容 card -->
   <div class="card table-main">
@@ -57,7 +58,7 @@
           <component :is="item.render" v-bind="scope" v-if="item.render"> </component>
           <slot :name="item.type" v-bind="scope" v-else></slot>
         </el-table-column>
-        <!-- other 循环递归 -->
+        <!-- other 循环递归 TODO: /component -->
         <TableColumn v-if="!item.type && item.prop && item.isShow" :column="item">
           <template v-for="slot in Object.keys($slots)" #[slot]="scope">
             <slot :name="slot" v-bind="scope"></slot>
@@ -94,9 +95,9 @@
   <ColSetting v-if="toolButton" ref="colRef" v-model:col-setting="colSetting" />
 
 </template>
-
+<!-- TODO: 封装Table组件，组件复用 -->
 <script setup lang="ts" name="ProTable">
-import { ref, watch, computed, provide, onMounted } from "vue"; // TODO: Vue3 钩子
+import { ref, watch, computed, provide, onMounted } from "vue"; // NOTE: Vue3 钩子
 import { useTable } from "@/hooks/useTable";
 import { useSelection } from "@/hooks/useSelection";
 import { BreakPoint } from "@/components/Grid/interface";
@@ -125,49 +126,45 @@ interface ProTableProps extends Partial<Omit<TableProps<any>, "data">> {
   searchCol?: number | Record<BreakPoint, number>; // 表格搜索项 每列占比配置 ==> 非必传 { xs: 1, sm: 2, md: 2, lg: 3, xl: 4 }
 }
 
-// 接受父组件参数，配置默认值
 const props = withDefaults(defineProps<ProTableProps>(), {
-  requestAuto: true, // 是否自动请求
-  columns: () => [], // 列配置
-  pagination: true, // 是否分页
-  initParam: {}, // 初始化参数
-  border: true, // 边框
-  toolButton: true, // 工具按钮
+  requestAuto: true, //   是否自动请求
+  columns: () => [], //   列配置
+  pagination: true, //    是否分页
+  initParam: {}, //       初始化参数
+  border: true, //        边框
+  toolButton: true, //    工具按钮
   rowKey: "id", // 行Id
   searchCol: () => ({ xs: 1, sm: 2, md: 2, lg: 3, xl: 4 }) //可搜索列
 });
 
-// 是否显示搜索模块  &&&  控制搜索框的显示与隐藏
 const isShowSearch = ref(true);
-
-// 表格 DOM 元素   &&&   控制表格主体的DOM
 const tableRef = ref<InstanceType<typeof ElTable>>();
-
-// 表格多选 Hooks
 const { selectionChange, selectedList, selectedListIds, isSelected } = useSelection(props.rowKey);
 
-// TODO: 表格操作 Hooks   &&&  接收父组件传递的属性，并初始化参数，返回组件需要的数据
-const { tableData, pageable, searchParam, searchInitParam, getTableList, search, reset, handleSizeChange, handleCurrentChange } =
-  useTable(props.requestApi, props.initParam, props.pagination, props.dataCallback, props.requestError);
-
-// 清空选中数据列表
-const clearSelection = () => tableRef.value!.clearSelection();
-
-// 初始化请求
-onMounted(() => props.requestAuto && getTableList());
-
-// 监听页面 initParam 改化，重新获取表格数据   &&&  监听Params和getTableList
+// TODO: 表格操作 Hooks
 // eslint-disable-next-line prettier/prettier
-watch(() => props.initParam, getTableList, { deep: true });
+const { 
+  tableData,
+  pageable, 
+  searchParam, 
+  searchInitParam, 
+  getTableList, 
+  search, 
+  reset, 
+  handleSizeChange, 
+  handleCurrentChange 
+} = useTable(props.requestApi, props.initParam, props.pagination, props.dataCallback, props.requestError);
 
+const clearSelection = () => tableRef.value!.clearSelection(); // 清空选中数据列表
+onMounted(() => props.requestAuto && getTableList()); // 初始化请求
+watch(() => props.initParam, getTableList, { deep: true }); // 监听页面 initParam 改化，重新获取表格数据
+const tableColumns = ref<ColumnProps[]>(props.columns); // 接收 columns 并设置为响应式
 
-
-
-
-
-// 接收 columns 并设置为响应式   &&&  接收传递过来的column并循环处理column
-const tableColumns = ref<ColumnProps[]>(props.columns);
-
+// FIXME: 以下为printJs
+// eslint-disable-next-line prettier/prettier
+// eslint-disable-next-line prettier/prettier
+// eslint-disable-next-line prettier/prettier
+// eslint-disable-next-line prettier/prettier
 // 定义 enumMap 存储 enum 值（避免异步请求无法格式化单元格内容 || 无法填充搜索下拉选择）
 const enumMap = ref(new Map<string, { [key: string]: any }[]>());
 provide("enumMap", enumMap);
@@ -222,7 +219,7 @@ const colRef = ref();
 const colSetting = tableColumns.value!.filter(
   item => !["selection", "index", "expand"].includes(item.type!) && item.prop !== "operation" && item.isShow
 );
-// TODO: 列设置 弹框 过滤列及排序
+// 列设置 弹框 过滤列及排序
 const openColSetting = () => colRef.value.openColSetting();
 
 // 🙅‍♀️ 不需要打印可以把以下方法删除，打印功能目前存在很多 bug（目前数据处理比较复杂 209-246 行）
@@ -248,7 +245,7 @@ const printData = computed(() => {
 });
 // console.log(printData.value);
 // console.log(flatColumns.value);
-// TODO: 打印表格数据（💥 多级表头数据打印时，只能扁平化成一维数组，printJs 不支持多级表头打印）
+// 打印表格数据（💥 多级表头数据打印时，只能扁平化成一维数组，printJs 不支持多级表头打印）
 const handlePrint = () => {
   const header = `<div style="text-align: center"><h2>${props.title}</h2></div>`;
   const gridHeaderStyle = "border: 1px solid #ebeef5;height: 45px;color: #232425;text-align: center;background-color: #fafafa;";
