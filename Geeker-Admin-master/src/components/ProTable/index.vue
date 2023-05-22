@@ -2,7 +2,8 @@
 <!-- 📚📚📚 Pro-Table 文档: https://juejin.cn/post/7166068828202336263 -->
 
 <template>
-  <!-- 一、查询表单 card  TODO: /component -->
+
+  <!-- 查询表单   TODO: 内部封装多组件 -->
   <SearchForm
     :search="search"
     :reset="reset"
@@ -52,14 +53,13 @@
           :align="item.align ?? 'center'"
           :reserve-selection="item.type == 'selection'"
           v-if="item.type == 'selection' || item.type == 'index'"
-        >
-        </el-table-column>
+        ></el-table-column>
         <!-- expand 支持 tsx 语法 && 作用域插槽 (tsx > slot) -->
         <el-table-column v-bind="item" :align="item.align ?? 'center'" v-if="item.type == 'expand'" v-slot="scope">
           <component :is="item.render" v-bind="scope" v-if="item.render"> </component>
           <slot :name="item.type" v-bind="scope" v-else></slot>
         </el-table-column>
-        <!-- other 循环递归 TODO: /component -->
+        <!-- other 循环递归 TODO: 封装列Column -->
         <TableColumn v-if="!item.type && item.prop && item.isShow" :column="item">
           <template v-for="slot in Object.keys($slots)" #[slot]="scope">
             <slot :name="slot" v-bind="scope"></slot>
@@ -68,7 +68,7 @@
       </template>
       <!-- 插入表格最后一行之后的插槽 -->
       <template #append>
-        <slot name="append"> </slot>
+        <slot name="append"></slot>
       </template>
       <!-- 表格无数据情况 -->
       <template #empty>
