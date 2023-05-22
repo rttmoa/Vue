@@ -8,7 +8,7 @@
       :init-param="initParam"
       :data-callback="dataCallback"
     >
-      <!-- 表格 header 按钮 (5个button按钮) -->
+      <!-- 表格 header 按钮 (5个button按钮)  v-auth：自定义指令  /src/directives -->
       <template #tableHeader="scope">
         <el-button type="primary" :icon="CirclePlus" @click="openDrawer('新增')" v-auth="'add'">新增用户</el-button>
         <el-button type="primary" :icon="Upload" plain @click="batchAdd" v-auth="'batchAdd'">批量添加用户</el-button>
@@ -19,26 +19,26 @@
         </el-button>
       </template>
 
-      <!-- 自定义：Expand -->
+      <!-- Expand -->
       <template #expand="scope">
         {{ scope.row }}
       </template>
 
-      <!-- 自定义：usernameHeader -->
+      <!-- 用户姓名 -->
       <template #usernameHeader="scope">
         <el-button type="primary" @click="ElMessage.success(`我是通过作用域插槽渲染的表头 - ${scope.row.label}`)">
           {{ scope.row.label }}
         </el-button>
       </template>
 
-      <!-- createTime -->
+      <!-- 创建时间 -->
       <template #createTime="scope">
-        <el-button type="primary" link @click="ElMessage.success(`我是通过作用域插槽渲染的内容${scope.row.createTime}`)">
+        <el-button type="primary" link @click="ElMessage.success(`我是通过作用域插槽渲染的内容   ///   ${scope.row.createTime}`)">
           {{ scope.row.createTime }}
         </el-button>
       </template>
 
-      <!-- 表格操作 -->
+      <!-- 操作 -->
       <template #operation="scope">
         <el-button type="primary" link :icon="View" @click="openDrawer('查看', scope.row)">查看</el-button>
         <el-button type="primary" link :icon="EditPen" @click="openDrawer('编辑', scope.row)">编辑</el-button>
@@ -109,6 +109,7 @@ const dataCallback = (data: any) => {
 const getTableList = (params: any) => {
   let newParams = JSON.parse(JSON.stringify(params));
   newParams.username && (newParams.username = "custom-" + newParams.username);
+  // newParams: {age: "22",createTime: (2) ['20'],gender: 1,idCard: "2039193",pageNum: 1pageSize: 25,status: 1,type: 1,username: "custom-zhangsan"}
   return getUserList(newParams);
 };
 
@@ -137,7 +138,7 @@ const columns: ColumnProps<User.ResUserList>[] = [
   {
     prop: "username",
     label: "用户姓名",
-    search: { el: "input" },
+    search: { el: "input" }, // 可搜索 用户姓名
     render: scope => {
       return (
         <el-button type="primary" link onClick={() => ElMessage.success(`我是通过 tsx 语法渲染的内容${scope.row.username}`)}>
@@ -155,19 +156,19 @@ const columns: ColumnProps<User.ResUserList>[] = [
     enum: getUserGender,
     // 字典请求携带参数
     // enum: () => getUserGender({ id: 1 }),
-    search: { el: "select", props: { filterable: true } },
+    search: { el: "select", props: { filterable: true } }, // 可搜索 性别
     fieldNames: { label: "genderLabel", value: "genderValue" }
   },
   // 多级 prop
   { prop: "user.detail.age", label: "年龄", search: { el: "input" } },
-  { prop: "idCard", label: "身份证号", search: { el: "input" } },
+  { prop: "idCard", label: "身份证号", search: { el: "input" } }, // 可搜索 身份证号
   { prop: "email", label: "邮箱" },
   { prop: "address", label: "居住地址" },
   {
     prop: "status",
     label: "用户状态",
     enum: getUserStatus,
-    search: { el: "tree-select", props: { filterable: true } },
+    search: { el: "tree-select", props: { filterable: true } }, // 可搜索 用户状态
     fieldNames: { label: "userLabel", value: "userStatus" },
     render: scope => {
       return (

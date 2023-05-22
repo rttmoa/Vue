@@ -3,14 +3,14 @@
     <el-form ref="formRef" :model="searchParam">
       <Grid ref="gridRef" :collapsed="collapsed" :gap="[20, 0]" :cols="searchCol">
         <GridItem v-for="(item, index) in columns" :key="item.prop" v-bind="getResponsive(item)" :index="index">
-          <el-form-item :label="`${item.label} :`">
+          <el-form-item :label="`${item.label} :`" style="font-weight: 700">
             <SearchFormItem :column="item" :search-param="searchParam" />
           </el-form-item>
         </GridItem>
         <GridItem suffix>
           <div class="operation">
             <el-button type="primary" :icon="Search" @click="search">搜索</el-button>
-            <el-button :icon="Delete" @click="reset">重置</el-button>
+            <el-button type="warning" :icon="Delete" @click="reset">重置</el-button>
             <el-button v-if="showCollapse" type="primary" link class="search-isOpen" @click="collapsed = !collapsed">
               {{ collapsed ? "展开" : "合并" }}
               <el-icon class="el-icon--right">
@@ -66,7 +66,7 @@ const collapsed = ref(true);
 const gridRef = ref();
 const breakPoint = computed<BreakPoint>(() => gridRef.value?.breakPoint);
 
-// 判断是否显示 展开/合并 按钮
+// FIXME: 判断是否显示 展开/合并 按钮
 const showCollapse = computed(() => {
   let show = false;
   props.columns.reduce((prev, current) => {

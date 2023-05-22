@@ -89,7 +89,7 @@ const changeTreeFilter = (val: string) => {
 // 表格配置项
 const columns: ColumnProps<User.ResUserList>[] = [
   { type: "index", label: "#", width: 80 },
-  { prop: "username", label: "用户姓名", width: 120, search: { el: "input" } },
+  { prop: "username", label: "用户姓名", width: 120, search: { el: "input" } }, // 可搜索用户姓名
   {
     prop: "gender",
     label: "性别",

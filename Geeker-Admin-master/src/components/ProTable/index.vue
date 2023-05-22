@@ -16,13 +16,14 @@
   <!-- 表格内容 card -->
   <div class="card table-main">
 
-    <!-- 表格头部 操作按钮 -->
+    <!-- 表格头部: 工具栏 -->
     <div class="table-header">
-      <!-- 二、左侧新增按钮 -->
+      <!-- 左：活 -->
       <div class="header-button-lf">
+        <!-- 操作表格数据，供父组件使用 -->
         <slot name="tableHeader" :selectedListIds="selectedListIds" :selectedList="selectedList" :isSelected="isSelected" />
       </div>
-      <!-- 三、右侧：刷新，打印，搜索 -->
+      <!-- 右：死 -->
       <div class="header-button-ri" v-if="toolButton">
         <slot name="toolButton">
           <el-button :icon="Refresh" circle @click="getTableList" />
@@ -33,7 +34,7 @@
       </div>
     </div>
 
-    <!-- 四、表格主体 -->
+    <!-- 表格主体 -->
     <el-table
       ref="tableRef"
       v-bind="$attrs"
@@ -80,7 +81,7 @@
       </template>
     </el-table>
 
-    <!-- 五、分页组件 -->
+    <!-- 分页: 封装 /component -->
     <slot name="pagination">
       <Pagination
         v-if="pagination"
@@ -91,10 +92,11 @@
     </slot>
   </div>
 
-  <!-- 列设置 -->
+  <!-- 列设置: 右侧弹窗 -->
   <ColSetting v-if="toolButton" ref="colRef" v-model:col-setting="colSetting" />
 
 </template>
+
 <!-- TODO: 封装Table组件，组件复用 -->
 <script setup lang="ts" name="ProTable">
 import { ref, watch, computed, provide, onMounted } from "vue"; // NOTE: Vue3 钩子
@@ -127,13 +129,13 @@ interface ProTableProps extends Partial<Omit<TableProps<any>, "data">> {
 }
 
 const props = withDefaults(defineProps<ProTableProps>(), {
-  requestAuto: true, //   是否自动请求
-  columns: () => [], //   列配置
-  pagination: true, //    是否分页
-  initParam: {}, //       初始化参数
-  border: true, //        边框
-  toolButton: true, //    工具按钮
-  rowKey: "id", // 行Id
+  requestAuto: true,
+  columns: () => [],
+  pagination: true,
+  initParam: {},
+  border: true,
+  toolButton: true,
+  rowKey: "id",
   searchCol: () => ({ xs: 1, sm: 2, md: 2, lg: 3, xl: 4 }) //可搜索列
 });
 
@@ -152,7 +154,7 @@ const {
   search, 
   reset, 
   handleSizeChange, 
-  handleCurrentChange 
+  handleCurrentChange
 } = useTable(props.requestApi, props.initParam, props.pagination, props.dataCallback, props.requestError);
 
 const clearSelection = () => tableRef.value!.clearSelection(); // 清空选中数据列表
@@ -160,11 +162,7 @@ onMounted(() => props.requestAuto && getTableList()); // 初始化请求
 watch(() => props.initParam, getTableList, { deep: true }); // 监听页面 initParam 改化，重新获取表格数据
 const tableColumns = ref<ColumnProps[]>(props.columns); // 接收 columns 并设置为响应式
 
-// FIXME: 以下为printJs
-// eslint-disable-next-line prettier/prettier
-// eslint-disable-next-line prettier/prettier
-// eslint-disable-next-line prettier/prettier
-// eslint-disable-next-line prettier/prettier
+// 以下为printJs
 // 定义 enumMap 存储 enum 值（避免异步请求无法格式化单元格内容 || 无法填充搜索下拉选择）
 const enumMap = ref(new Map<string, { [key: string]: any }[]>());
 provide("enumMap", enumMap);
@@ -183,7 +181,7 @@ const flatColumnsFunc = (columns: ColumnProps[], flatArr: ColumnProps[] = []) =>
     if (col._children?.length) flatArr.push(...flatColumnsFunc(col._children)); // 如果有children属性，将children push到数组中
     flatArr.push(col);
 
-    // FIXME: 给每一项 column 添加 isShow && isFilterEnum 默认属性
+    // 给每一项 column 添加 isShow && isFilterEnum 默认属性
     col.isShow = col.isShow ?? true;
     col.isFilterEnum = col.isFilterEnum ?? true;
 
@@ -199,7 +197,7 @@ const flatColumnsFunc = (columns: ColumnProps[], flatArr: ColumnProps[] = []) =>
 const flatColumns = ref<ColumnProps[]>();
 flatColumns.value = flatColumnsFunc(tableColumns.value);
 
-// 过滤需要搜索的配置项
+// TODO: 过滤需要搜索的配置项 / 搜索
 const searchColumns = flatColumns.value.filter(item => item.search?.el); // 对象下search：{search: {el: 'input', order: 3}}
 // console.log("搜索配置项：", searchColumns);
 // 设置搜索表单排序默认值 && 设置搜索表单项的默认值
@@ -213,12 +211,11 @@ searchColumns.forEach((column, index) => {
 // 排序搜索表单项
 searchColumns.sort((a, b) => a.search!.order! - b.search!.order!);
 
-// 列设置 ==> 过滤掉不需要设置的列
+//------------------------列设置 ==> 过滤掉不需要设置的列-------------------------------------
 const colRef = ref();
-// 列设置组件：<ColSetting />
-const colSetting = tableColumns.value!.filter(
-  item => !["selection", "index", "expand"].includes(item.type!) && item.prop !== "operation" && item.isShow
-);
+const colSetting = tableColumns.value!.filter(item => {
+  return !["selection", "index", "expand"].includes(item.type!) && item.prop !== "operation" && item.isShow;
+});
 // 列设置 弹框 过滤列及排序
 const openColSetting = () => colRef.value.openColSetting();
 

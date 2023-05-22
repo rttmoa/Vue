@@ -41,6 +41,7 @@
   </div>
 </template>
 
+<!-- 快速访问： http://localhost:8848/#/system/menuMange -->
 <script setup lang="ts" name="menuMange">
 import { ref } from "vue";
 import { ColumnProps } from "@/components/ProTable/interface";
@@ -54,10 +55,10 @@ const proTable = ref();
 // 表格配置项 Config
 const columns: ColumnProps[] = [
   { type: "index", label: "#", width: 150 },
-  { prop: "meta.title", label: "菜单名称", align: "left", search: { el: "input" } },
+  { prop: "meta.title", label: "菜单名称", align: "left", search: { el: "input" } }, // 可搜索 菜单名称
   { prop: "meta.icon", label: "菜单图标" },
   { prop: "name", label: "菜单 name" },
-  { prop: "path", label: "菜单路径", width: 300, search: { el: "input" } },
+  { prop: "path", label: "菜单路径", width: 300, search: { el: "input" } }, // 可搜索 菜单路径
   { prop: "component", label: "组件路径", width: 300 },
   { prop: "operation", label: "操作", width: 250, fixed: "right" }
 ];

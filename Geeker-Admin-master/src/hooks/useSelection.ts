@@ -12,6 +12,8 @@ export const useSelection = (rowKey: string = "id") => {
   const selectedListIds = computed((): string[] => {
     let ids: string[] = [];
     selectedList.value.forEach(item => ids.push(item[rowKey]));
+    // console.log(selectedList.value); // 表格中的每一项Item
+    // console.log(ids); // ['447616687754768472', '661233179731676372']
     return ids;
   });
 
@@ -21,14 +23,15 @@ export const useSelection = (rowKey: string = "id") => {
    * @return void
    */
   const selectionChange = (rowArr: { [key: string]: any }[]) => {
+    // console.log(rowArr); // 点击表格中的每一条Item： (3)[Proxy(Object), Proxy(Object), Proxy(Object)]
     rowArr.length ? (isSelected.value = true) : (isSelected.value = false);
     selectedList.value = rowArr;
   };
 
   return {
-    isSelected,
-    selectedList,
-    selectedListIds,
-    selectionChange
+    isSelected, // 是否点击了表格的复选框
+    selectedList, // 选择的表格中的所有Item
+    selectedListIds, // 选择的表格中每一项Item的Id
+    selectionChange // Change事件
   };
 };
