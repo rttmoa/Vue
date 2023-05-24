@@ -96,7 +96,10 @@
   <ColSetting v-if="toolButton" ref="colRef" v-model:col-setting="colSetting" />
 
 </template>
-
+<!--  -->
+<!--  -->
+<!--  -->
+<!--  -->
 <!-- TODO: 封装Table组件，组件复用 -->
 <script setup lang="ts" name="ProTable">
 import { ref, watch, computed, provide, onMounted } from "vue"; // NOTE: Vue3 钩子
@@ -143,7 +146,8 @@ const isShowSearch = ref(true);
 const tableRef = ref<InstanceType<typeof ElTable>>();
 const { selectionChange, selectedList, selectedListIds, isSelected } = useSelection(props.rowKey);
 
-// TODO: 表格操作 Hooks
+// console.log(props.initParam); // useSelectFilter: {departmentId: Array(5), userStatus: '2', userRole: Array(2)}
+// Hooks
 // eslint-disable-next-line prettier/prettier
 const { 
   tableData,
@@ -162,7 +166,7 @@ onMounted(() => props.requestAuto && getTableList()); // 初始化请求
 watch(() => props.initParam, getTableList, { deep: true }); // 监听页面 initParam 改化，重新获取表格数据
 const tableColumns = ref<ColumnProps[]>(props.columns); // 接收 columns 并设置为响应式
 
-// 以下为printJs
+// ================================处理列 ==> Column处理 ================================================================================================
 // 定义 enumMap 存储 enum 值（避免异步请求无法格式化单元格内容 || 无法填充搜索下拉选择）
 const enumMap = ref(new Map<string, { [key: string]: any }[]>());
 provide("enumMap", enumMap);
@@ -181,26 +185,25 @@ const flatColumnsFunc = (columns: ColumnProps[], flatArr: ColumnProps[] = []) =>
     if (col._children?.length) flatArr.push(...flatColumnsFunc(col._children)); // 如果有children属性，将children push到数组中
     flatArr.push(col);
 
-    // 给每一项 column 添加 isShow && isFilterEnum 默认属性
     col.isShow = col.isShow ?? true;
     col.isFilterEnum = col.isFilterEnum ?? true;
 
     // 设置 enumMap
     setEnumMap(col);
   });
-  // console.log("枚举Map：", enumMap); // Map(0)
+  // console.log("枚举Map：", enumMap); // Map(0) || Map(2) {'status' => Array(2), 'gender' => Array(2)}
   // console.log("列结果：", JSON.parse(JSON.stringify(flatArr)));
   return flatArr.filter(item => !item._children?.length);
 };
-
-// TODO:  flatColumns   &&&   扁平化处理(处理下children + 对象下属性 + 枚举)
+// flatColumnsRef
 const flatColumns = ref<ColumnProps[]>();
 flatColumns.value = flatColumnsFunc(tableColumns.value);
 
-// TODO: 过滤需要搜索的配置项 / 搜索
+//================================过滤条件(搜索) ==> 根据列的配置搜索内容================================================================================
+// 过滤需要搜索的配置项 / 搜索
 const searchColumns = flatColumns.value.filter(item => item.search?.el); // 对象下search：{search: {el: 'input', order: 3}}
 // console.log("搜索配置项：", searchColumns);
-// 设置搜索表单排序默认值 && 设置搜索表单项的默认值
+// 设置搜索表单排序默认值
 searchColumns.forEach((column, index) => {
   column.search!.order = column.search!.order ?? index + 2;
   if (column.search?.defaultValue !== undefined && column.search?.defaultValue !== null) {
@@ -211,7 +214,7 @@ searchColumns.forEach((column, index) => {
 // 排序搜索表单项
 searchColumns.sort((a, b) => a.search!.order! - b.search!.order!);
 
-//------------------------列设置 ==> 过滤掉不需要设置的列-------------------------------------
+//================================列设置(弹窗) ==> 过滤掉不需要设置的列================================================================================
 const colRef = ref();
 const colSetting = tableColumns.value!.filter(item => {
   return !["selection", "index", "expand"].includes(item.type!) && item.prop !== "operation" && item.isShow;
@@ -219,6 +222,7 @@ const colSetting = tableColumns.value!.filter(item => {
 // 列设置 弹框 过滤列及排序
 const openColSetting = () => colRef.value.openColSetting();
 
+//================================打印 ==> 可注掉====================================================================================================
 // 🙅‍♀️ 不需要打印可以把以下方法删除，打印功能目前存在很多 bug（目前数据处理比较复杂 209-246 行）
 // 处理打印数据（把后台返回的值根据 enum 做转换）
 const printData = computed(() => {

@@ -31,6 +31,7 @@ const RenderTableColumn = (item: ColumnProps) => {
       {item.isShow && (
         <el-table-column
           {...item}
+          // align是否有，如果有就align，没有传入就是center
           align={item.align ?? "center"}
           showOverflowTooltip={item.showOverflowTooltip ?? item.prop !== "operation"}
         >

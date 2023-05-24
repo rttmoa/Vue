@@ -68,7 +68,6 @@ import {
 
 const router = useRouter();
 
-// 跳转详情页
 const toDetail = () => {
   router.push(`/proTable/useTreeFilter/detail/123456?params=detail-page`);
 };
@@ -81,12 +80,11 @@ const initParam = reactive({ departmentId: "1" });
 
 // 树形筛选切换
 const changeTreeFilter = (val: string) => {
-  ElMessage.success("请注意查看请求参数变化 🤔");
+  ElMessage.success(`请注意查看请求参数变化 🤔 + ${val}`);
   proTable.value.pageable.pageNum = 1;
-  initParam.departmentId = val;
+  initParam.departmentId = val; // TODO: 当initParams改变后，会watch initParam变化去发请求
 };
 
-// 表格配置项
 const columns: ColumnProps<User.ResUserList>[] = [
   { type: "index", label: "#", width: 80 },
   { prop: "username", label: "用户姓名", width: 120, search: { el: "input" } }, // 可搜索用户姓名
@@ -107,6 +105,7 @@ const columns: ColumnProps<User.ResUserList>[] = [
     label: "用户状态",
     width: 120,
     sortable: true,
+    // 是tag
     tag: true,
     enum: getUserStatus,
     search: { el: "select" },
@@ -116,13 +115,11 @@ const columns: ColumnProps<User.ResUserList>[] = [
   { prop: "operation", label: "操作", width: 330, fixed: "right" }
 ];
 
-// 删除用户信息
 const deleteAccount = async (params: User.ResUserList) => {
   await useHandleData(deleteUser, { id: [params.id] }, `删除【${params.username}】用户`);
   proTable.value.getTableList();
 };
 
-// 重置用户密码
 const resetPass = async (params: User.ResUserList) => {
   await useHandleData(resetUserPassWord, { id: params.id }, `重置【${params.username}】用户密码`);
   proTable.value.getTableList();

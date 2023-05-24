@@ -1,17 +1,15 @@
+<!-- eslint-disable vue/no-parsing-error -->
 <!-- eslint-disable prettier/prettier -->
 <template>
   <div class="card filter">
-    <el-alert
-      title="树结构"
-      type="error"
-      :closable="false"
-    />
+    <el-alert title="树结构" type="error" :closable="false"/>
     <br />
     
     <h4 class="title sle" v-if="title">{{ title }}</h4>
     <el-input v-model="filterText" placeholder="输入关键字进行过滤" clearable />
     <el-scrollbar :style="{ height: title ? `calc(100% - 95px)` : `calc(100% - 56px)` }">
       <!-- TODO: 树 -->
+      <!-- https://element-plus.gitee.io/zh-CN/component/tree.html#%E5%B1%9E%E6%80%A7 -->
       <el-tree
         ref="treeRef"
         default-expand-all
@@ -72,8 +70,8 @@ const treeAllData = ref<{ [key: string]: any }[]>([]);
 
 const selected = ref();
 const setSelected = () => {
-  // console.log(JSON.stringify(props.defaultValue)); // "1" || ["11"]
   // 如果 是多选，并且默认值是数组，那就是默认值，否则 [ 数字/字符串/布尔值 ]
+  // console.log(JSON.stringify(props.defaultValue)); // 单选："1"    ||  多选： ["11"]
   if (props.multiple) selected.value = Array.isArray(props.defaultValue) ? props.defaultValue : [props.defaultValue];
   else selected.value = typeof props.defaultValue === "string" ? props.defaultValue : "";
 };
@@ -82,6 +80,7 @@ onBeforeMount(async () => {
   setSelected();
   if (props.requestApi) {
     const { data } = await props.requestApi!(); // 父组件中的request-api
+    // console.log(data);
     treeData.value = data;
     treeAllData.value = [{ id: "", [props.label]: "全部" }, ...data];
   }
@@ -97,8 +96,9 @@ watch(
 watch(
   () => props.data,
   () => {
+    // 父组件是否传入了 data 属性   传入data或传入api
     if (props.data?.length) {
-      console.log("Data: ", props.data);
+      console.log("props.data: ", props.data);
       treeData.value = props.data;
       treeAllData.value = [{ id: "", [props.label]: "全部" }, ...props.data];
     }
@@ -109,13 +109,14 @@ watch(
 const filterText = ref("");
 watch(filterText, val => {
   // console.log(val); // val是在输入框输入的内容
-  // console.log(treeRef.value);
+  // console.log(treeRef.value); // method
   treeRef.value!.filter(val);
 });
 
 // 过滤
 const filterNode = (value: string, data: { [key: string]: any }, node: any) => {
   if (!value) return true;
+  // console.log(value); // 输入框的内容
   let parentNode = node.parent,
     labels = [node.label],
     level = 1;
@@ -135,13 +136,13 @@ const emit = defineEmits<FilterEmits>();
 // 单选
 const handleNodeClick = (data: { [key: string]: any }) => {
   if (props.multiple) return;
+  // console.log("单选", data); // data: {id: '11', name: '研发部', $treeNodeId: 3}
   emit("change", data[props.id]);
 };
 
 // 多选
 const handleCheckChange = () => {
-  console.log(treeRef.value);
-  console.log(treeRef.value?.getCheckedKeys()); // 获取数组的值
+  console.log("多选", treeRef.value?.getCheckedKeys()); // 获取数组：['11', '12', '13', '3', '31', '32', '33', '34']
   emit("change", treeRef.value?.getCheckedKeys());
 };
 

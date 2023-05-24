@@ -2,6 +2,7 @@
 <template>
   <div class="main-box">
 
+    <!-- 多选 - 传入 multiple -->
     <TreeFilter
       title="部门列表(多选)"
       multiple
@@ -134,13 +135,14 @@ const selectFilterData = reactive([
 onMounted(() => getUserRoleDict());
 const getUserRoleDict = async () => {
   const { data } = await getUserRole();
+  // console.log(data); // (5) [{label: '全部', value: ''}, {label: '超级管理员', value: '1'}, {label: '公司CEO', value: '2'}, {…}, {…}]
   selectFilterData[1].options = data as any;
 };
-
+// TODO: 点击的树结构数据和单选框中数据合并成 :init-param="Object.assign(treeFilterValues, selectFilterValues)"
 // 默认 selectFilter 参数
 const selectFilterValues = ref({ userStatus: "2", userRole: ["1", "3"] });
 const changeSelectFilter = (value: typeof selectFilterValues.value) => {
-  ElMessage.success("请注意查看请求参数变化 🤔");
+  ElMessage.success(`请注意查看请求参数变化 🤔 + 用户状态：${value.userStatus} && 用户角色：[${value.userRole}]`);
   proTable.value.pageable.pageNum = 1;
   selectFilterValues.value = value;
 };
@@ -148,18 +150,16 @@ const changeSelectFilter = (value: typeof selectFilterValues.value) => {
 // 默认 treeFilter 参数
 const treeFilterValues = reactive({ departmentId: ["11"] });
 const changeTreeFilter = (val: string[]) => {
-  ElMessage.success("请注意查看请求参数变化 🤔");
+  ElMessage.success(`请注意查看请求参数变化 🤔 + [${val}]`);
   proTable.value.pageable.pageNum = 1;
   treeFilterValues.departmentId = val;
 };
 
-// 删除用户信息
 const deleteAccount = async (params: User.ResUserList) => {
   await useHandleData(deleteUser, { id: [params.id] }, `删除【${params.username}】用户`);
   proTable.value.getTableList();
 };
 
-// 重置用户密码
 const resetPass = async (params: User.ResUserList) => {
   await useHandleData(resetUserPassWord, { id: params.id }, `重置【${params.username}】用户密码`);
   proTable.value.getTableList();

@@ -109,6 +109,7 @@ const columns: ColumnProps<User.ResUserList>[] = [
 
 // 选择行
 const setCurrent = () => {
+  console.log(proTable.value);
   proTable.value.element.setCurrentRow(proTable.value.tableData[4]);
 };
 
@@ -150,19 +151,21 @@ const tableRowClassName = ({ rowIndex }: { row: User.ResUserList; rowIndex: numb
 
 // 单击行
 const rowClick = (row: User.ResUserList, column: TableColumnCtx<User.ResUserList>) => {
-  console.log(row);
+  // console.log(row); // {id: '128601164466776366', username: '吴勇', gender: 2, user: {…}, idCard: '128601164466776366', …}
   if (column.property == "operation") return;
-  ElMessage.success("当前行被点击了！");
+  ElMessage.success(`点击的当前行姓名为：${row.username}`);
 };
 
 // 删除用户信息
 const deleteAccount = async (params: User.ResUserList) => {
+  // console.log(params); // 删除一条：  {id: '635851143861600361', username: '钱秀兰', gender: 1, user: {…}, idCard: '635851143861600361', …}
   await useHandleData(deleteUser, { id: [params.id] }, `删除【${params.username}】用户`);
   proTable.value.getTableList();
 };
 
 // 批量删除用户信息
 const batchDelete = async (id: string[]) => {
+  // console.log(id); // 删除多个： ['687064619583270621', '044167273256255464', '763720575522284954']
   await useHandleData(deleteUser, { id }, "删除所选用户信息");
   proTable.value.clearSelection();
   proTable.value.getTableList();
@@ -170,6 +173,7 @@ const batchDelete = async (id: string[]) => {
 
 // 重置用户密码
 const resetPass = async (params: User.ResUserList) => {
+  // console.log(params); // 修改一条：  {id: '635851143861600361', username: '钱秀兰', gender: 1, user: {…}, idCard: '635851143861600361', …}
   await useHandleData(resetUserPassWord, { id: params.id }, `重置【${params.username}】用户密码`);
   proTable.value.getTableList();
 };
