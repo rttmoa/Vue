@@ -105,7 +105,7 @@ const remoteMethod = (query: string) => {
   setTimeout(() => {
     loading.value = false;
     filterGenderEnum.value.push(...genderType.filter(item => item.label.includes(query)));
-  }, 500);
+  }, 1500);
 };
 
 // 表格配置项

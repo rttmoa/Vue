@@ -175,15 +175,18 @@ const initDate = (): string[] => {
   let dateList = [];
   let startDate = new Date();
   let endDate = new Date();
-  endDate.setDate(startDate.getDate() + 30);
-  startDate.setDate(startDate.getDate() + 1);
+  endDate.setDate(startDate.getDate() + 30); //  1687661141195
+  startDate.setDate(startDate.getDate() + 1); // 1685155530994  相差30天
+  let num = 1;
   while (endDate.getTime() - startDate.getTime() >= 0) {
     let month =
       (startDate.getMonth() + 1).toString().length === 1 ? "0" + (startDate.getMonth() + 1).toString() : startDate.getMonth() + 1;
     let day = startDate.getDate().toString().length === 1 ? "0" + startDate.getDate() : startDate.getDate();
     dateList.push(month + "/" + day);
     startDate.setDate(startDate.getDate() + 1);
+    console.log(num++);
   }
+  // console.log(dateList); // (30) ['05/26', '05/27', '05/28', '05/29', '05/30', '05/31', '06/01', '06/02', '06/03', '06/04', '06/05', '06/06', '06/07', '06/08', '06/09', '06/10', '06/11', '06/12', '06/13', '06/14', '06/15', '06/16', '06/17', '06/18', '06/19', '06/20', '06/21', '06/22', '06/23', '06/24']
   return dateList;
 };
 defineExpose({

@@ -1,7 +1,7 @@
 <template>
   <!-- 实时访问 -->
   <div class="actual-total">
-    <div class="expect-total">可预约总量<i>999999</i>人</div>
+    <div class="expect-total">可预约总量<i>845135</i>人</div>
     <div class="actual-total">
       <div class="actual-item" v-for="(item, index) in actualTotal.split('')" :key="index">
         {{ item }}

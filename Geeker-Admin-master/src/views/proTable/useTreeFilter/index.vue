@@ -82,7 +82,7 @@ const initParam = reactive({ departmentId: "1" });
 const changeTreeFilter = (val: string) => {
   ElMessage.success(`请注意查看请求参数变化 🤔 + ${val}`);
   proTable.value.pageable.pageNum = 1;
-  initParam.departmentId = val; // TODO: 当initParams改变后，会watch initParam变化去发请求
+  initParam.departmentId = val; // TODO: 当initParam改变后，会watch initParam变化去发请求
 };
 
 const columns: ColumnProps<User.ResUserList>[] = [

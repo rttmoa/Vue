@@ -65,7 +65,7 @@ watch(
       if (item.multiple) selected.value[item.key] = props.defaultValues[item.key] ?? [""];
       else selected.value[item.key] = props.defaultValues[item.key] ?? "";
     });
-    // console.log(selected.value); // {state: '2', type: Array(2), test: ''}
+    // console.log(selected.value); // 将data,defaultData,selectRef合并： {state: '2', type: Array(2), test: ''}
   },
   { deep: true, immediate: true }
 );

@@ -1,7 +1,9 @@
+<!-- eslint-disable prettier/prettier -->
 <template>
   <div class="dataScreen-container">
     <div class="dataScreen" ref="dataScreenRef">
       <div class="dataScreen-header">
+        
         <div class="header-lf">
           <span class="header-screening" @click="router.push(HOME_URL)">首页</span>
         </div>
@@ -16,6 +18,7 @@
           <span class="header-time">当前时间：{{ time }}</span>
         </div>
       </div>
+
       <div class="dataScreen-main">
         <div class="dataScreen-lf">
           <div class="dataScreen-top">
@@ -49,6 +52,8 @@
             </div>
           </div>
         </div>
+
+        <!-- 中国地图 -->
         <div class="dataScreen-ct">
           <div class="dataScreen-map">
             <div class="dataScreen-map-title">景区实时客流量</div>
@@ -79,6 +84,7 @@
             </div>
           </div>
         </div>
+
         <div class="dataScreen-rg">
           <div class="dataScreen-top">
             <div class="dataScreen-main-title">
@@ -111,7 +117,9 @@
             </div>
           </div>
         </div>
+
       </div>
+      
     </div>
   </div>
 </template>
@@ -138,7 +146,8 @@ const dataScreenRef = ref<HTMLElement | null>(null);
 onMounted(() => {
   // 初始化时为外层盒子加上缩放属性，防止刷新界面时就已经缩放
   if (dataScreenRef.value) {
-    dataScreenRef.value.style.transform = `scale(${getScale()}) translate(-50%, -50%)`;
+    // console.log(`scale(${getScale()}) translate(-50%, -50%)`); // scale(0.7682291666666666) translate(-50%, -50%)
+    dataScreenRef.value.style.transform = `scale(${getScale()}) translate(-50%, -50%)`; // 缩放
     dataScreenRef.value.style.width = `1920px`;
     dataScreenRef.value.style.height = `1080px`;
   }
@@ -194,7 +203,7 @@ const OverNext30Ref = ref<ChartExpose>();
 const PlatformSourceRef = ref<ChartExpose>();
 const MapChartRef = ref<ChartExpose>();
 
-// 初始化 charts参数
+// 年龄比例(左三) charts参数
 let ageData = [
   {
     value: 200,
@@ -227,6 +236,7 @@ let ageData = [
     percentage: "20%"
   }
 ];
+// 热门景区排行(右一) 传递data数据
 let hotData = [
   {
     value: 79999,
@@ -259,6 +269,7 @@ let hotData = [
     maxValue: 100000
   }
 ];
+// 预约渠道数据统计(右三) 传递data数据
 let platFromData = [
   {
     value: 40,
@@ -281,6 +292,7 @@ let platFromData = [
     percentage: "30%"
   }
 ];
+// 年度游客量对比(右二) 传递data数据
 let annualData = [
   {
     label: new Date().getFullYear() - 2 + "年",
@@ -295,6 +307,7 @@ let annualData = [
     value: ["548", "259", "113", "90", "69", "512", "23", "49", "28", "420", "313", "156"]
   }
 ];
+// 中国地图(主) 传递data数据
 let mapData = [
   {
     fromName: "北京",
@@ -362,24 +375,28 @@ let mapData = [
   }
 ];
 
-// 初始化 echarts
+// TODO: 初始化 echarts
 const initCharts = (): void => {
-  dataScreen.chart1 = RealTimeAccessRef.value?.initChart(0.5) as ECharts;
-  dataScreen.chart2 = AgeRatioRef.value?.initChart(ageData) as ECharts;
+  dataScreen.chart1 = RealTimeAccessRef.value?.initChart(0.5) as ECharts; // 游客
+  dataScreen.chart2 = AgeRatioRef.value?.initChart(ageData) as ECharts; // 年龄比例
+  // 年度游客
   dataScreen.chart3 = AnnualUseRef.value?.initChart({
     data: annualData,
     unit: annualData.map(val => val.label),
     columns: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
     colors: ["#FFA600", "#007AFE", "#FF4B7A"]
   }) as ECharts;
+  // 热门景区
   dataScreen.chart4 = HotPlateRef.value?.initChart({
     data: hotData,
     colors: ["#1089E7", "#F57474", "#56D0E3", "#F8B448", "#8B78F6"]
   }) as ECharts;
+  // 男女比例
   dataScreen.chart5 = MaleFemaleRatioRef.value?.initChart({
     man: 0.6,
     woman: 0.4
   }) as ECharts;
+  // 未来30天
   dataScreen.chart6 = OverNext30Ref.value?.initChart({
     unit: ["访问量"],
     data: new Array(30).fill("").map(val => {
@@ -387,6 +404,7 @@ const initCharts = (): void => {
       return val;
     })
   }) as ECharts;
+  // 预约渠道数据统计
   dataScreen.chart7 = PlatformSourceRef.value?.initChart({
     data: platFromData,
     colors: ["#078dbc", "#6ad40b", "#6172fc", "#1786ff", "#ffbe2f", "#4dc89d", "#b797df", "#ffd3aa"]
@@ -404,9 +422,9 @@ timer = setInterval(() => {
 
 // 销毁时触发
 onBeforeUnmount(() => {
-  window.removeEventListener("resize", resize);
-  clearInterval(timer!);
-  Object.values(dataScreen).forEach(val => val?.dispose());
+  window.removeEventListener("resize", resize); //              1、关闭页面 销毁监听事件resize
+  clearInterval(timer!); //                                     2、关闭页面 销毁定时器timer
+  Object.values(dataScreen).forEach(val => val?.dispose()); //  3、关闭页面 销毁ref事件
 });
 </script>
 <style lang="scss" scoped>

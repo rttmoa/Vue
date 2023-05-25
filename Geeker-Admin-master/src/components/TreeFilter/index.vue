@@ -136,7 +136,7 @@ const emit = defineEmits<FilterEmits>();
 // 单选
 const handleNodeClick = (data: { [key: string]: any }) => {
   if (props.multiple) return;
-  // console.log("单选", data); // data: {id: '11', name: '研发部', $treeNodeId: 3}
+  console.log("单选", data); // data: {id: '11', name: '研发部', $treeNodeId: 3}
   emit("change", data[props.id]);
 };
 
