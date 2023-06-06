@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>姓名: 张三</title>
+    <!-- 基础组件库 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.7"></script>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <link rel="stylesheet" href="./swiper/dist/css/swiper.css" />
+    <script type="text/javascript" src="./swiper/dist/js/swiper.js"></script>
+    <script type="text/javascript" src="./vue-awesome-swiper/dist/vue-awesome-swiper.js"></script>
+    <script type="text/javascript">
+      Vue.use(window.VueAwesomeSwiper)
+    </script>
+    <!-- 基础样式库 -->
+    <link rel="stylesheet" href="./css/index.css">
+    <link rel="stylesheet" href="./css/header.css">
+    <link rel="stylesheet" href="./css/footer.css">
+    <link rel="stylesheet" href="./css/floor1.css">
+    <link rel="stylesheet" href="./css/solution.css">
+    <!-- 自定义样式 -->
+    <link rel="stylesheet" href="./custom.css">
+    <!-- 自定义js -->
+    <script src="./custom.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <header class="header-wrap">
+        <!-- <NavHeader :isTop="isTop"></NavHeader> -->
+        <div>
+          <div class="Header" :class="isTop?'':'isTop'">
+            <a :to="{path:'/'}">
+              <img class="logo" src="https://resource.teld.cn/teldimage/107/NewLogo.png">
+            </a>
+            <el-menu class="navHeader" :default-active="activeHeaderIndex" mode="horizontal" background-color="transparent"
+              text-color="#FFFFFF" active-text-color="#7AC9FF">
+              <template v-if="!isLogin && !isBlank">
+                <el-menu-item index="0" class="blank-box">
+                  <div></div>
+                </el-menu-item>
+              </template>
+              <el-menu-item index="1" :class="!!isLogin?'user-menu-login':'user-menu-no-login'">
+                <template v-if="!!isLogin && !isBlank">
+                  <div class="user-box">
+                    <div class="user-box-blank" @mouseenter="showDropDownMenu('1')" @mouseleave="handleDropDownMenu('1',$event)">
+                      <!-- <img class='user-img' :src="userInfo.Avatar" /> -->
+                      <div class='user-img' :style="{backgroundImage: `url(${userInfo.Avatar}`}"></div>
+                      <span class='user-name'>{{userInfo.Alias || userInfo.UserName|| userInfo.Mobile}}</span>
+                    </div>
+                  </div>
+                </template>
+                <template v-else-if="!isLogin && !isBlank">
+                  <div class="user-box-nologin" @click="Register" @mouseenter="showDropDownMenu('1')" @mouseleave="handleDropDownMenu('1',$event)">
+                    <span>注册/登录</span>
+                  </div>
+                </template>
+                <template v-else>
+                  <div class="user-box"></div>
+                </template>
+              </el-menu-item>
+              <el-menu-item index="2">
+                <div @mouseenter="showDropDownMenu('2')" @mouseleave="handleDropDownMenu('2')">
+                  <a :to="{path:'/www/downLoad'}">手机专区</a>
+                </div>
+              </el-menu-item>
+              <el-menu-item index="3">
+                <div @mouseenter="showDropDownMenu('3')" @mouseleave="handleDropDownMenu('3')">
+                  <span>关于特来电</span>
+                </div>
+              </el-menu-item>
+              <el-menu-item index="4">
+                <div @mouseenter="showDropDownMenu('4')" @mouseleave="handleDropDownMenu('4')">
+                  <span>生态合作</span>
+                </div>
+              </el-menu-item>
+              <el-menu-item index="5">
+                <div @mouseenter="showDropDownMenu('5')" @mouseleave="handleDropDownMenu('5')">
+                  <a target="_blank" :href="`${protocol}//${teldHost}${domain}/StationNetwork/ChargeNetwork`">充电网络</a>
+                </div>
+              </el-menu-item>
+              <el-menu-item index="6">
+                <div @mouseenter="showDropDownMenu('6')" @mouseleave="handleDropDownMenu('6')">
+                  <span>解决方案</span>
+                </div>
+              </el-menu-item>
+              <el-menu-item index="7">
+                <div @mouseenter="showDropDownMenu('7')" @mouseleave="handleDropDownMenu('7')">
+                  <span>产品</span>
+                </div>
+              </el-menu-item>
+            </el-menu>
+          </div>
+
+          <div class="user-menu-box" v-show=" !!isLogin && !!shouUserMenu" @mouseenter="showDropDownMenu('1')"
+            @mouseleave="closeDropDownMenu">
+            <div class='user-menu'>
+              <div class="triangle"></div>
+              <div class="user-menu-item">
+                <img class="user-menu-icon" src="https://resource.teld.cn/teldimage/107/usercenterIcon.png">
+                <a :href="`${protocol}//${teldHost}${domain}/PersonalCenter/PersonalCenter`" target="_blank" class="user-menu-text">个人中心</a>
+              </div>
+              <template v-if="userInfo.BusiCustID">
+                <div @click="goEnterpriseCentre" class="user-menu-item">
+                  <img class="user-menu-icon" src="https://resource.teld.cn/teldimage/107/EnterpriseCentreIcon.png">
+                  <span class="user-menu-text">企业中心</span>
+                </div>
+              </template>
+              <template v-if="hasBusMall">
+                <div class="user-menu-item">
+                  <img class="user-menu-icon" src="https://resource.teld.cn/teldimage/107/EnterpriseMallIcon.png">
+                  <a :href="`${protocol}//c2${domain}/newmall/exclusiveList`" target="_blank" class="user-menu-text">企业商城</a>
+                </div>
+              </template>
+              <div @click="showLogoutConfirm" class="user-menu-item">
+                <img class="user-menu-icon" src="https://resource.teld.cn/teldimage/107/logoutIcon.png">
+                <span class="user-menu-text">退出登录</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="drop-down" @mouseleave="closeDropDownMenu" :class="!!showProductMenu?'showMenu':'hideMenu'">
+            <el-menu class="drop-down-menu" :default-active="activeMenuIndex" background-color="transparent" text-color="#FFFFFF"
+              active-text-color="#7AC9FF">
+              <el-menu-item :index="String(index)" v-for="(menu,index) in Object.keys(publicMenu.productMenu)" :key="index"
+                v-show="publicMenu.productMenu[menu].some((attr)=>attr.address!='')">
+                <div class="drop-down-menu-item" @mouseenter.self="changeActiveMenuIndex(index)">
+                  <div class="show-circle" :class="activeMenuIndex==String(index)?'':'hide-circle'"></div>
+                  <span class="drop-down-menu-item-text">{{menu}}</span>
+                </div>
+              </el-menu-item>
+            </el-menu>
+            <div class="categories" v-for="(products, index) in Object.values(publicMenu.productMenu)" :key="index"
+              v-show="activeMenuIndex===String(index)">
+              <div class="categorie-menu" v-for="(product,productIndex) in products" :key="productIndex"
+                @mouseenter.self="changeProductDetailIndex(productIndex)" v-show="!!product.address">
+                <div class="show-circle" :class="ProductDetailIndex==String(productIndex)?'':'hide-circle'"></div>
+                <a :class="ProductDetailIndex==String(productIndex)?'active-menu':''" :to="{path:product.address,query:{id:product.id}}">{{ product.name }}</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="drop-down horizontalMenu" @mouseleave="closeDropDownMenu" :class="!!showSolutionMenu?'showMenu':'hideMenu'">
+            <el-menu class="drop-down-menu" mode="horizontal" :default-active="activeMenuIndex" background-color="transparent"
+              text-color="#FFFFFF" active-text-color="#7AC9FF">
+              <el-menu-item v-for="(solution,index) in publicMenu.solutionMenu" :key="index" :index="String(index)"
+                v-show="!!solution.isUsed">
+                <div class="drop-down-menu-item" @mouseenter.self="changeActiveMenuIndex(index)" @mouseleave.self="resetActiveMenuIndex">
+                  <div class="show-circle" :class="activeMenuIndex==String(index)?'':'hide-circle'"></div>
+                  <template v-if="!!solution.address">
+                    <a class="drop-down-menu-item-text" :class="activeMenuIndex==String(index)?'active-menu':''" :to="{path:solution.address,query:{id:solution.id}}">{{solution.name}}</a>
+                  </template>
+                </div>
+              </el-menu-item>
+            </el-menu>
+          </div>
+
+          <div class="drop-down horizontalMenu" @mouseleave="closeDropDownMenu" :class="!!showCooperationMenu?'showMenu':'hideMenu'">
+            <el-menu class="drop-down-menu" mode="horizontal" :default-active="activeMenuIndex" background-color="transparent"
+              text-color="#FFFFFF" active-text-color="#7AC9FF">
+              <el-menu-item v-for="(menu,index) in publicMenu.cooperationMenu" :key="index" :index="String(index)">
+                <div class="drop-down-menu-item" @mouseenter.self="changeActiveMenuIndex(index)" @mouseleave.self="resetActiveMenuIndex">
+                  <div class="show-circle" :class="activeMenuIndex==String(index)?'':'hide-circle'"></div>
+                  <template v-if="menu.addressType===1">
+                    <a target="_blank" class="drop-down-menu-item-text" :href="`${protocol}//${teldHost}${domain}${menu.address}`">{{menu.name}}</a>
+                  </template>
+                  <template v-else-if="menu.addressType===2">
+                    <a target="_blank" class="drop-down-menu-item-text" :href="`${protocol}//ion${domain}${menu.address}`">{{menu.name}}</a>
+                  </template>
+                </div>
+              </el-menu-item>
+            </el-menu>
+          </div>
+
+          <div class="drop-down horizontalMenu" @mouseleave="closeDropDownMenu" :class="!!showContactMenu?'showMenu':'hideMenu'">
+            <el-menu class="drop-down-menu" mode="horizontal" :default-active="activeMenuIndex" background-color="transparent"
+              text-color="#FFFFFF" active-text-color="#7AC9FF">
+              <el-menu-item v-for="(menu,index) in publicMenu.contactMenu" :key="index" :index="String(index)">
+                <div class="drop-down-menu-item" @mouseenter.self="changeActiveMenuIndex(index)" @mouseleave.self="resetActiveMenuIndex">
+                  <div class="show-circle" :class="activeMenuIndex==String(index)?'':'hide-circle'"></div>
+                  <template v-if="menu.type===1">
+                    <a target="_blank" class="drop-down-menu-item-text" :href=menu.address>{{menu.name}}</a>
+                  </template>
+                  <template v-else-if="menu.type===2">
+                    <a class="drop-down-menu-item-text" :to="{path:menu.address}">{{menu.name}}</a>
+                  </template>
+                </div>
+              </el-menu-item>
+            </el-menu>
+          </div>
+        </div>
+      </header>
+      <div>
+        <div>
+          <div class="swiper-slide slide1">
+            <div class="slide-wrap">
+              <!-- floor1 -->
+              <div class="floor-videos">
+                <!-- <div class="swiper-container-videos" v-swiper:mySwiper="swiperOption2"> -->
+                <swiper class="swiper-container-videos" :options="swiperOption1" ref="mySwiper">
+                  <!-- <div class="swiper-wrapper"> -->
+                    <div class="swiper-slide swiper-slide1">
+                      <div class="slide-wrap">
+                        <div class="video-wrap">
+                           <!-- v-if="isSwiperInited" -->
+                          <video id="oVideo1" ref="oVideo1" muted loop preload="auto" poster="https://resource.teld.cn/teldimage/107/teld-official-index-beta-04.jpg"
+                            @canplaythrough="canplaythrough1" @canplay="canplay1" @click="handlePlay1">
+                            <source src="https://resource.teld.cn/telddoc/107/teld-official-index-beta-04.mp4" type="video/mp4">
+                            您的浏览器不支持Video标签。
+                          </video>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="swiper-slide swiper-slide2">
+                      <div class="slide-wrap">
+                        <div class="video-wrap">
+                          <!-- v-if="isSwiperInited2" -->
+                          <video v-if="isSwiperInited2" ref="oVideo2" muted loop preload="auto" poster="https://resource.teld.cn/teldimage/107/teld-official-index-beta-05.jpg"
+                            @canplaythrough="canplaythrough2" @canplay="canplay2" @click="handlePlay2">
+                            <source src="https://resource.teld.cn/telddoc/107/teld-official-index-beta-05.mp4" type="video/mp4">
+                            您的浏览器不支持Video标签。
+                          </video>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="swiper-slide swiper-slide3">
+                      <div class="slide-wrap">
+                        <div class="video-wrap">
+                          <!-- v-if="isSwiperInited2" -->
+                          <video ref="oVideo3" muted loop preload="auto" poster="https://resource.teld.cn/teldimage/107/teld-official-index-beta-06.jpg"
+                            @canplaythrough="canplaythrough3" @canplay="canplay3" @click="handlePlay3">
+                            <source src="https://resource.teld.cn/telddoc/107/teld-official-index-beta-06.mp4" type="video/mp4">
+                            您的浏览器不支持Video标签。
+                          </video>
+                        </div>
+                      </div>
+                    </div>
+                  <!-- </div> -->
+                  <div class="swiper-pagination swiper-pagination2" slot="pagination"></div>
+              </div>
+              <ul class="info-block">
+                <li class="info-block-left">
+                  <h5 class="h5">我们已经</h5>
+                  <h2 class="h2">做到</h2>
+                </li>
+                <li class="info-block-split"></li>
+                <li class="info-block-right">
+                  <ol>
+                    <li class="one-info">
+                      <div class="middle">
+                        <div class="unit">
+                          <span class="">
+                            <template v-if="basicInfo.power.length >= 11">亿</template>
+                          </span>
+                          <span class="space">空</span>
+                          <span class="space margin-more">空</span>
+                          <span class="space">空</span>
+                          <span class="">
+                            <template v-if="basicInfo.power.length >= 6">万</template>
+                          </span>
+                          <span class="space margin-more">空</span>
+                          <span class="space">空</span>
+                          <span class="space">空</span>
+                          <span class="space">空</span>
+                        </div>
+                        <!-- 18,731,549,698 -->
+                        <span>
+                          {{ basicInfo.power || '&nbsp;' }}
+                        </span>
+                      </div>
+                      <div class="bottom">
+                        &nbsp;&nbsp;总充电量（度）
+                      </div>
+                    </li>
+                    <li class="one-info">
+                      <div class="middle">
+                        <div class="unit">
+                          <span class="">
+                            <template v-if="basicInfo.terminalNum.length >= 11">亿</template>
+                          </span>
+                          <span class="space">空</span>
+                          <span class="space margin-more">空</span>
+                          <span class="space">空</span>
+                          <span class="">
+                            <template v-if="basicInfo.terminalNum.length >= 6">万</template>
+                          </span>
+                          <span class="space margin-more">空</span>
+                          <span class="space">空</span>
+                          <span class="space">空</span>
+                          <span class="space">空</span>
+                        </div>
+                        <!-- 376,943 -->
+                        {{ basicInfo.terminalNum || '&nbsp;' }}
+                      </div>
+                      <div class="bottom">
+                        运营终端数
+                      </div>
+                    </li>
+                    <li class="one-info">
+                      <div class="middle">
+                        <div class="unit">
+                          <span class="space">空</span>
+                          <span class="space">空</span>
+                          <span class="space">空</span>
+                        </div>
+                        {{ basicInfo.cityNum || '&nbsp;'  }}
+                      </div>
+                      <div class="bottom">
+                        覆盖城市
+                      </div>
+                    </li>
+                    <li class="one-info">
+                      <div class="middle">
+                        <div class="unit">
+                          <span class="">
+                            <template v-if="basicInfo.carbonNum.length >= 11">亿</template>
+                          </span>
+                          <span class="space">空</span>
+                          <span class="space margin-more">空</span>
+                          <span class="space">空</span>
+                          <span class="">
+                            <template v-if="basicInfo.carbonNum.length >= 6">万</template>
+                          </span>
+                          <span class="space margin-more">空</span>
+                          <span class="space">空</span>
+                          <span class="space">空</span>
+                          <span class="space">空</span>
+                        </div>
+                        {{ basicInfo.carbonNum }}
+                      </div>
+                      <div class="bottom">
+                        &nbsp;&nbsp;碳减排（吨）
+                      </div>
+                    </li>
+                    <li class="one-info">
+                      <div class="middle">
+                        <div class="unit">
+                          <span class="">
+                            <template v-if="basicInfo.savingOilNum.length >= 11">亿</template>
+                          </span>
+                          <span class="space">空</span>
+                          <span class="space margin-more">空</span>
+                          <span class="space">空</span>
+                          <span class="">
+                            <template v-if="basicInfo.savingOilNum.length >= 6">万</template>
+                          </span>
+                          <span class="space margin-more">空</span>
+                          <span class="space">空</span>
+                          <span class="space">空</span>
+                          <span class="space">空</span>
+                        </div>
+                        {{ basicInfo.savingOilNum }}
+                      </div>
+                      <div class="bottom">
+                        &nbsp;&nbsp;节油量（升）
+                      </div>
+                    </li>
+                  </ol>
+                </li>
+                <li class="more-tips">
+                  来自特来电平台实时数据
+                </li>
+              </ul>
+            </div>
+
+            <div class="mask"></div>
+          </div>
+        </div>
+        <div class="swiper-slide slide2 slide-poster">
+          <div class="slide-wrap">
+            <div class="video-wrap">
+              <video id="oVideo" ref="oVideo" preload="metadata" poster="" x5-playsinline webkit-playsinline="true"
+                playsinline="true" @canplaythrough="canplaythrough" @canplay="canplay" @click="handlePlay">
+                <source src="https://resource.teld.cn/telddoc/107/teld-official-index-intr-4k.mp4" type="video/mp4">
+                您的浏览器不支持Video标签。
+              </video>
+            </div>
+            <!-- <img class="img-poster" src="https://resource.teld.cn/teldimage/107/teld-official-index-intr-01-mid.jpg" alt=""> -->
+            <div class="img-poster" src="https://resource.teld.cn/teldimage/107/teld-official-index-intr-01-mid.jpg">
+            </div>
+            <div class="mask mask-poster-pc"></div>
+            <div class="bg-info">
+              <h2 class="video-title">与未来 特来电</h2>
+              <h3 class="video-subtitle">实现新能源车充新能源电</h3>
+              <div class="video-button" @click="handleGo('/www/about')">关于特来电</div>
+            </div>
+            <div v-if="isShowIconPlay" class="icon-play-wrap" @click="handlePlay"></div>
+          </div>
+        </div>
+        <div class="swiper-slide slide3">
+          <div class="slide-wrap slide-wrap-floor3">
+            <!-- <Floor3></Floor3> -->
+
+            <div class="slide-wrap-floor3">
+              <h2 class="floor-title floor-title-1">
+                我们提供
+                <div class="slash"></div>
+              </h2>
+              <h2 class="floor-title floor-title-2">多场景解决方案</h2>
+            </div>
+
+            <div class="floor3-component-pc main-wrap">
+              <div class="main-wrap-middle" :style="{paddingRight}">
+                <div class="main-wrap-middle2">
+                  <swiper class="swiper-container-3" :options="swiperOption2">
+                    <!-- <div class="swiper-wrapper"> -->
+                    <div class="swiper-slide swiper-slide1" v-for="(item, index) of solutionList" :key="index">
+                      <div class="slide-wrap">
+                        <div class="top-img-wrap">
+                          <img class="top-img" :src="item.src" @click="handleClickGoProduct(item)">
+                        </div>
+                        <h2 class="item-title" @click="handleClickGoProduct(item)">{{ item.name }}</h2>
+                        <h4 class="item-desc" @click="handleClickGoProduct(item)">{{ item.desc }}</h4>
+                      </div>
+                    </div>
+                    <!-- </div> -->
+                    <div class="swiper-pagination swiper-pagination3"></div>
+                    <div class="swiper-button-group">
+                      <div class="swiper-button-prev"></div>
+                      <!--左箭头。如果放置在swiper外面，需要自定义样式。-->
+                      <div class="swiper-button-next"></div>
+                      <!--右箭头。如果放置在swiper外面，需要自定义样式。-->
+                    </div>
+                  </swiper>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="swiper-slide swiper-slide-last">
+          <div class="slide-wrap">
+            <div class="content">
+              <h2 class="h2">诚邀您 共赢新能源黄金赛道</h2>
+              <ul class="h5">
+                <li>
+                  覆盖城市
+                  <b class="num">{{ basicInfo.cityNum }}</b>
+                  座
+                </li>
+                <li>
+                  全资/合资城市公司
+                  <b class="num">{{ basicInfo.companyNum }}</b>
+                  家
+                </li>
+              </ul>
+              <div class="button" @click="handleGo('/www/contactus')">
+                联系我们
+                <span class="slash"></span>
+                点此咨询合作
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="swiper-slide swiper-slide-corp">
+          <div class="slide-wrap">
+            <div class="content">
+              <div class="content-left">
+                <h2 class="left-title">特来电新能源股份有限公司</h2>
+                <h4 class="left-para left-para1">
+                  特来电是中国创业板第一股特锐德(300001)控股子公司，股东包括国家产业调整基金、国新基金、国家电投、三峡基金等，是新基建产业独角兽TOP100企业。<br><br>2014年创立，率先进入电动汽车充电领域，构建了充电网-微电网-储能网-数据网“四网融合”的新能源和新交通双向交互的全新产业，并致力于成为中国最强最大充电网生态运营商。
+                </h4>
+                <h4></h4>
+                <h4 class="left-para left-para2">
+                  <span class="left-para-title">特来电的目标是：</span>
+                  <span>做政府放心、客户满意的中国最强最大充电网生态运营商。</span>
+                </h4>
+                <h4 class="left-para left-para3">
+                  <span class="left-para-title">特来电的使命是：</span>
+                  <span>实现新能源车充新能源电，让尾气和雾霾远离人类。</span>
+                </h4>
+                <ul class="button-line">
+                  <li @click="handleGo('/www/about')">
+                    公司简介
+                  </li>
+                  <li @click="handleGo('/www/dmHistory')">
+                    发展历程
+                  </li>
+                  <li @click="handleGo('/www/enCulture')">
+                    企业文化
+                  </li>
+                </ul>
+              </div>
+              <div class="content-right">
+                <div class="video-wrap-corp">
+                  <video ref="oVideoCorp" preload="metadata" controls poster="" x5-playsinline webkit-playsinline="true"
+                    playsinline="true">
+                    <source src="https://resource.teld.cn/telddoc/107/teld-official-index-intr-02.mp4" type="video/mp4">
+                    您的浏览器不支持Video标签。
+                  </video>
+                </div>
+                <img v-if="isShowIconPlayCorp" class="img-poster-corp" src="https://resource.teld.cn/teldimage/107/teld-official-index-intr-02-poster-mobile.jpg"
+                  alt="">
+                <div v-if="isShowIconPlayCorp" class="icon-play-wrap-corp" @click="handlePlayCorp"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="swiper-slide swiper-slide-foot">
+          <div class="slide-wrap">
+            <div class="footer-wrap">
+              <!-- <NavFooter @handlePlay="handlePlay" @handleService="handleService"></NavFooter> -->
+
+              <div class="Footer">
+                <div :class="{hideVideo:showVideo,showVideo:!showVideo}">
+                  <video style="width: 80%;" ref="oVideoCorp" preload="metadata" controls poster="" x5-playsinline
+                    webkit-playsinline="true" playsinline="true">
+                    <source src="https://resource.teld.cn/telddoc/107/teld-official-index-intr-4k.mp4" type="video/mp4">
+                    您的浏览器不支持Video标签。
+                  </video>
+                </div>
+                <div class="Footer-menu">
+                  <div class="social-medias">
+                    <img src="https://resource.teld.cn/teldimage/107/FooterLogo.png" />
+                    <div class="follow">关注我们</div>
+                    <div class="social-medias-icon">
+                      <a v-for="(img,index) in icons" :key="index" :href="img.link" target="_blank" @mouseenter="showWechat(index)"
+                        @mouseleave="hideWechat">
+                        <img class="icon" :src="img.src">
+                      </a>
+                      <img class="bottom-icon" v-show="!!showWechatImg" src="https://resource.teld.cn/teldimage/107/teld-official-index-qr-wechat.png">
+                    </div>
+                  </div>
+                  <div class="categories">
+                    <div class="categorie" v-for="(bottomMenu,index) in bottomMenus" :key="index">
+                      <div class="categorie-menu" v-for="(menu, menuIndex) in bottomMenu" :key="menuIndex">
+                        <template v-if="menu.linkType===1">
+                          <a :href="menu.link" target="_blank">{{ menu.name }}</a>
+                        </template>
+                        <template v-else-if="menu.linkType===2">
+                          <router-link :to="{path:menu.link}">{{ menu.name }}</router-link>
+                        </template>
+                        <template v-else-if="menu.linkType===4">
+                          <div @click="handlePlayCorp">形象视频</div>
+                        </template>
+                        <template v-else>
+                          <a @click.prevent="goCategorie(menu.linkType)">{{ menu.name }}</a>
+                        </template>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="link-msg">
+                  <div>
+                    <span>Copyright © 2015 - 2023 特来电新能源股份有限公司</span>
+                    <span class="split-line"> | </span>
+                    <a class="footer-msg" href="https://resource.teld.cn/telddoc/107/02b5aec5c0d445a791cc689589db7da0.html"
+                      target="_blank">营业执照</a>
+                    <span class="split-line"> | </span>
+                    <a class="footer-msg" href="http://beian.miit.gov.cn/" target="_blank">{{ Filing }}</a>
+                    <span class="split-line"> | </span>
+                    <a class="footer-msg" href="https://dxzhgl.miit.gov.cn/#/home" target="_blank">增值电信业务经营许可证：合字B2-20210028</a>
+                  </div>
+                  <div class="police">
+                    <img class="police-icon" src="https://resource.teld.cn/teldimage/107/police.png" />
+                    <a class="police-text footer-msg" target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=37021202000852">鲁公网安备
+                      37021202000852号</a>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="swiper-scrollbar"></div>
+    </div>
+    </div>
+
+    <script>
+      var app = new Vue({
+        el: '#app',
+        props: {
+          slidesPerView: {
+            type: Number || String,
+            default: 3
+          },
+          paddingRight: {
+            type: String,
+            default: '130px'
+          }
+        },
+        data() {
+          vm = this
+          return {
+            basicInfo: {
+              cityNum: 360,
+              power: 19527896304,
+              terminalNum: 376943,
+              carbonNum: 0,
+              savingOilNum: 0
+            },
+            // basic
+            isShowIconPlay: true,
+            isShowIconPlayCorp: true,
+            isTop: true,
+            swiperOption: {},
+            // header
+            isLogin: false,
+            isBlank: true,
+            domain: undefined,
+            protocol: '',
+            teldHost: '',
+            activeHeaderIndex: "",
+            activeMenuIndex: "",
+            productMenuIndex: "",
+            ProductDetailIndex: "",
+            showProductMenu: false,
+            showSolutionMenu: false,
+            showCooperationMenu: false,
+            showContactMenu: false,
+            shouUserMenu: false,
+            userInfo: {},
+            NewUserInfo: {},
+            hasBusMall: false,
+            centerDialogVisible: false,
+            // footer
+            showVideo: true,
+            domain: null,
+            showWechatImg: false,
+            obj: {
+              a: 1
+            },
+            array: [{
+                a: 1
+              },
+              {
+                b: 1
+              }
+            ],
+            icons: [{
+                src: 'https://resource.teld.cn/teldimage/107/WeChat.png'
+              },
+              {
+                src: 'https://resource.teld.cn/teldimage/107/MicroBlog.png',
+                link: 'https://weibo.com/u/7389485089'
+              },
+              {
+                src: 'https://resource.teld.cn/teldimage/107/TikTok.png',
+                link: 'https://v.douyin.com/Dwgt5Pa/'
+              },
+              {
+                src: 'https://resource.teld.cn/teldimage/107/RedBook.png',
+                link: 'https://www.xiaohongshu.com/user/profile/63ddc0f50000000026006560?xhsshare=CopyLink&appuid=63ddc0f50000000026006560&apptime=1681434929'
+              }
+            ],
+            bottomMenus: [
+              [{
+                  name: '关于特来电',
+                  link: ''
+                },
+                {
+                  name: '企业简介',
+                  link: '/www/about',
+                  linkType: 2
+                },
+                {
+                  name: '企业资讯',
+                  link: '/www/dynamicNew',
+                  linkType: 2
+                },
+                {
+                  name: '发展历程',
+                  link: '/www/dmHistory',
+                  linkType: 2
+                },
+                {
+                  name: '生态党建',
+                  link: '/www/ecological',
+                  linkType: 2
+                }
+              ],
+              [{
+                  name: '数字资料',
+                  link: ''
+                },
+                {
+                  name: '形象视频',
+                  link: '',
+                  linkType: 4
+                },
+                {
+                  name: '数字展厅',
+                  link: 'https://www.kuleiman.com/149787',
+                  linkType: 1
+                },
+                {
+                  name: '充电网络',
+                  link: 'https://www.teld.cn/StationNetwork/ChargeNetwork',
+                  linkType: 1
+                }
+              ],
+              [{
+                  name: '加入我们',
+                  link: ''
+                },
+                {
+                  name: '人才计划',
+                  link: 'https://teld.zhiye.com/',
+                  linkType: 1
+                },
+                {
+                  name: '校园招聘',
+                  link: 'https://teld.zhiye.com/campus',
+                  linkType: 1
+                },
+                {
+                  name: '社会招聘',
+                  link: 'https://teld.zhiye.com/social',
+                  linkType: 1
+                }
+              ],
+              [{
+                  name: '取得联系',
+                  link: ''
+                },
+                {
+                  name: '联系我们',
+                  link: '/www/contactus',
+                  linkType: 2
+                },
+                {
+                  name: '客服',
+                  link: '',
+                  linkType: 3
+                }
+              ],
+              [{
+                  name: '快速链接',
+                  link: ''
+                },
+                {
+                  name: '隐私政策',
+                  link: 'https://cv.teld.cn/module/Pictivity.html#/ActivityPage3?hiCode=yszcteld',
+                  linkType: 1
+                },
+                {
+                  name: '监察举报',
+                  link: 'https://cv.teld.cn/module/Pictivity.html#/ActivityPage3?hiCode=TeldSupervison',
+                  linkType: 1
+                }
+              ]
+            ],
+            // floor1
+            isSwiperInited: false,
+            isSwiperInited2: false,
+            swiperOption1: {
+              el: '.swiper-container-videos',
+              loop: false,
+              mousewheel: false,
+              allowTouchMove: true, // 是否允许触摸滑动
+              // autoHeight: true,
+              height: window.innerHeight,
+              // freeMode: true,
+              keyboard: true,
+              autoplay: {
+                delay: 10000, // 10秒切换一次
+                disableOnInteraction: false // 用户操作是否打断 自动播放 - true - 打断,false - 不打断
+              },
+              pagination: {
+                el: '.swiper-pagination',
+                clickable: true
+                // type: 'custom' // bullets 圆点（默认）, fraction 分式,  progressbar 进度条, custom 自定义
+              },
+              on: {
+                init: function(swiper) {
+                  // Swiper初始化了
+                  vm.isSwiperInited = true
+                }
+              }
+            },
+            // floor3
+
+            solutionList: [{
+                id: 'fcff2706-606c-43f3-8758-ccd2e8d8817e',
+                code: '004',
+                name: '光储充放检·新能源微网',
+                isUsed: true,
+                desc: '实现新能源车充新能源电，构建智慧低碳新型电力系统',
+                src: 'https://resource.teld.cn/teldimage/107/teld-official-index-solution-04.jpg',
+                address: '/www/solution'
+              },
+              {
+                id: 'a7100f88-680d-40af-a305-a815ac225174',
+                code: '001',
+                name: '公交充电网',
+                isUsed: true,
+                desc: '提供公交企业精细化充电解决方案，助力公共交通领域碳中和',
+                src: 'https://resource.teld.cn/teldimage/107/teld-official-index-solution-01.jpg',
+                address: '/www/solution',
+                solutionInfo: {
+                  item1: 'http://resource.teld.cc/teldimage/107/teld-official-solution-car-mobile-01.png',
+                  item2_div_01: '公交充电网',
+                  item2_div_02: 'http://resource.teld.cc/teldimage/107/teld-official-solution-car-mobile-02.png',
+                  item2_div_03: '特来电公交行业系统解决方案目前已在北京、上海、深圳、天津、重庆等260多个城市得到广泛应用，服务700多家公交公司，建设3080多座公交充电场站，其中由特来电投资建设为公交客户提供充电服务的场站有近800座，公交市场占有率行业第一，处于绝对领先地位。',
+                  item3: 'http://resource.teld.cc/teldimage/107/teld-official-solution-car-mobile-03.png',
+                  item4: 'http://resource.teld.cc/teldimage/107/teld-official-solution-car-mobile-06.png',
+                  item4_div1_01: 'http://resource.teld.cc/teldimage/107/teld-official-solution-car-mobile-07.png',
+                  item4_div1_02: '公交充电网解决方案',
+                  item5: 'http://resource.teld.cc/teldimage/107/teld-official-solution-car-mobile-04.png',
+                  item6: 'http://resource.teld.cc/teldimage/107/teld-official-solution-car-mobile-05.png'
+                }
+              },
+              {
+                id: '42e99067-87a9-4e33-9fcd-2c7c436388be',
+                code: '006',
+                name: '公共充电网',
+                isUsed: true,
+                desc: '为社会车辆提供高效、便捷、优质的充电服务体验',
+                src: 'https://resource.teld.cn/teldimage/107/teld-official-index-solution-06.jpg',
+                address: '/www/solution'
+              },
+              {
+                id: '9b985477-6918-4ce6-9db2-ccd3aa0c4259',
+                code: '009',
+                name: '企事业园区充电网',
+                isUsed: true,
+                desc: '为园区驻地场景提供充电解决方案',
+                src: 'https://resource.teld.cn/teldimage/107/teld-official-index-solution-09.jpg',
+                address: '/www/solution'
+              },
+            ],
+            swiperOption2: {
+              el: '.swiper-container-3',
+              slidesPerView: 3, // this.slidesPerView,
+              loop: false,
+              spaceBetween: 42,
+              navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+              }
+            }
+          }
+        },
+        computed: {
+          // header
+          publicMenu() {
+            return Object.freeze({
+              productMenu: {
+                "微网产品系列": [{
+                    name: "微网箱变",
+                    address: ""
+                  },
+                  {
+                    name: "梯次电池储能系统",
+                    address: ""
+                  },
+                  {
+                    name: "特微网产品",
+                    address: ""
+                  },
+                ],
+                "群充产品系列": [{
+                    name: "高低压一体化群充电箱变",
+                    address: ""
+                  },
+                  {
+                    name: "分体式群充电机",
+                    address: ""
+                  },
+                  {
+                    name: "液冷直流充电终端",
+                    address: "/www/productDetails",
+                    id: '0e556691-1271-4f92-b149-c072faa523fb',
+                    code: "005"
+                  },
+                ],
+                // "大功率产品系列": [
+                //   { name: "液冷直流充电终端", address: "/www/productDetails", id: '0e556691-1271-4f92-b149-c072faa523fb', code: "005" },
+                // ],
+                "小功率产品系列": [{
+                    name: "特惠充",
+                    address: "/www/productDetails",
+                    id: '4c72e1be-dd3e-4d98-96c9-b22fc7b87b8e',
+                    code: "006"
+                  },
+                  {
+                    name: "征程7kW智能交流充电桩",
+                    address: "/www/productDetails",
+                    id: 'd410d7a9-65e4-48f2-b7ba-087ebb963eb2',
+                    code: "003"
+                  },
+                ],
+                "自动充电产品系列": [{
+                    name: "智动柔性充电弓",
+                    address: "/www/productDetails",
+                    id: '3c7a7f43-7f34-4733-a738-897a65e160cc',
+                    code: "002"
+                  },
+                  {
+                    name: "智动柔性充电机器人",
+                    address: "/www/productDetails",
+                    id: 'f4b858c6-8a98-45d5-8269-8e78ca90d2d2',
+                    code: "001"
+                  },
+                  {
+                    name: "智动柔性充电机械手",
+                    address: ""
+                  },
+                ],
+                "单桩产品系列": [{
+                  name: "一体式直流充电机",
+                  address: "/www/productDetails",
+                  id: '8a7ac4f3-00ad-4994-931c-3b9ec2c87c16',
+                  code: "004"
+                }, ],
+                "海外产品系列": [{
+                  name: "一体式欧标直流充电桩(60/80/120/160kW)",
+                  address: ""
+                }, ],
+              },
+              solutionMenu: [{
+                  id: 'fcff2706-606c-43f3-8758-ccd2e8d8817e',
+                  code: '004',
+                  name: '光储充放检·新能源微网',
+                  isUsed: true,
+                  desc: '实现新能源车充新能源电，构建智慧低碳新型电力系统',
+                  src: 'https://resource.teld.cn/teldimage/107/teld-official-index-solution-04.jpg',
+                  address: '/www/solution'
+                },
+                {
+                  id: 'a7100f88-680d-40af-a305-a815ac225174',
+                  code: '001',
+                  name: '公交充电网',
+                  isUsed: true,
+                  desc: '提供公交企业精细化充电解决方案，助力公共交通领域碳中和',
+                  src: 'https://resource.teld.cn/teldimage/107/teld-official-index-solution-01.jpg',
+                  address: '/www/solution',
+                  solutionInfo: {
+                    item1: 'http://resource.teld.cc/teldimage/107/teld-official-solution-car-mobile-01.png',
+                    item2_div_01: '公交充电网',
+                    item2_div_02: 'http://resource.teld.cc/teldimage/107/teld-official-solution-car-mobile-02.png',
+                    item2_div_03: '特来电公交行业系统解决方案目前已在北京、上海、深圳、天津、重庆等260多个城市得到广泛应用，服务700多家公交公司，建设3080多座公交充电场站，其中由特来电投资建设为公交客户提供充电服务的场站有近800座，公交市场占有率行业第一，处于绝对领先地位。',
+                    item3: 'http://resource.teld.cc/teldimage/107/teld-official-solution-car-mobile-03.png',
+                    item4: 'http://resource.teld.cc/teldimage/107/teld-official-solution-car-mobile-06.png',
+                    item4_div1_01: 'http://resource.teld.cc/teldimage/107/teld-official-solution-car-mobile-07.png',
+                    item4_div1_02: '公交充电网解决方案',
+                    item5: 'http://resource.teld.cc/teldimage/107/teld-official-solution-car-mobile-04.png',
+                    item6: 'http://resource.teld.cc/teldimage/107/teld-official-solution-car-mobile-05.png'
+                  }
+                },
+                {
+                  id: '42e99067-87a9-4e33-9fcd-2c7c436388be',
+                  code: '006',
+                  name: '公共充电网',
+                  isUsed: true,
+                  desc: '为社会车辆提供高效、便捷、优质的充电服务体验',
+                  src: 'https://resource.teld.cn/teldimage/107/teld-official-index-solution-06.jpg',
+                  address: '/www/solution'
+                },
+                {
+                  id: '9b985477-6918-4ce6-9db2-ccd3aa0c4259',
+                  code: '009',
+                  name: '企事业园区充电网',
+                  isUsed: true,
+                  desc: '为园区驻地场景提供充电解决方案',
+                  src: 'https://resource.teld.cn/teldimage/107/teld-official-index-solution-09.jpg',
+                  address: '/www/solution'
+                },
+                {
+                  id: '931d1f99-01b0-4788-ab5c-ca148ae14baa',
+                  code: '008',
+                  name: '居民小区充电网',
+                  isUsed: true,
+                  desc: '“统建统营 有序充电”模式，有效解决小区充电难题',
+                  src: 'https://resource.teld.cn/teldimage/107/teld-official-index-solution-08.jpg',
+                  address: '/www/solution'
+                },
+                {
+                  id: '25d104d3-2131-4961-ac5b-5c5228b52a76',
+                  code: '007',
+                  name: '物流充电网',
+                  isUsed: true,
+                  desc: '搭建全国新能源物流车辆充电补能网',
+                  src: 'https://resource.teld.cn/teldimage/107/teld-official-index-solution-07.jpg',
+                  address: '/www/solution'
+                },
+
+                {
+                  id: 'ccac4e00-2fc0-4e43-8abe-271e51e58d9b',
+                  code: '005',
+                  name: '城市充电网',
+                  isUsed: true,
+                  desc: '为地方政府定制城市级充电网解决方案，赋能城市新基建，实现“双碳”战略目标',
+                  src: 'https://resource.teld.cn/teldimage/107/teld-official-index-solution-05.jpg',
+                  address: '/www/solution'
+                },
+                {
+                  id: 'b3422de6-2ad1-4218-b5e4-0c289b09431c',
+                  code: '003',
+                  name: '能源充电网',
+                  isUsed: true,
+                  desc: '智慧综合能源站，助力能源企业双碳转型',
+                  src: 'https://resource.teld.cn/teldimage/107/teld-official-index-solution-03.jpg',
+                  address: '/www/solution'
+                },
+                {
+                  id: '29cdaac5-e26c-42ae-b9f6-085337daaf16',
+                  code: '002',
+                  name: '民航充电网',
+                  isUsed: true,
+                  desc: '共建机场充电网，打赢蓝天保卫战',
+                  src: 'https://resource.teld.cn/teldimage/107/teld-official-index-solution-02.jpg',
+                  address: '/www/solution'
+                },
+
+                {
+                  id: '7ee761f2-158d-4925-9e7d-24f39ddf57f8',
+                  code: '010',
+                  name: '公路充电网',
+                  isUsed: true,
+                  desc: '支撑规模化电动汽车长途无忧',
+                  src: 'https://resource.teld.cn/teldimage/107/teld-official-index-solution-10.jpg',
+                  address: '/www/solution'
+                },
+                // + 港口充电网
+                {
+                  id: 'bac65eb0-9275-41dc-9211-e258952c4db4',
+                  code: '011',
+                  name: '港口充电网',
+                  isUsed: true,
+                  desc: '为港口提供智慧充电解决方案，助力港口安全绿色转型',
+                  src: 'https://resource.teld.cn/teldimage/107/teld-official-index-solution-11.jpg',
+                  address: '/www/solution'
+                },
+                // - { id: 'bac65eb0-9275-41dc-9211-e258952c4db4', code: '011', name: '国际业务充电网', isUsed: true, desc: '', src: 'https://resource.teld.cn/teldimage/107/teld-official-index-solution-11.jpg', address: '/www/solution' },
+                {
+                  id: 'c89fcf2f-929d-41aa-a5b9-e460742207bd',
+                  code: '012',
+                  name: '商用车/工程机械/专用车解决方案',
+                  isUsed: true,
+                  desc: '商用车/工程机械/专用车充电站、大功率充电、自动充电及光储充放检综合解决方案',
+                  src: 'https://resource.teld.cn/teldimage/107/teld-official-index-solution-12.jpg',
+                  address: '/www/solution'
+                },
+              ],
+              cooperationMenu: [{
+                  name: 'SaaS平台',
+                  address: "/TeldSaas/index.html",
+                  addressType: 1
+                },
+                {
+                  name: '互联互通平台',
+                  address: "/home",
+                  addressType: 2
+                },
+              ],
+              contactMenu: [{
+                  name: '企业简介',
+                  address: "/www/about",
+                  type: 2
+                },
+                {
+                  name: '企业文化',
+                  address: "/www/enCulture",
+                  type: 2
+                },
+                {
+                  name: '企业资讯',
+                  address: "/www/dynamicNew",
+                  type: 2
+                },
+                {
+                  name: '生态党建',
+                  address: "/www/ecological",
+                  type: 2
+                },
+                {
+                  name: '发展历程',
+                  address: "/www/dmHistory",
+                  type: 2
+                },
+                {
+                  name: '加入我们',
+                  address: "https://teld.zhiye.com/",
+                  type: 1
+                },
+              ],
+            })
+          },
+
+          // footer
+          Filing() {
+            if (this.domain == '.teld.cn') {
+              return '鲁ICP备14031144号-3'
+            } else if (this.domain == '.teld.cc') {
+              return '鲁ICP备14031144号-7'
+            } else if (this.domain == '.teld.co') {
+              return '鲁ICP备2021027143号-6'
+            } else if (this.domain == '.teld6.xyz') {
+              return '鲁ICP备2021027143号-3'
+            }
+          }
+
+        },
+
+        async mounted() {
+          // basic
+          window.addEventListener('resize', this.handlePauseVideo, false)
+          window.addEventListener('scroll', this.handleJudgeTop, false)
+          // header
+          this.isBlank = false
+          this.protocol = location.protocol
+          this.teldHost = 'www',
+            this.domain = '.teld.cc'
+          this.isLogin = false
+          window.onmouseout = (event) => {
+            if (event.toElement === null) {
+              this.initDropDownMenu()
+              this.shouUserMenu = false
+            }
+          }
+          // footer - all repeated
+        },
+        beforeDestroy() {
+          // basic
+          window.removeEventListener('resize', this.handlePauseVideo, false)
+          window.removeEventListener('scroll', this.handleJudgeTop, false)
+          // footer - all repeated
+        },
+        methods: {
+          // basic
+          handlePauseVideo() {
+            if (!this.checkFull()) {
+              if (this.$refs.oVideo) {
+                this.$refs.oVideo.pause()
+                this.isShowIconPlay = true
+              }
+              if (this.$refs.oVideoCorp) {
+                this.isShowIconPlayCorp = true
+              }
+            }
+          },
+          handleJudgeTop() {
+            this.isTop = document.documentElement.scrollTop === 0
+          },
+          handlePlay() {
+            this.isShowIconPlay = false
+            this.$refs.oVideo.currentTime = 0
+            // this.$refs.oVideo.requestFullscreen()
+            const eleVideo = this.$refs.oVideo
+            this.$refs.oVideo.style.position = 'fixed'
+            this.$refs.oVideo.style.top = 0
+            this.$refs.oVideo.style.width = '100%'
+            this.$refs.oVideo.style.height = '100%'
+            this.$refs.oVideo.style.objectFit = 'contain'
+            if (eleVideo.requestFullscreen) {
+              console.log('requestFullscreen')
+              eleVideo.requestFullscreen()
+              //兼容Firefox
+            } else if (eleVideo.mozRequestFullScreen) {
+              console.log('mozRequestFullScreen')
+              eleVideo.mozRequestFullScreen()
+              //兼容Chrome, Safari and Opera等
+            } else if (eleVideo.webkitRequestFullScreen) {
+              console.log('webkitRequestFullScreen')
+              eleVideo.webkitRequestFullScreen()
+
+              //兼容IE/Edge
+            } else if (eleVideo.msRequestFullscreen) {
+              console.log('msRequestFullscreen')
+              eleVideo.msRequestFullscreen()
+            }
+            setTimeout(() => {
+              // safari 需要延时
+              this.$refs.oVideo.play()
+            }, 500)
+          },
+          handlePlayCorp() {
+            this.isShowIconPlayCorp = !this.isShowIconPlayCorp
+            // this.$refs.oVideoCorp.requestFullscreen()
+            this.$refs.oVideoCorp.currentTime = 0
+            this.$refs.oVideoCorp.play()
+          },
+          canplaythrough() {},
+          canplay() {},
+          handleClickGoProduct() {
+            this.$router.push({
+              path: '/www/product'
+            })
+          },
+          handleService() {
+            this.$refs.asideBar.handleClickItem('service')
+          },
+          handleGo(path) {
+            this.$router.push(path)
+          },
+          // utils
+          checkFull() {
+            var isFull =
+              window.fullScreen !== undefined ?
+              window.fullScreen :
+              document.webkitIsFullScreen !== undefined ?
+              document.webkitIsFullScreen :
+              document.msFullscreenEnabled
+            return isFull
+          },
+          // header
+          // 登录/注册
+          Register() {},
+          // 退出登录弹窗
+          showLogoutConfirm() {},
+          // 跳转企业中心
+          goEnterpriseCentre() {},
+          // 企业商城
+          initShop(num) {
+            this.hasBusMall = Number(num) > 0
+            // this.hasBusMall = Number(num) >= 0
+            if (this.hasBusMall && this.userInfo.BusiCustID && this.$utils.cookie.readCookie('companyID') !=
+              this.userInfo
+              .BusiCustID) {
+              this.$utils.cookie.createCookie('companyID', this.userInfo.BusiCustID, 15 * 24 * 3600)
+            }
+          },
+          GetCountOfShopActivity() {},
+          // 获取菜单index
+          changeActiveMenuIndex(val) {
+            this.activeMenuIndex = String(val)
+            this.ProductDetailIndex = ''
+          },
+          // 充值菜单index
+          resetActiveMenuIndex() {
+            this.activeMenuIndex = ''
+          },
+          // 获取产品index
+          changeProductDetailIndex(val) {
+            this.ProductDetailIndex = String(val)
+          },
+          // 初始化下拉菜单
+          initDropDownMenu() {
+            this.showProductMenu = false
+            this.showCooperationMenu = false
+            this.showSolutionMenu = false
+            this.showContactMenu = false
+            this.shouUserMenu = false
+            this.activeHeaderIndex = ''
+            this.ProductDetailIndex = ''
+            this.activeMenuIndex = ''
+          },
+          // 切换Menu显示下拉菜单
+          showDropDownMenu(val) {
+            // console.log('显示下拉菜单Index', val)
+            this.initDropDownMenu()
+            let firstProductMenuIndex = Object.entries(this.publicMenu.productMenu).findIndex((list) => !!
+              list[1].some(
+                (val) => val.address !== ''))
+            // console.log(firstProductMenuIndex)
+            switch (val) {
+              case '7':
+                this.activeMenuIndex = String(firstProductMenuIndex)
+                this.showProductMenu = true
+                break
+              case '6':
+                this.showSolutionMenu = true
+                break
+              case '4':
+                this.showCooperationMenu = true
+                break
+              case '3':
+                this.showContactMenu = true
+                break
+              case '1':
+                this.shouUserMenu = true
+                break
+              default:
+                this.activeHeaderIndex = ''
+                break
+            }
+            this.activeHeaderIndex = val
+          },
+          // 重置菜单
+          closeDropDownMenu(e) {
+            if (e.pageY <= 60) {
+              return
+            }
+            this.initDropDownMenu()
+          },
+          // 重置HeaderIndex和MenuIndex
+          handleDropDownMenu(index, e) {
+            if (index === '1' || index === '2' || index === '5') {
+              this.activeHeaderIndex = ''
+            } else if (index === '1' && e.pageY >= 60 && !!this.isTop) {
+              return
+            } else if (index === '1' && !this.isTop) {
+              this.shouUserMenu = false
+            }
+            this.shouUserMenu = false
+          },
+          // footer
+          handlePlayCorpFooter() {
+            setTimeout(() => {
+              this.showVideo = !this.showVideo
+              this.$refs.oVideoCorp.currentTime = 0
+              this.$refs.oVideoCorp.play()
+            })
+            const eleVideo = this.$refs.oVideoCorp
+            if (eleVideo.requestFullscreen) {
+              console.log('requestFullscreen')
+              eleVideo.requestFullscreen()
+              //兼容Firefox
+            } else if (eleVideo.mozRequestFullScreen) {
+              console.log('mozRequestFullScreen')
+              eleVideo.mozRequestFullScreen()
+              //兼容Chrome, Safari and Opera等
+            } else if (eleVideo.webkitRequestFullScreen) {
+              console.log('webkitRequestFullScreen')
+              eleVideo.webkitRequestFullScreen()
+
+              //兼容IE/Edge
+            } else if (eleVideo.msRequestFullscreen) {
+              console.log('msRequestFullscreen')
+              eleVideo.msRequestFullscreen()
+            }
+            setTimeout(() => {
+              // safari 需要延时
+              this.$refs.oVideoCorp.play()
+            }, 500)
+          },
+
+          handlePauseVideo() {
+            if (!this.checkFull()) {
+              if (this.$refs.oVideo) {
+                this.$refs.oVideo.pause()
+                this.isShowIconPlay = true
+              }
+              if (this.$refs.oVideoCorp) {
+                // this.$refs.oVideoCorp.pause()
+                this.showVideo = true
+                this.$refs.oVideoCorp.pause()
+              }
+            }
+          },
+          checkFull() {
+            var isFull =
+              window.fullScreen !== undefined ?
+              window.fullScreen :
+              document.webkitIsFullScreen !== undefined ?
+              document.webkitIsFullScreen :
+              document.msFullscreenEnabled
+            return isFull
+          },
+          goCategorie(linkType) {
+            switch (linkType) {
+              case 3:
+                let w = document.documentElement.offsetWidth || document.body.offsetWidth
+                w = (w - 375) / 2
+                window.open(
+                  'https://webchat.7moor.com/wapchat.html?accessId=7466d670-59da-11e9-aed0-8bd8dc83ec8d&fromUrl=' +
+                  encodeURIComponent(window.location.href) +
+                  '&urlTitle=dfd',
+                  'title',
+                  'width=400,height=750,top=160,left=' +
+                  w +
+                  ',menubar=0,scrollbars=1,resizable=1,status=1,titlebar=0,toolbar=0,location=1'
+                )
+                break
+            }
+          },
+          showWechat(index) {
+            if (index === 0) this.showWechatImg = true
+          },
+          hideWechat() {
+            this.showWechatImg = false
+          },
+          // floor1
+          handlePlay1() {
+            this.$refs.oVideo1.play()
+          },
+          handlePlay2() {
+            this.$refs.oVideo2.play()
+          },
+          handlePlay3() {
+            this.$refs.oVideo3.play()
+          },
+          canplaythrough1() {
+            this.handlePlay1()
+            this.isSwiperInited2 = true
+          },
+          canplaythrough2() {
+            this.handlePlay2()
+          },
+          canplaythrough3() {
+            this.handlePlay3()
+          },
+          canplay1() {},
+          canplay2() {},
+          canplay3() {},
+          // floor3
+          handleClickGoProduct(item) {}
+        }
+      })
+    </script>
+  </body>
+</html>

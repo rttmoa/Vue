@@ -1,0 +1,335 @@
+body {
+    margin: 0;
+}
+.video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.slide-poster {
+    position: relative;
+}
+.swiper-slide {
+    overflow: hidden;
+    height: 100vh;
+}
+.swiper-slide .slide-wrap {
+    position: relative;
+    height: 100%;
+    background-size: cover;
+}
+.swiper-slide .mask {
+    pointer-events: none;
+    z-index: 1;
+    position: absolute;
+    background: rgba(30, 30, 30, 0.2);
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+.swiper-slide .video-wrap {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+.swiper-slide .video-wrap video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.swiper-slide .img-poster {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+.swiper-slide div.img-poster {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center center;
+    background-image: url("https://resource.teld.cn/teldimage/107/teld-official-index-intr-01-mid.jpg");
+}
+.swiper-slide .mask-poster-pc {
+    background: rgba(40, 40, 40, 0.35);
+}
+.swiper-slide .bg-info {
+    pointer-events: none;
+    z-index: 2;
+    position: absolute;
+    display: flex;
+    left: 50%;
+    top: 13.796%;
+    transform: translate(-50%, 0);
+    flex-direction: column;
+}
+.swiper-slide .bg-info .video-title {
+    line-height: 32px;
+    margin-bottom: 16px;
+    color: #fff;
+    font-size: 32px;
+    font-weight: normal;
+    text-align: center;
+}
+.swiper-slide .bg-info .video-subtitle {
+    line-height: 22px;
+    margin-top: 0;
+    margin-bottom: 32px;
+    color: #fff;
+    font-size: 22px;
+    font-weight: normal;
+    text-align: center;
+}
+.swiper-slide .bg-info .video-button {
+    pointer-events: auto;
+    align-self: center;
+    display: inline-block;
+    padding: 11px 32px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.2);
+    margin-bottom: 97px;
+    color: #fff;
+    font-size: 16px;
+    text-align: center;
+    cursor: pointer;
+}
+.swiper-slide .bg-info .video-button:hover {
+    background: rgba(255, 255, 255, 0.25);
+}
+.swiper-slide .icon-play-wrap {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 64px;
+    height: 64px;
+    border-radius: 64px;
+    background-color: rgba(7, 19, 27, 0.47);
+    background-image: url("https://resource.teld.cn/teldimage/107/teld-official-index-icon-play.png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    margin: 0 auto;
+}
+.slide3 {
+    min-height: 900px;
+    max-height: 1300px;
+}
+.slide3 .slide-wrap {
+    background-color: #fff;
+}
+.slide-wrap-floor3 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.swiper-slide-last {
+    position: relative;
+}
+.swiper-slide-last .slide-wrap {
+    position: absolute;
+    display: flex;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    justify-content: center;
+    align-items: center;
+    background-size: cover;
+    background-position: center;
+    background-image: url("https://resource.teld.cn/teldimage/107/teld-official-index-footer-bg.jpg");
+}
+.swiper-slide-last .content {
+    margin-top: -12%;
+}
+.swiper-slide-last .h2 {
+    margin-bottom: 34px;
+    line-height: 45px;
+    font-size: 45px;
+    color: #fff;
+    font-weight: bold;
+    text-align: center;
+}
+.swiper-slide-last .h5 {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 42px;
+}
+.swiper-slide-last .h5 > li {
+    margin: 0 20px;
+    font-size: 24px;
+    color: #2b4f64;
+}
+.swiper-slide-last .h5 > li b.num {
+    font-size: 30px;
+}
+.swiper-slide-last .button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    width: 323px;
+    height: 54px;
+    border-radius: 27px;
+    background-color: #0086c4;
+    font-size: 22px;
+    color: #fff;
+    cursor: pointer;
+}
+.swiper-slide-last .button .slash {
+    width: 2px;
+    height: 18px;
+    background: #fff;
+    margin: 0 0.7em;
+}
+.swiper-slide-corp {
+    position: relative;
+    height: auto;
+}
+.swiper-slide-corp ul, .swiper-slide-corp li, .swiper-slide-corp ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.swiper-slide-corp img.bg-img {
+    width: 100%;
+}
+.swiper-slide-corp div.bg-img {
+    background-size: 100%;
+}
+.swiper-slide-corp .slide-wrap .content {
+    background-image: url("https://resource.teld.cn/teldimage/107/teld-official-index-corp-bg-pc.jpg");
+    background-size: 100% 100%;
+}
+.swiper-slide-corp .content {
+    display: flex;
+    justify-content: space-between;
+    border: pink;
+    padding: 69px 196px 135px;
+}
+.swiper-slide-corp .content .content-left {
+    flex-shrink: 1;
+    width: 812px;
+    margin-right: 40px;
+}
+.swiper-slide-corp .content .content-left .left-title {
+    margin-bottom: 28px;
+    line-height: 26px;
+    font-size: 26px;
+    color: #fff;
+    font-weight: bold;
+}
+.swiper-slide-corp .content .content-left .left-para {
+    line-height: 28px;
+    width: 100%;
+    font-size: 16px;
+    font-weight: normal;
+}
+.swiper-slide-corp .content .content-left .left-para1 {
+    color: #8DAAC3;
+    text-align: justify;
+}
+.swiper-slide-corp .content .content-left .left-para2 {
+    margin: 0 !important;
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 33px;
+    color: #C8E6FF;
+    text-align: justify;
+}
+.swiper-slide-corp .content .content-left .left-para3 {
+    margin: 0 0 20px 0 !important;
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 33px;
+    color: #C8E6FF;
+    text-align: justify;
+}
+.swiper-slide-corp .content .content-left .left-para-title {
+    white-space: nowrap;
+}
+.swiper-slide-corp .content .content-left .button-line {
+    display: flex;
+}
+.swiper-slide-corp .content .content-left .button-line li {
+    padding: 7px 20px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    margin-right: 35px;
+    font-size: 16px;
+    line-height: 16px;
+    color: #fff;
+    text-align: center;
+    cursor: pointer;
+}
+.swiper-slide-corp .content .content-left .button-line li:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+.swiper-slide-corp .content .content-right {
+    flex-shrink: 0;
+    position: relative;
+    width: 444.444px;
+    height: 250px;
+    align-self: center;
+}
+.swiper-slide-corp .content .content-right .video-wrap-corp {
+    width: 100%;
+    height: 100%;
+}
+.swiper-slide-corp .content .content-right .img-poster-corp {
+    position: absolute;
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+.swiper-slide-corp .content .content-right video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.swiper-slide-corp .content .content-right .icon-play-wrap-corp {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50px;
+    background-image: url(https://resource.teld.cn/teldimage/107/teld-official-index-icon-play.png);
+    background-size: 100% 100%;
+    cursor: pointer;
+}
+@media (max-width: 1300px) {
+    .swiper-slide-corp .content {
+        padding: 69px 20px 135px;
+    }
+}
+.swiper-slide-foot {
+    height: 100px;
+    overflow: visible;
+    height: auto !important;
+    margin-top: -70px;
+}
+.swiper-slide-foot .footer-wrap {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+.aside {
+    z-index: 1;
+    position: fixed;
+    right: 50px;
+    bottom: 45px;
+}

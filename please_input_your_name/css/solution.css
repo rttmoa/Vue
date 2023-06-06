@@ -1,0 +1,143 @@
+.floor-title {
+  position: relative;
+  padding-left: 23px;
+  margin: 0;
+  margin-left: 112px;
+  line-height: 32px;
+  font-size: 36px;
+  color: #141719;
+  font-weight: bold;
+}
+
+.floor-title .slash {
+  position: absolute;
+  top: 2px;
+  left: 0;
+  width: 8px;
+  height: 28px;
+  background: #00a0e9;
+}
+
+.floor-title-1 {
+  margin-bottom: 20px;
+}
+
+.floor-title-2 {
+  margin-bottom: 25px;
+}
+
+/* part2 */
+ul, ol, li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.main-wrap {
+    box-sizing: border-box;
+    width: 100%;
+    padding-left: 112px;
+    margin: 0 auto;
+}
+.main-wrap .main-wrap-middle {
+    overflow: hidden;
+    padding: 15px 0;
+}
+.slide-wrap-floor3 .swiper-slide {
+    max-width: 600px;
+    height: auto;
+    margin-right: 42px;
+}
+.slide-wrap-floor3 .slide-wrap {
+    height: 100%;
+    background-size: cover;
+    background: #fff;
+    box-shadow: 0px 0px 19.32px 0px #e9f0f3;
+    border-radius: 26px;
+    overflow: hidden;
+}
+.top-img-wrap {
+    overflow: hidden;
+    margin-bottom: 26px;
+}
+.top-img {
+    overflow: hidden;
+    display: block;
+    transition: all 500ms;
+    width: 100%;
+    cursor: pointer;
+}
+.top-img:hover {
+    transform: scale(1.1);
+}
+.item-title, .item-desc {
+    margin-left: 20px;
+    margin-right: 20px;
+    cursor: pointer;
+}
+.item-title {
+    margin-bottom: 1px;
+    line-height: 30px;
+    font-size: 26px;
+    color: #202426;
+    font-weight: bold;
+    white-space: wrap;
+}
+.item-desc {
+    margin-bottom: 24px;
+    line-height: 24px;
+    font-size: 16px;
+    color: #121212;
+}
+
+/* part3 */
+.main-wrap {
+    position: relative;
+}
+.floor3-component-pc .swiper-pagination-bullets, .floor3-component-pc .swiper-pagination3 {
+    display: flex;
+    justify-content: center;
+    left: 112px;
+    bottom: -50px;
+    width: 90%;
+}
+.floor3-component-pc .swiper-pagination-bullet-active, .floor3-component-pc .swiper-pagination-bullet {
+    box-sizing: content-box;
+    display: block;
+    width: 80px;
+    height: 5px;
+    border-radius: 3px;
+    background-color: #d1d1d1;
+    background-clip: content-box;
+    margin: 0 4px;
+    border-width: 15px 0;
+    border-style: solid;
+    border-color: transparent;
+    cursor: pointer;
+}
+.floor3-component-pc .swiper-pagination-bullet-active {
+    background-color: #aaaaaa;
+}
+.floor3-component-pc .swiper-button-group {
+    position: absolute;
+    top: -9%;
+    right: 8%;
+    display: flex;
+}
+.floor3-component-pc .swiper-button-group .swiper-button-prev, .floor3-component-pc .swiper-button-group .swiper-button-next {
+    position: relative;
+    left: initial;
+    right: initial;
+    width: 40px;
+    height: 40px;
+    background-size: 100% 100%;
+}
+.floor3-component-pc .swiper-button-group .swiper-button-prev {
+    margin-right: 25px;
+}
+.floor3-component-pc .swiper-button-group .swiper-button-prev {
+    background-image: url("https://resource.teld.cn/teldimage/107/teld-official-index-swiper-icon-left.png");
+}
+.floor3-component-pc .swiper-button-group .swiper-button-next {
+    background-image: url("https://resource.teld.cn/teldimage/107/teld-official-index-swiper-icon-right.png");
+}
+

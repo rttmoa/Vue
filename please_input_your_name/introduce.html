@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>姓名: </title>
+	</head>
+	<body>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14"></script>
+    <div id="app">
+        <div>
+          <img src="http://resource.teld.cc/teldimage/107/9C10F41C-FA6C-4d65-BEBB-F585C54EE598.png" alt="">
+          <p>第1屏: 由三个轮流播放的动画(包括指示器)和在其上的特来电充电数据组件组成</p>
+          <p>Tips: 动画,指示器和数据组组件能在各端正常展示, 动画切换间隔7s, 指示器状态跟随变化</p>
+        </div>
+        <div>
+          <img src="http://resource.teld.cc/teldimage/107/C2428842-F03C-4d66-AE8C-3A401033E086.png" alt="">
+          <p>第2屏: 由背景图和浮在上方的文案组件组成</p>
+          <p>Tips: 1.背景图不变形, 文案组件在各端正常展示; 2.点击播放按钮全屏播放视频, 切换前后保证页面正常展示</p>
+        </div>
+        <div>
+          <img src="http://resource.teld.cc/teldimage/107/7594358E-FB10-4e51-81C0-9E98A06BC034.png" alt="">
+          <p>第3屏: 主要由标题和解决方案轮播组件组成</p>
+          <p>Tips: 1.轮播组件在各端正常展示, 一行的展示数量可变, 2.保证解决方案的图片不变形, 每一组轮播组件的大小保持一致</p>
+        </div>
+        <div>
+          <img src="http://resource.teld.cc/teldimage/107/D2B7A21B-6227-421b-AFC1-FDE0E18FF00B.png" alt="">
+          <p>第4屏: 由背景图和浮在上方的文案组件组成</p>
+          <p>Tips: 背景图不变形, 文案组件在各端正常展示</p>
+        </div>
+        <div>
+          <img src="http://resource.teld.cc/teldimage/107/29379544-CEEB-40f3-B27E-C4C5D9A91932.png" alt="">
+          <p>第5屏: 左右结构, 由左侧的文字组件和右侧的视频组件组成</p>
+          <p>Tips: 1.左侧文字宽度自适应, 右侧视频比例保持固定 2.点击视频全屏播放, 切换前后页面布局保持正常</p>
+        </div>
+        <header>
+          <img src="http://resource.teld.cc/teldimage/107/765D99A7-3A27-4d7d-9836-36367F0AC69F.png" alt="">
+          <p>header 由三部分功能组成, 从左到右依次为, 特来电logo、菜单、登录信息</p>
+          <p>Tips: 各端保证内容的完整展示</p>
+        </header>
+        <footer>
+          <img src="http://resource.teld.cc/teldimage/107/FC5D82F2-B115-4832-93F8-AC290EFA9F8E.png" alt="">
+          <p>footer和aside 效果图如上</p>
+          <p>Tips: 1.各端保证内容的完整展示; 2.aside -- 固定在屏幕右下方, 点击"Top"返回顶部, 移动端不展示</p>
+        </footer>
+        <div>
+          <h5>移动端竖屏参考效果图</h5>
+        </div>
+        <ol class="mobile-imgs">
+          <li>
+            <img src="http://resource.teld.cc/teldimage/107/273987af08ed4c8a440258e562b30d75.png" alt="">
+          </li>
+          <li>
+            <img src="http://resource.teld.cc/teldimage/107/6bbafc1d7260fd8e1eb771a04a544efc.png" alt="">
+          </li>
+          <li>
+            <img src="http://resource.teld.cc/teldimage/107/bf1842e21a0e532324397eb32ba7a295.png" alt="">
+          </li>
+          <li>
+            <img src="http://resource.teld.cc/teldimage/107/ff28583036819f7bf60000d0135750f2.png" alt="">
+          </li>
+          <li>
+            <img src="http://resource.teld.cc/teldimage/107/51bd95859a0549c027f86e68c6c4bf03.png" alt="">
+          </li>
+          <li>
+            <img src="http://resource.teld.cc/teldimage/107/9c00d404dbb3b6e2d247cae0f56ebfa5.png" alt="">
+          </li>
+        </ol>
+        <dl>
+          <dt>
+            <h5>参考资料:</h5>
+          </dt>
+          <dd>
+            <h5>常用素材地址链接已上传资源服务器, 见项目根目录下README.md</h5>
+          </dd>
+          <dd>
+            <h5>本次响应式开发以摹客设计图为参考基准, 并可按需下载素材 -- https://cc.mockplus.cn/app/gt4LIq8U9Vn/design --</h5>
+          </dd>
+          <dd>
+            <h5>移动端竖屏参考效果图见文末 - 摹客设计图地址同上</h5>
+          </dd>
+          <dd>
+            <h5>官网地址 https://www.teld.cn</h5>
+          </dd>
+          <dd>
+            <h5>参赛选手的自定义样式和自定义js应分别书写于根目录的custom.css和custom.js中</h5>
+          </dd>
+        </dl>
+    </div>
+    
+    <script>
+      var app = new Vue({
+        el: '#app',
+        data: {
+          message: 'Hello Vue!'
+        }
+      })
+    </script>
+    
+    <style>
+      .mobile-imgs, .mobile-imgs > li {
+          list-style: none;
+      }
+      .mobile-imgs {
+        display: flex;
+        width: 90%;
+      }
+      .mobile-imgs > li:not(:last-child) {
+        padding-right: 10px;
+      }
+      img {
+        width: 100%;
+      }
+    </style>
+	</body>
+</html>

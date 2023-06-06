@@ -1,0 +1,128 @@
+.hideVideo {
+  display: none;
+}
+
+.showVideo {
+  display: block;
+}
+
+.Footer {
+  background-image: url('https://resource.teld.cn/teldimage/107/FooterBackground.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  padding-bottom: 20px;
+}
+
+.Footer-menu {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 100px;
+  width: 80%;
+  margin: 0 auto;
+}
+
+.social-medias {
+  padding-top: 20px;
+  width: 30%;
+}
+
+.social-medias-icon {
+  position: relative;
+}
+
+.follow {
+  margin: 20px 0 14px 0;
+  color: white;
+  font-weight: 900;
+  font-size: 18px;
+  user-select: none;
+}
+
+.icon {
+  margin: 5px;
+  opacity: 0.7;
+  cursor: pointer;
+}
+
+.icon:hover {
+  opacity: 1;
+}
+
+.bottom-icon {
+  position: absolute;
+  top: 40px;
+  left: -35px;
+  height: 100px;
+}
+
+.Footer .categories {
+  display: flex;
+  justify-content: space-around;
+  width: 80%;
+  max-width: 700px;
+}
+
+.categorie {
+  color: white;
+  margin-top: 30px;
+  user-select: none;
+}
+
+.categorie-menu {
+  margin-top: 15px;
+  opacity: 0.6;
+}
+
+.categorie-menu:hover {
+  opacity: 1;
+  cursor: pointer;
+}
+
+.categorie-menu:nth-child(1) {
+  font-weight: 900;
+  font-size: 15px;
+  opacity: 1;
+}
+
+.categorie-menu:nth-child(1):hover {
+  cursor: auto;
+}
+
+.categorie a {
+  color: white;
+}
+
+
+
+.link-msg {
+  padding: 20px 0;
+  margin-top: 38px;
+  text-align: center;
+  user-select: none;
+}
+
+.footer-msg:hover {
+  color: #5183a2;
+}
+
+.link-msg span,
+.link-msg a {
+  color: #3b505d;
+}
+
+.split-line {
+  margin: 0 8px;
+}
+
+.police {
+  margin-top: 20px;
+}
+
+.police-icon {
+  vertical-align: middle;
+}
+
+.police-text {
+  vertical-align: middle;
+  margin: 0px 0px 0px 5px;
+}
