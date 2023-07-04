@@ -1,0 +1,1 @@
+cmd /k "cd /d   E:\Project\Vue\erabbit-client-pc   && npm start" 
