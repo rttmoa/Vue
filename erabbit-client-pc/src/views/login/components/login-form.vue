@@ -1,16 +1,25 @@
+<!-- /** FIXME:  TODO: 封装的Form表单: 账号密码登陆，短信登陆，登陆注册，QQ登陆 */ -->
 <template>
   <div class="account-box">
+
     <div class="toggle">
       <a @click="isMsgLogin=false" href="javascript:;" v-if="isMsgLogin">
-        <i class="iconfont icon-user"></i> 使用账号登录
+        <i class="iconfont icon-user"></i>
+        使用账号登录
       </a>
       <a @click="isMsgLogin=true" href="javascript:;" v-else>
-        <i class="iconfont icon-msg"></i> 使用短信登录
+        <i class="iconfont icon-msg"></i>
+        使用短信登录
       </a>
     </div>
+
+
     <Form ref="formCom" class="form" :validation-schema="schema" v-slot="{errors}" autocomplete="off">
+
+      <!-- 账号密码登陆 -->
       <template v-if="!isMsgLogin">
         <div class="form-item">
+          <!-- 输入框：用户名 -->
           <div class="input">
             <i class="iconfont icon-user"></i>
             <Field :class="{error:errors.account}" v-model="form.account" name="account" type="text" placeholder="请输入用户名" />
@@ -21,9 +30,10 @@
           </div>
         </div>
         <div class="form-item">
+          <!-- 输入框：密码 -->
           <div class="input">
             <i class="iconfont icon-lock"></i>
-            <Field :class="{error:errors.password}" v-model="form.password" name="password" type="password" placeholder="请输入密码" />
+            <Field :class="{error: errors.password}" v-model="form.password" name="password" type="password" placeholder="请输入密码" />
           </div>
           <div class="error" v-if="errors.password">
             <i class="iconfont icon-warning" />
@@ -31,8 +41,11 @@
           </div>
         </div>
       </template>
+
+      <!-- 手机号登陆 -->
       <template v-else>
         <div class="form-item">
+          <!-- 输入框：手机号 -->
           <div class="input">
             <i class="iconfont icon-user"></i>
             <Field :class="{error:errors.mobile}" v-model="form.mobile" name="mobile" type="text" placeholder="请输入手机号" />
@@ -43,11 +56,12 @@
           </div>
         </div>
         <div class="form-item">
+          <!-- 输入框：验证码 -->
           <div class="input">
             <i class="iconfont icon-code"></i>
             <Field :class="{error:errors.code}" v-model="form.code" name="code" type="text" placeholder="请输入验证码" />
             <span @click="send()" class="code">
-              {{time===0?'发送验证码':`${time}秒后发送`}}
+              {{time === 0 ? '发送验证码': `${time}秒后发送`}}
             </span>
           </div>
           <div class="error" v-if="errors.code">
@@ -56,6 +70,8 @@
           </div>
         </div>
       </template>
+
+      <!-- 勾选同意服务 -->
       <div class="form-item">
         <div class="agree">
           <Field as="XtxCheckbox" name="isAgree" v-model="form.isAgree" />
@@ -69,8 +85,12 @@
           {{errors.isAgree}}
         </div>
       </div>
+
       <a @click="login()" href="javascript:;" class="btn">登录</a>
+
     </Form>
+
+    <!-- QQ登陆，忘记密码，免费注册 -->
     <div class="action">
       <a href="https://graph.qq.com/oauth2.0/authorize?client_id=100556005&response_type=token&scope=all&redirect_uri=http%3A%2F%2Fwww.corho.com%3A8080%2F%23%2Flogin%2Fcallback">
         <img src="https://qzonestyle.gtimg.cn/qzone/vas/opensns/res/img/Connect_logo_7.png" alt="">
@@ -80,11 +100,15 @@
         <a href="javascript:;">免费注册</a>
       </div>
     </div>
+
   </div>
 </template>
+
+
+
 <script>
 import { onUnmounted, reactive, ref, watch } from 'vue'
-import { Form, Field } from 'vee-validate'
+import { Form, Field } from 'vee-validate'/** #### TODO: vee-validate包 */
 import schema from '@/utils/vee-validate-schema'
 import Message from '@/components/library/Message'
 import { userAccountLogin, userMobileLogin, userMobileLoginMsg } from '@/api/user'
@@ -94,6 +118,7 @@ import { useIntervalFn } from '@vueuse/core'
 export default {
   name: 'LoginForm',
   components: { Form, Field },
+
   setup () {
     // 切换短信登录
     const isMsgLogin = ref(false)
@@ -112,7 +137,7 @@ export default {
     // 3. 定义Field的name属性指定的校验规则函数，Form的validation-schema接受定义好的校验规则是对象
     // 4. 自定义组件需要校验必须先支持v-model 然后Field使用as指定为组件名称
     const mySchema = {
-      // 校验函数规则：返回true就是校验成功，返回一个字符串就是失败，字符串就是错误提示
+      // FIXME: (表单校验，Utils工具类，返回true)校验函数规则：返回true就是校验成功，返回一个字符串就是失败，字符串就是错误提示
       account: schema.account,
       password: schema.password,
       mobile: schema.mobile,
@@ -120,14 +145,15 @@ export default {
       isAgree: schema.isAgree
     }
 
-    // 监听isMsgLogin重置表单（数据+清除校验结果）
+    // FIXME: 监听isMsgLogin重置表单（数据+清除校验结果）
     const formCom = ref(null)
     watch(isMsgLogin, () => {
       // 重置数据
       form.isAgree = true
       form.account = null
       form.password = null
-      form.mobile = null
+      // form.mobile = null
+      form.mobile = "15303663375"
       form.code = null
       // 如果是没有销毁Field组件，之前的校验结果是不会清除  例如：v-show切换的
       // Form组件提供了一个 resetForm 函数清除校验结果
@@ -142,6 +168,7 @@ export default {
     const store = useStore()
     const router = useRouter()
     const route = useRoute()
+    // TODO: 登陆
     const login = async () => {
       // Form组件提供了一个 validate 函数作为整体表单校验，当是返回的是一个promise
       const valid = await formCom.value.validate()
@@ -183,29 +210,28 @@ export default {
       }
     }
 
-    // pause 暂停 resume 开始
-    // useIntervalFn(回调函数,执行间隔,是否立即开启)
+
+
+    // TODO: 手机短信登陆： 发送验证码
     const time = ref(0)
+    // pause 暂停, resume 开始
+    // useIntervalFn(回调函数,执行间隔,是否立即开启)
     const { pause, resume } = useIntervalFn(() => {
       time.value--
-      if (time.value <= 0) {
-        pause()
-      }
+      if (time.value <= 0) { pause() }
     }, 1000, false)
-    onUnmounted(() => {
-      pause()
-    })
+    onUnmounted(() => { pause() })
 
-    // 1. 发送验证码
+    // 1.  手机短信登陆： 发送验证码
     // 1.1 绑定发送验证码按钮点击事件
     // 1.2 校验手机号，如果成功才去发送短信（定义API），请求成功开启60s的倒计时，不能再次点击，倒计时结束恢复
     // 1.3 如果失败，失败的校验样式显示出来
     const send = async () => {
-      const valid = mySchema.mobile(form.mobile)
+      const valid = mySchema.mobile(form.mobile) // vaild是传入utils中校验后返回的true
       if (valid === true) {
         // 通过
         if (time.value === 0) {
-        // 没有倒计时才可以发送
+          // 没有倒计时才可以发送
           await userMobileLoginMsg(form.mobile)
           Message({ type: 'success', text: '发送成功' })
           time.value = 60
@@ -228,6 +254,8 @@ export default {
   }
 }
 </script>
+
+
 <style scoped lang="less">
 // 账号容器
 .account-box {
@@ -269,7 +297,8 @@ export default {
           &.error {
             border-color: @priceColor;
           }
-          &.active,&:focus {
+          &.active,
+          &:focus {
             border-color: @xtxColor;
           }
         }

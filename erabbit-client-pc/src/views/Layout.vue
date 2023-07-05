@@ -7,8 +7,8 @@
   <AppHeaderSticky />
   <!-- 内容容器 -->
   <div class="app-body">
-    <!-- 二级路由 -->
-    <RouterView />
+    <!-- TODO: 可先注释掉 二级路由 -->
+    <!-- <RouterView /> -->
   </div>
   <!-- 底部组件 -->
   <AppFooter />
@@ -30,12 +30,13 @@ export default {
   // 获取下分类数据
   setup () {
     const store = useStore()
+    // console.log('根store', store)
     store.dispatch('category/getList')
   }
 }
 </script>
 <style scoped lang="less">
-.app-body {
-  min-height: 600px;
-}
+  .app-body {
+    min-height: 600px;  /** 二级路由中的高度（主要内容区域）**/
+  }
 </style>

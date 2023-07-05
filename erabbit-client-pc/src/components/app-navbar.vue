@@ -1,7 +1,9 @@
+<!-- NavBar: 顶部请先登陆、免费注册... -->
 <template>
   <nav class="app-topnav">
     <div class="container">
       <ul>
+        <!-- FIXME: 判断是否有Token 控制显示的内容 -->
         <template v-if="profile.token">
           <li><RouterLink to="/member"><i class="iconfont icon-user"></i>{{profile.account}}</RouterLink></li>
           <li><a @click="logout()" href="javascript:;">退出登录</a></li>
@@ -25,6 +27,7 @@ import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 export default {
   name: 'AppTopnav',
+
   setup () {
     // 获取用户的登录信息才能控制切换导航菜单
     const store = useStore()
@@ -32,7 +35,6 @@ export default {
     const profile = computed(() => {
       return store.state.user.profile
     })
-
     // 退出登录
     // 1. 清空本地存储信息和vuex的用户信息
     // 2. 跳转登录

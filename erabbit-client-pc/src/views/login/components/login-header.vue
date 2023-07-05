@@ -1,10 +1,13 @@
+<!-- TODO: 头部Header：container容器中flex两端对齐，中间H3标签占flex=1, i标签使用自定义颜色：@xtxColor -->
 <template>
   <header class="login-header">
     <div class="container">
       <h1 class="logo">
         <RouterLink to="/">小兔鲜</RouterLink>
       </h1>
-      <h3 class="sub"><slot /></h3>
+      <h3 class="sub">
+        <slot />
+      </h3>
       <RouterLink class="entry" to="/">
         进入网站首页
         <i class="iconfont icon-angle-right"></i>
@@ -35,6 +38,7 @@ export default {
       display: block;
       height: 132px;
       width: 100%;
+      /** 文字缩进 负 */
       text-indent: -9999px;
       background: url(../../../assets/images/logo.png) no-repeat center 18px / contain;
     }

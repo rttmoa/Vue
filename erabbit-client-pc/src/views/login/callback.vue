@@ -1,5 +1,7 @@
 <template>
+
   <LoginHeader>联合登录</LoginHeader>
+
   <section class="container" v-if="isBind">
     <div class="unbind">
       <div class="loading"></div>
@@ -23,8 +25,14 @@
       <CallbackPatch :unionId="unionId" />
     </div>
   </section>
+
   <LoginFooter />
+
 </template>
+
+
+
+<!-- TODO: 联合登陆callback组件的地址：http://localhost:8080/#/login/callback -->
 <script>
 import LoginHeader from './components/login-header'
 import LoginFooter from './components/login-footer'
@@ -41,7 +49,6 @@ export default {
   components: { LoginHeader, LoginFooter, CallbackBind, CallbackPatch },
   setup () {
     const hasAccount = ref(true)
-
     // 首先：默认认为已经注册且已经绑定
     // 通过QQ的API获取openId就是后台需要的unionId然后去进行登录
     // 如果成功：登录成功
