@@ -1,17 +1,26 @@
 <template>
+
   <header class="app-header">
+
     <div class="container">
+
       <h1 class="logo"><RouterLink to="/">小兔鲜</RouterLink></h1>
-      <!-- 使用头部导航组件 -->
+
+      <!-- FIXME: 使用头部导航组件 -->
       <AppHeaderNav />
+
       <div class="search">
         <i class="iconfont icon-search"></i>
         <input type="text" placeholder="搜一搜" />
       </div>
-      <!-- 使用头部购物车组件 -->
+
+      <!-- FIXME: 使用头部购物车组件 -->
       <AppHeaderCart />
+
     </div>
+
   </header>
+
 </template>
 
 <script>

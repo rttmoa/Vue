@@ -8,7 +8,7 @@
   <!-- 内容容器 -->
   <div class="app-body">
     <!-- TODO: 可先注释掉 二级路由 -->
-    <!-- <RouterView /> -->
+    <RouterView />
   </div>
   <!-- 底部组件 -->
   <AppFooter />

@@ -1,9 +1,12 @@
 <template>
   <ul class="app-header-nav">
-    <li class="home"><RouterLink to="/">首页</RouterLink></li>
+    <li class="home">
+      <RouterLink to="/">首页</RouterLink>
+    </li>
+    <!-- TODO: 鼠标移入显示隐藏的Item -->
     <li v-for="item in list" :key="item.id" @mousemove="show(item)" @mouseleave="hide(item)">
       <RouterLink @click="hide(item)" :to="`/category/${item.id}`">{{item.name}}</RouterLink>
-      <div class="layer" :class="{open:item.open}">
+      <div class="layer" :class="{open: item.open}">
         <ul>
           <li v-for="sub in item.children" :key="sub.id">
             <RouterLink  @click="hide(item)" :to="`/category/sub/${sub.id}`">
@@ -16,6 +19,8 @@
     </li>
   </ul>
 </template>
+
+
 <script>
 import { computed } from 'vue'
 import { useStore } from 'vuex'
@@ -27,6 +32,7 @@ export default {
     const list = computed(() => {
       return store.state.category.list
     })
+    // console.log('CategoryList', list.value)
 
     // 跳转的时候不会关闭二级类目，通过数据来控制
     // 1. vuex每个分类加上open数据

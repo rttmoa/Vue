@@ -6,6 +6,8 @@
     </article>
   </div>
 </template>
+
+
 <script>
 import AppMemberAside from '@/components/app-member-aside'
 export default {

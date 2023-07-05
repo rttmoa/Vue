@@ -111,7 +111,7 @@ import { onUnmounted, reactive, ref, watch } from 'vue'
 import { Form, Field } from 'vee-validate'/** #### TODO: vee-validate包 */
 import schema from '@/utils/vee-validate-schema'
 import Message from '@/components/library/Message'
-import { userAccountLogin, userMobileLogin, userMobileLoginMsg } from '@/api/user'
+import { userAccountLogin, userMobileLogin, userMobileLoginMsg } from '@/api/user' // userMobileLoginMsg
 import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router'
 import { useIntervalFn } from '@vueuse/core'
@@ -122,7 +122,7 @@ export default {
   setup () {
     // 切换短信登录
     const isMsgLogin = ref(false)
-    // 表单数据对象
+    // TODO: 表单数据对象 （使用 reactive）
     const form = reactive({
       isAgree: true,
       account: null,
@@ -153,7 +153,7 @@ export default {
       form.account = null
       form.password = null
       // form.mobile = null
-      form.mobile = "15303663375"
+      form.mobile = '15303663375'
       form.code = null
       // 如果是没有销毁Field组件，之前的校验结果是不会清除  例如：v-show切换的
       // Form组件提供了一个 resetForm 函数清除校验结果
@@ -174,6 +174,7 @@ export default {
       const valid = await formCom.value.validate()
       if (valid) {
         try {
+          /* TODO: 这里要判断是手机号还是账号登陆，结果去存储Store */
           let data = null
           if (isMsgLogin.value) {
             // **手机号登录
@@ -197,7 +198,7 @@ export default {
           store.commit('user/setUser', { id, account, avatar, mobile, nickname, token })
           store.dispatch('cart/mergeCart').then(() => {
             // 进行跳转
-            router.push(route.query.redirectUrl || '/')
+            router.push(route.query.redirectUrl || '/') // TODO: 重定向到拦截页（router, route）
             // 成功消息提示
             Message({ type: 'success', text: '登录成功' })
           })
@@ -232,7 +233,7 @@ export default {
         // 通过
         if (time.value === 0) {
           // 没有倒计时才可以发送
-          await userMobileLoginMsg(form.mobile)
+          await userMobileLoginMsg(form.mobile) // FIXME: 报错 Request failed with status code 400
           Message({ type: 'success', text: '发送成功' })
           time.value = 60
           resume()

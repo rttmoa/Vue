@@ -21,6 +21,8 @@
     </div>
   </nav>
 </template>
+
+
 <script>
 import { computed } from 'vue'
 import { useStore } from 'vuex'
@@ -32,9 +34,7 @@ export default {
     // 获取用户的登录信息才能控制切换导航菜单
     const store = useStore()
     // 使用vuex中的state需要设置计算属性，否则不是响应式
-    const profile = computed(() => {
-      return store.state.user.profile
-    })
+    const profile = computed(() => store.state.user.profile)
     // 退出登录
     // 1. 清空本地存储信息和vuex的用户信息
     // 2. 跳转登录

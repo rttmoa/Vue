@@ -17,5 +17,6 @@ module.exports = {
         'no-multiple-empty-lines': [2, { 'max': 8 }],
         'eol-last': 0, // 取消最后一个空行的规则校验
         "indent": 0, // 12:1  error  Expected indentation of 2 spaces but found 4
+        "space-before-function-paren": 0, // error Missing space before function parentheses space-before-function-paren
     }
 }
