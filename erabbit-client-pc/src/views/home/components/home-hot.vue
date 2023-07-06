@@ -1,8 +1,8 @@
 <template>
   <div class="home-hot">
     <HomePanel title="人气推荐" sub-title="人气爆款 不容错过">
-      <div ref="target" style="position: relative;height: 426px;">
-        <!-- 面板内容 -->
+      <!-- 面板内容 （插槽 slot） -->
+      <div ref="target" style="position: relative; height: 426px;">
         <Transition name="fade">
           <ul v-if="list.length" class="goods-list">
             <li v-for="item in list" :key="item.id">
@@ -29,10 +29,9 @@ export default {
   components: { HomePanel, HomeSkeleton },
   setup () {
     // const list = ref([])
-    // findHot().then(data => {
-    //   list.value = data.result
-    // })
+    // findHot().then(data => { list.value = data.result })
     const { target, result } = useLazyData(findHot)
+    // console.log("人气推荐接口图片数据", result) //  FIXME: 
     return { list: result, target }
   }
 }

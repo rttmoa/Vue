@@ -1,12 +1,17 @@
+<!-- TODO: 产品区块: （居家，美食，服饰，母婴） -->
 <template>
   <div class="home-product" ref="target">
+    <!-- 外侧循环（居家，美食，服饰，母婴）的大盒子 -->
     <HomePanel :title="cate.name" v-for="cate in list" :key="cate.id">
+      <!-- 标题右侧插槽 -->
       <template v-slot:right>
         <div class="sub">
+          <!-- 内循环每一个cate中的children就是Title右侧的a链接 -->
           <RouterLink v-for="sub in cate.children" :key="sub.id" :to="`/category/sub/${sub.id}`">{{sub.name}}</RouterLink>
         </div>
         <XtxMore :path="`/category/${cate.id}`" />
       </template>
+      <!-- 图片内容区域插槽 -->
       <div class="box">
         <RouterLink class="cover" :to="`/category/${cate.id}`">
           <img v-lazy="cate.picture" alt="">

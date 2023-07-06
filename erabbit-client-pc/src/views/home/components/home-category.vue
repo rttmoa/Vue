@@ -1,15 +1,13 @@
+<!-- TODO: 文章分类 + 轮播图 -->
 <template>
-  <div class="home-category" @mouseleave="categoryId=null">
+  <div class="home-category" @mouseleave="categoryId = null">
     <ul class="menu">
-      <li :class="{active:categoryId&&categoryId===item.id}" v-for="item in menuList" :key="item.id" @mouseenter="categoryId=item.id">
+      <li :class="{active: categoryId && categoryId === item.id}" v-for="item in menuList" :key="item.id" @mouseenter="categoryId = item.id">
         <RouterLink :to="`/category/${item.id}`">{{ item.name }}</RouterLink>
         <template v-if="item.children">
-          <RouterLink
-            v-for="sub in item.children"
-            :key="sub.id"
-            :to="`/category/sub/${sub.id}`"
-            >{{ sub.name }}</RouterLink
-          >
+          <RouterLink v-for="sub in item.children" :key="sub.id" :to="`/category/sub/${sub.id}`">
+            {{ sub.name }}
+          </RouterLink>
         </template>
         <!-- 骨架 -->
         <template v-else>
@@ -18,9 +16,9 @@
         </template>
       </li>
     </ul>
-    <!-- 弹层 -->
+    <!-- 弹层（display: none;） -->
     <div class="layer">
-      <h4>{{currCategory&&currCategory.id==='brand'?'品牌':'分类'}}推荐 <small>根据您的购买或浏览记录推荐</small></h4>
+      <h4>{{currCategory && currCategory.id === 'brand' ? '品牌' : '分类'}}推荐 <small>根据您的购买或浏览记录推荐</small></h4>
       <!-- 商品 -->
       <ul v-if="currCategory && currCategory.goods">
         <li v-for="item in currCategory.goods" :key="item.id">
@@ -63,9 +61,8 @@ export default {
     const brand = reactive({
       id: 'brand',
       name: '品牌',
-      children: [{ id: 'brand-children', name: '品牌推荐' }],
-      // 品牌列表
-      brands: []
+      children: [{ id: 'brand-children', name: '品牌推荐' }], 
+      brands: [] // 品牌列表
     })
     const menuList = computed(() => {
       // 得到9个分类切每个一级分类下的子分类只有两个
@@ -80,7 +77,7 @@ export default {
       list.push(brand)
       return list
     })
-
+    // console.log('左侧一级/二级分类', menuList) // FIXME: 左侧列表数据
     // 得到弹出层的推荐商品数据
     const categoryId = ref(null)
     const currCategory = computed(() => {

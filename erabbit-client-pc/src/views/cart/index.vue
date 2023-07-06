@@ -1,17 +1,25 @@
+<!-- TODO: 购物车 -->
+<!-- 购物车：http://localhost:8080/#/cart -->
 <template>
   <div class="xtx-cart-page">
     <div class="container">
+
       <!-- 面包屑 -->
       <XtxBread>
         <XtxBreadItem to="/">首页</XtxBreadItem>
         <XtxBreadItem>购物车</XtxBreadItem>
       </XtxBread>
-      <!-- 购物车内容：table表格 -->
+
+      <!-- 购物车内容： table表格 -->
       <div class="cart">
         <table>
           <thead>
             <tr>
-              <th width="120"><XtxCheckbox @change="checkAll" :modelValue="$store.getters['cart/isCheckAll']">全选</XtxCheckbox></th>
+            <!-- // 1、组件中获取getters：$store.getters['cart/isCheckAll'] -->
+              <th width="120">
+                <!-- FIXME: XtxCheckbox组件中 使用useVModel实现双向数据绑定v-model指令 -->
+                <XtxCheckbox @change="checkAll" :modelValue="$store.getters['cart/isCheckAll']"> 全选</XtxCheckbox>
+              </th>
               <th width="400">商品信息</th>
               <th width="220">单价</th>
               <th width="180">数量</th>
@@ -19,16 +27,19 @@
               <th width="140">操作</th>
             </tr>
           </thead>
+
           <!-- 有效商品 -->
           <tbody>
-            <tr v-if="$store.getters['cart/validList'].length===0">
+            <tr v-if="$store.getters['cart/validList'].length === 0">
               <td colspan="6">
                 <!-- 没有商品时，渲染空数据 -->
                 <CartNone />
               </td>
             </tr>
             <tr v-for="goods in $store.getters['cart/validList']" :key="goods.skuId">
+              <!-- Table表格表头 全选 -->
               <td><XtxCheckbox @change="($event)=>checkOne(goods.skuId, $event)" :modelValue="goods.selected" /></td>
+              <!-- Table表格表头 商品信息 -->
               <td>
                 <div class="goods">
                   <RouterLink :to="`/product/${goods.id}`">
@@ -41,18 +52,22 @@
                   </div>
                 </div>
               </td>
+              <!-- Table表格表头 单价 -->
               <td class="tc">
                 <p>&yen;{{goods.nowPrice}}</p>
-                <p v-if="goods.price-goods.nowPrice>0">
+                <p v-if="goods.price-goods.nowPrice > 0">
                   比加入时降价 <span class="red">&yen;{{goods.price-goods.nowPrice}}</span>
                 </p>
               </td>
+              <!-- Table表格表头 数量 -->
               <td class="tc">
                 <XtxNumbox @change="$event=>updateCount(goods.skuId,$event)" :max="goods.stock" :modelValue="goods.count"/>
               </td>
+              <!-- Table表格表头 小计 -->
               <td class="tc">
                 <p class="f16 red">&yen;{{Math.round(goods.nowPrice*100)*goods.count/100}}</p>
               </td>
+              <!-- Table表格表头 操作 -->
               <td class="tc">
                 <p><a href="javascript:;">移入收藏夹</a></p>
                 <p><a @click="deleteCart(goods.skuId)" class="green" href="javascript:;">删除</a></p>
@@ -60,6 +75,7 @@
               </td>
             </tr>
           </tbody>
+
           <!-- 无效商品 -->
           <tbody v-if="$store.getters['cart/invalidList'].length">
             <tr><td colspan="6"><h3 class="tit">失效商品</h3></td></tr>
@@ -87,10 +103,11 @@
           </tbody>
         </table>
       </div>
+
       <!-- 操作栏 -->
       <div class="action">
         <div class="batch">
-          <XtxCheckbox @change="checkAll" :modelValue="$store.getters['cart/isCheckAll']">全选2</XtxCheckbox>
+          <XtxCheckbox @change="checkAll" :modelValue="$store.getters['cart/isCheckAll']"> 全选</XtxCheckbox>
           <a @click="batchDeleteCart()" href="javascript:;">删除商品</a>
           <a href="javascript:;">移入收藏夹</a>
           <a @click="batchDeleteCart(true)" href="javascript:;">清空失效商品</a>
@@ -101,8 +118,10 @@
           <XtxButton @click="checkout()" type="primary">下单结算</XtxButton>
         </div>
       </div>
+
       <!-- 猜你喜欢 -->
       <GoodRelevant />
+
     </div>
   </div>
 </template>

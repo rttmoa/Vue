@@ -1,3 +1,5 @@
+<!-- TODO: 商品详情 -->
+<!-- 商品详情： http://localhost:8080/#/product/3434008 -->
 <template>
   <div class='xtx-goods-page' v-if="goods">
     <div class="container">

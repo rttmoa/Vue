@@ -1,10 +1,15 @@
 <template>
+
   <div class="container">
+
     <AppMemberAside />
+
     <article class="article">
       <RouterView />
     </article>
+
   </div>
+
 </template>
 
 

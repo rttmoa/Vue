@@ -1,13 +1,10 @@
 import { createStore } from 'vuex'
 import createPersistedState from 'vuex-persistedstate' // 持久化存储Store
 
-
 // 三个模块
 import cart from './modules/cart'
 import user from './modules/user'
 import category from './modules/category'
-// console.log(category)
-
 export default createStore({
     modules: {
         cart,

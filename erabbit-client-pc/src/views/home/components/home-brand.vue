@@ -32,9 +32,8 @@ export default {
   setup () {
     // 获取数据
     // const brands = ref([])
-    // findBrand(10).then(data => {
-    //   brands.value = data.result
-    // })
+    // findBrand(10).then(data => { brands.value = data.result })
+    
     // 注意：useLazyData需要的是API函数，如果遇到要传参的情况，自己写函数再函数中调用API
     const { target, result } = useLazyData(() => findBrand(10))
 

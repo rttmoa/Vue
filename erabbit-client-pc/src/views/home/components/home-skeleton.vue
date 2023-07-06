@@ -1,3 +1,4 @@
+<!-- TODO: 当请求的时候 加载状态的骨架 -->
 <template>
   <div class='home-skeleton'>
     <div class="item" v-for="i in 4" :key="i" :style="{backgroundColor:bg}">

@@ -1,3 +1,4 @@
+<!-- TODO: 轮播图 -->
 <template>
   <div class='xtx-carousel' @mouseenter="stop()" @mouseleave="start()">
     <!-- 图片容器 -->

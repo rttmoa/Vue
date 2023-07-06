@@ -1,9 +1,11 @@
 <template>
   <div class="home-new">
     <HomePanel title="新鲜好物" sub-title="新鲜出炉 品质靠谱">
-      <template #right><XtxMore path="/" /></template>
+      <template #right>
+        <XtxMore path="/" />
+      </template>
+      <!-- 面板内容 -->
       <div ref="target" style="position: relative;height: 426px;">
-        <!-- 面板内容 -->
         <Transition name="fade">
           <ul v-if="goods.length" class="goods-list">
             <li v-for="item in goods" :key="item.id">
@@ -30,12 +32,12 @@ export default {
   components: { HomePanel, HomeSkeleton },
   setup () {
     // const goods = ref([])
-    // findNew().then(data => {
-    //   goods.value = data.result
-    // })
+    // findNew().then(data => { goods.value = data.result })
+
     // 1. target 去绑定一个监听对象,最好的DOM
     // 2. 传入API函数，内部获取调用，返回就是响应式数据
     const { target, result } = useLazyData(findNew)
+    // console.log('新鲜好物接口图片数据', result) // FIXME: 新鲜好物接口图片数据
     return { goods: result, target }
   }
 }

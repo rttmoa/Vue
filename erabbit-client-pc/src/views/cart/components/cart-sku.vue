@@ -1,3 +1,4 @@
+<!-- TODO: 购物车中商品信息选择规格（弹出框） -->
 <template>
   <div class="cart-sku" ref="target">
     <div class="attrs" @click="toggle()">

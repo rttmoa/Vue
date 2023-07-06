@@ -1,3 +1,4 @@
+<!-- TODO: 产品区块: （居家，美食，服饰，母婴） 中右侧的 Children -->
 <template>
   <div class="goods-item">
     <RouterLink :to="`/product/${goods.id}`" class="image">
@@ -6,6 +7,7 @@
     <p class="name ellipsis-2">{{goods.name}}</p>
     <p class="desc ellipsis">{{goods.desc}}</p>
     <p class="price">&yen;{{goods.price}}</p>
+    <!-- 隐藏 -->
     <div class="extra">
       <RouterLink to="/">
         <span>找相似</span>

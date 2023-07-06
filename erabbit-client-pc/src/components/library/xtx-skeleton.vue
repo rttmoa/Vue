@@ -1,5 +1,6 @@
+<!-- TODO: 加载中的骨架 -->
 <template>
-  <div class="xtx-skeleton" :style="{width,height}" :class="{shan:animated}">
+  <div class="xtx-skeleton" :style="{width, height}" :class="{shan:animated}">
     <!-- 1 盒子-->
     <div class="block" :style="{backgroundColor:bg}"></div>
     <!-- 2 闪效果 xtx-skeleton 伪元素 --->

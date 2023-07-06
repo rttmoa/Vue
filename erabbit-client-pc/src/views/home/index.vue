@@ -1,3 +1,4 @@
+<!-- TODO: 首页  http://localhost:8080/#/ -->
 <template>
   <!-- 首页入口 -->
   <div class="home-entry">
@@ -12,9 +13,9 @@
   <HomeNew />
   <!-- 人气推荐 -->
   <HomeHot />
-  <!-- 品牌组件 -->
+  <!-- 热门品牌 -->
   <HomeBrand />
-  <!-- 产品区块 -->
+  <!-- 产品区块: （居家，美食，服饰，母婴） -->
   <HomeProduct />
   <!-- 最新专题 -->
   <HomeSpecial />

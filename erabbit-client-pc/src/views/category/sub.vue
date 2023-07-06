@@ -1,3 +1,5 @@
+<!-- TODO: 详情分类 -->
+<!-- 详情分类：http://localhost:8080/#/category/sub/1008006 -->
 <template>
   <div class="sub-categroy">
     <div class="container">
