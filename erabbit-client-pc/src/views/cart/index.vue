@@ -36,9 +36,13 @@
                 <CartNone />
               </td>
             </tr>
+            <!-- FIXME: 遍历getters中有效的数据 -->
             <tr v-for="goods in $store.getters['cart/validList']" :key="goods.skuId">
               <!-- Table表格表头 全选 -->
-              <td><XtxCheckbox @change="($event)=>checkOne(goods.skuId, $event)" :modelValue="goods.selected" /></td>
+              <td>
+                <!-- FIXME: XtxCheckbox组件中 使用useVModel实现双向数据绑定v-model指令 -->
+                <XtxCheckbox @change="($event) => checkOne(goods.skuId, $event)" :modelValue="goods.selected" />
+              </td>
               <!-- Table表格表头 商品信息 -->
               <td>
                 <div class="goods">
@@ -48,7 +52,7 @@
                   <div>
                     <p class="name ellipsis">{{goods.name}}</p>
                     <!-- 选择规格组件 - 商品信息(规格) -->
-                    <CartSku @change="$event=>updateCartSku(goods.skuId, $event)" :skuId="goods.skuId" :attrsText="goods.attrsText" />
+                    <CartSku @change="$event => updateCartSku(goods.skuId, $event)" :skuId="goods.skuId" :attrsText="goods.attrsText" />
                   </div>
                 </div>
               </td>
@@ -61,11 +65,12 @@
               </td>
               <!-- Table表格表头 数量 -->
               <td class="tc">
-                <XtxNumbox @change="$event=>updateCount(goods.skuId,$event)" :max="goods.stock" :modelValue="goods.count"/>
+                <!-- FIXME: XtxNumbox组件中 使用useVModel实现双向数据绑定v-model指令 -->
+                <XtxNumbox @change="$event => updateCount(goods.skuId, $event)" :max="goods.stock" :modelValue="goods.count"/>
               </td>
               <!-- Table表格表头 小计 -->
               <td class="tc">
-                <p class="f16 red">&yen;{{Math.round(goods.nowPrice*100)*goods.count/100}}</p>
+                <p class="f16 red">&yen;{{Math.round(goods.nowPrice * 100) * goods.count / 100}}</p>
               </td>
               <!-- Table表格表头 操作 -->
               <td class="tc">
@@ -147,7 +152,7 @@ export default {
     const checkAll = (selected) => {
       store.dispatch('cart/checkAllCart', selected)
     }
-    // 删除
+    // 删除（单个商品）
     const deleteCart = (skuId) => {
       Confirm({ text: '亲，您是否确认删除商品' }).then(() => {
         store.dispatch('cart/deleteCart', skuId).then(() => {
@@ -161,16 +166,16 @@ export default {
         store.dispatch('cart/batchDeleteCart', isClear)
       }).catch(e => {})
     }
-    // 修改数量
+    // 修改数量（单个商品）
     const updateCount = (skuId, count) => {
       store.dispatch('cart/updateCart', { skuId, count })
     }
-    // 修改规格
+    // 修改商品信息中商品的规格
     const updateCartSku = (oldSkuId, newSku) => {
       store.dispatch('cart/updateCartSku', { oldSkuId, newSku })
     }
 
-    // 结算
+    // 下单结算
     const router = useRouter()
     const checkout = () => {
       // 1. 判断是否选中商品，且提示
