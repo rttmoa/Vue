@@ -15,7 +15,7 @@ export default {
   name: 'SubBread',
   setup () {
     // 通过计算属性从vuex获取顶级和二级类目信息
-    // 数据对象：{top:{id,name},sub:{id:name}}
+    // 数据对象：{top: {id, name}, sub: {id: name}}
     const route = useRoute()
     const store = useStore()
     const category = computed(() => {
@@ -30,10 +30,13 @@ export default {
           }
         }
       })
+      // console.log('BreadItemData', cate) // {sub: {id: '1008017', name: '收纳'}, top: {id: '1005000', name: '居家'}}
       return cate
     })
 
-    return { category }
+    return {
+      category
+    }
   }
 }
 </script>

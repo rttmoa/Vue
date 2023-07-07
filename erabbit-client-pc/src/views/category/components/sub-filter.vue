@@ -1,18 +1,30 @@
 <template>
+  <!-- TODO: 筛选区 （ filterData  changeBrand  changeProp ） -->
   <div class="sub-filter" v-if="filterData && !filterLoading">
     <div class="item">
       <div class="head">品牌：</div>
       <div class="body">
-        <a @click="changeBrand(item.id)" :class="{active:item.id===filterData.selectedBrand}" href="javascript:;" v-for="item in filterData.brands" :key="item.id">{{item.name}}</a>
+        <a
+          @click="changeBrand(item.id)" :class="{active:item.id === filterData.selectedBrand}" href="javascript:;"
+          v-for="item in filterData.brands" :key="item.id"
+        >
+          {{item.name}}
+        </a>
       </div>
     </div>
     <div class="item" v-for="item in filterData.saleProperties" :key="item.id">
-      <div class="head">{{item.name}}：</div>
+      <div class="head">{{item.name}}: </div>
       <div class="body">
-        <a @click="changeProp(item,prop.id)" :class="{active:prop.id===item.selectedProp}" href="javascript:;" v-for="prop in item.properties" :key="prop.id">{{prop.name}}</a>
+        <a
+          @click="changeProp(item,prop.id)" :class="{active: prop.id === item.selectedProp}" href="javascript:;"
+          v-for="prop in item.properties" :key="prop.id"
+        >
+          {{prop.name}}
+        </a>
       </div>
     </div>
   </div>
+  <!-- Loading Skeleton -->
   <div v-else class="sub-filter">
     <XtxSkeleton class="item" width="800px" height="40px"  />
     <XtxSkeleton class="item" width="800px" height="40px"  />
@@ -27,6 +39,7 @@ import { useRoute } from 'vue-router'
 import { findSubCategoryFilter } from '@/api/category'
 export default {
   name: 'SubFilter',
+
   setup (props, { emit }) {
     const route = useRoute()
     // 监听二级类目ID的变化获取筛选数据
@@ -72,13 +85,13 @@ export default {
       return obj
     }
 
-    // 1. 记录当前选择的品牌
+    // TODO: 1. 记录当前选择的品牌 (品牌)
     const changeBrand = (brandId) => {
       if (filterData.value.selectedBrand === brandId) return
       filterData.value.selectedBrand = brandId
       emit('filter-change', getFilterParams())
     }
-    // 2. 记录呢选择的销售属性
+    // TODO: 2. 记录呢选择的销售属性 (规格,数量,类型)
     const changeProp = (item, propId) => {
       if (item.selectedProp === propId) return
       item.selectedProp = propId

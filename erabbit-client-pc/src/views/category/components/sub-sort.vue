@@ -1,14 +1,14 @@
 <template>
   <div class='sub-sort'>
     <div class="sort">
-      <a :class="{active:sortParams.sortField===null}" @click="changeSort(null)" href="javascript:;">默认排序</a>
-      <a :class="{active:sortParams.sortField==='publishTime'}" @click="changeSort('publishTime')" href="javascript:;">最新商品</a>
-      <a :class="{active:sortParams.sortField==='orderNum'}" @click="changeSort('orderNum')" href="javascript:;">最高人气</a>
-      <a :class="{active:sortParams.sortField==='evaluateNum'}" @click="changeSort('evaluateNum')" href="javascript:;">评论最多</a>
+      <a :class="{active:sortParams.sortField === null}" @click="changeSort(null)" href="javascript:;">默认排序</a>
+      <a :class="{active:sortParams.sortField === 'publishTime'}" @click="changeSort('publishTime')" href="javascript:;">最新商品</a>
+      <a :class="{active:sortParams.sortField === 'orderNum'}" @click="changeSort('orderNum')" href="javascript:;">最高人气</a>
+      <a :class="{active:sortParams.sortField === 'evaluateNum'}" @click="changeSort('evaluateNum')" href="javascript:;">评论最多</a>
       <a @click="changeSort('price')" href="javascript:;">
         价格排序
-        <i class="arrow up" :class="{active:sortParams.sortField==='price'&&sortParams.sortMethod==='asc'}" />
-        <i class="arrow down" :class="{active:sortParams.sortField==='price'&&sortParams.sortMethod==='desc'}" />
+        <i class="arrow up" :class="{active:sortParams.sortField === 'price' && sortParams.sortMethod === 'asc'}" />
+        <i class="arrow down" :class="{active:sortParams.sortField === 'price' && sortParams.sortMethod === 'desc'}" />
       </a>
     </div>
     <div class="check">

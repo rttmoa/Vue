@@ -4,13 +4,13 @@
   <div class="sub-categroy">
     <div class="container">
 
-      <!-- 面包屑 -->
+      <!-- TODO: 面包屑: (首页 -> 数码 -> 3C数码) -->
       <SubBread />
 
-      <!-- 筛选区 -->
+      <!-- TODO: 筛选区 -->
       <SubFilter @filter-change="filterChange" />
 
-      <!-- 商品面板（排序+列表） -->
+      <!-- TODO: 商品面板（排序+列表） -->
       <div class="goods-list">
         <SubSort @sort-change="sortChange" />
         <ul>
@@ -18,7 +18,7 @@
             <GoodsItem :goods="goods" />
           </li>
         </ul>
-        <!-- 无限加载组件 -->
+        <!-- TODO: 无限加载组件 -->
         <XtxInfiniteLoading :loading="loading" :finished="finished" @infinite="getData" />
       </div>
 
