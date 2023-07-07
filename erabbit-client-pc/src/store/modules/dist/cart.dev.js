@@ -17,29 +17,32 @@ var _default = {
   namespaced: true,
   state: function state() {
     return {
-      // 购物车商品列表
-      list: []
+      list: [] // 购物车商品列表
+
     };
   },
+  // TODO: 1、组件中获取getters：$store.getters['cart/isCheckAll']
+  // TODO: 2、组件中循环getters：<tr v-for="goods in $store.getters['cart/validList']" :key="goods.skuId"></tr>
   getters: {
     // 有效商品列表
     validList: function validList(state) {
       // 有效商品：库存大于0  stock  商品有效标识为  true  isEffective
+      // console.log('validList', JSON.parse(JSON.stringify(state))) // FIXME: {list: Array(4)}
       return state.list.filter(function (goods) {
         return goods.stock > 0 && goods.isEffective;
       });
     },
-    // 有效商品总件数
+    // 有效商品(总件数)
     validTotal: function validTotal(state, getters) {
-      return getters.validList.reduce(function (p, c) {
-        return p + c.count;
+      return getters.validList.reduce(function (prev, curr) {
+        return prev + curr.count;
       }, 0);
     },
-    // 有效商品总金额
+    // 有效商品(总金额)
     validAmount: function validAmount(state, getters) {
       // return (getters.validList.reduce((p, c) => p + c.nowPrice * 100 * c.count, 0) / 100).toFixed(2)
-      return getters.validList.reduce(function (p, c) {
-        return p + Math.round(c.nowPrice * 100) * c.count;
+      return getters.validList.reduce(function (prev, curr) {
+        return prev + Math.round(curr.nowPrice * 100) * curr.count;
       }, 0) / 100;
     },
     // 无效商品列表
@@ -52,25 +55,26 @@ var _default = {
     selectedList: function selectedList(state, getters) {
       return getters.validList.filter(function (item) {
         return item.selected;
-      });
+      }); // Item selected is true / false
     },
-    // 已选商品总件数
+    // 已选商品(总件数)
     selectedTotal: function selectedTotal(state, getters) {
-      return getters.selectedList.reduce(function (p, c) {
-        return p + c.count;
+      return getters.selectedList.reduce(function (prev, curr) {
+        return prev + curr.count;
       }, 0);
     },
-    // 已选商品总金额
+    // 已选商品(总金额)
     selectedAmount: function selectedAmount(state, getters) {
-      return getters.selectedList.reduce(function (p, c) {
-        return p + Math.round(c.nowPrice * 100) * c.count;
+      return getters.selectedList.reduce(function (prev, curr) {
+        return prev + Math.round(curr.nowPrice * 100) * curr.count;
       }, 0) / 100;
     },
-    // 是否全选
+    // 是否全选 ()
     isCheckAll: function isCheckAll(state, getters) {
       return getters.validList.length !== 0 && getters.selectedList.length === getters.validList.length;
     }
   },
+  // TODO: mutations
   mutations: {
     // 加入购物车
     insertCart: function insertCart(state, payload) {
@@ -99,11 +103,15 @@ var _default = {
       // goods 商品信息：nowPrice stock isEffective
       // goods 商品对象的字段不固定，对象中有哪些字段就改哪些字段，字段的值合理才改
       // goods 商品对象 必需有SKUID
+      // console.log(state)
+      // console.log(goods)
       var updateGoods = state.list.find(function (item) {
         return item.skuId === goods.skuId;
-      });
+      }); // console.log(updateGoods) // {skuId: '300287220', attrsText: '颜色：卡其绿 尺码：XL',  name: '瑜伽裸感女式运动训练紧身裤', …}
 
       for (var key in goods) {
+        // console.log('key', key) // skuId, selected
+        // console.log('key', key) // skuId, count
         if (goods[key] !== undefined && goods[key] !== null && goods[key] !== '') {
           updateGoods[key] = goods[key];
         }
@@ -122,6 +130,7 @@ var _default = {
       state.list = payload;
     }
   },
+  // TODO: actions
   actions: {
     // 合并购物车
     mergeCart: function mergeCart(ctx) {
@@ -156,6 +165,7 @@ var _default = {
     updateCartSku: function updateCartSku(ctx, _ref) {
       var oldSkuId = _ref.oldSkuId,
           newSku = _ref.newSku;
+      // skuId, newSku: 300287226  {skuId: '300287218', price: '83.90', oldPrice: '149.90', specsText: '颜色：卡其绿 尺码：M'}
       return new Promise(function (resolve, reject) {
         if (ctx.rootState.user.profile.token) {
           // 已登录
@@ -207,6 +217,7 @@ var _default = {
     },
     // 批量删除
     batchDeleteCart: function batchDeleteCart(ctx, isClear) {
+      // isClear: Boolean
       return new Promise(function (resolve, reject) {
         if (ctx.rootState.user.profile.token) {
           // 已登录
@@ -225,13 +236,15 @@ var _default = {
           // isClear 未 true  删除失效商品列表，否则事选中的商品列表
           ctx.getters[isClear ? 'invalidList' : 'selectedList'].forEach(function (item) {
             ctx.commit('deleteCart', item.skuId);
-          });
+          }); // ctx.getters['invalidList']
+
           resolve();
         }
       });
     },
     // 全选与取消全选
     checkAllCart: function checkAllCart(ctx, selected) {
+      // FIXME: selected: Boolean
       return new Promise(function (resolve, reject) {
         if (ctx.rootState.user.profile.token) {
           // 已登录
@@ -261,7 +274,9 @@ var _default = {
     },
     // 修改购物车（选中状态，数量）
     updateCart: function updateCart(ctx, payload) {
-      // payload 需要：必需有skuId  可能：selected  count
+      // FIXME: payload 需要：必需有skuId  可能：selected  count
+      // console.log(payload) // Gouxuan: {skuId: '300287220', selected: true}
+      // console.log(payload) // Shuliang: {skuId: '300287220', count: 4}
       return new Promise(function (resolve, reject) {
         if (ctx.rootState.user.profile.token) {
           // 已登录
@@ -280,6 +295,7 @@ var _default = {
     },
     // 删除购物车
     deleteCart: function deleteCart(ctx, payload) {
+      // 单条删除 payload 现在  就是skuId
       return new Promise(function (resolve, reject) {
         if (ctx.rootState.user.profile.token) {
           // 已登录

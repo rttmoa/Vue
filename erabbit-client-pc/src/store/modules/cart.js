@@ -5,24 +5,26 @@ export default {
     namespaced: true,
     state() {
         return {
-            // 购物车商品列表
-            list: []
+            list: [] // 购物车商品列表
         }
     },
+    // TODO: 1、组件中获取getters：$store.getters['cart/isCheckAll']
+    // TODO: 2、组件中循环getters：<tr v-for="goods in $store.getters['cart/validList']" :key="goods.skuId"></tr>
     getters: {
         // 有效商品列表
         validList(state) {
             // 有效商品：库存大于0  stock  商品有效标识为  true  isEffective
+            // console.log('validList', JSON.parse(JSON.stringify(state))) // FIXME: {list: Array(4)}
             return state.list.filter(goods => goods.stock > 0 && goods.isEffective)
         },
-        // 有效商品总件数
+        // 有效商品(总件数)
         validTotal(state, getters) {
-            return getters.validList.reduce((p, c) => p + c.count, 0)
+            return getters.validList.reduce((prev, curr) => prev + curr.count, 0)
         },
-        // 有效商品总金额
+        // 有效商品(总金额)
         validAmount(state, getters) {
             // return (getters.validList.reduce((p, c) => p + c.nowPrice * 100 * c.count, 0) / 100).toFixed(2)
-            return getters.validList.reduce((p, c) => p + Math.round(c.nowPrice * 100) * c.count, 0) / 100
+            return getters.validList.reduce((prev, curr) => prev + Math.round(curr.nowPrice * 100) * curr.count, 0) / 100
         },
         // 无效商品列表
         invalidList(state) {
@@ -30,21 +32,22 @@ export default {
         },
         // 已选商品列表
         selectedList(state, getters) {
-            return getters.validList.filter(item => item.selected)
+            return getters.validList.filter(item => item.selected) // Item selected is true / false
         },
-        // 已选商品总件数
+        // 已选商品(总件数)
         selectedTotal(state, getters) {
-            return getters.selectedList.reduce((p, c) => p + c.count, 0)
+            return getters.selectedList.reduce((prev, curr) => prev + curr.count, 0)
         },
-        // 已选商品总金额
+        // 已选商品(总金额)
         selectedAmount(state, getters) {
-            return getters.selectedList.reduce((p, c) => p + Math.round(c.nowPrice * 100) * c.count, 0) / 100
+            return getters.selectedList.reduce((prev, curr) => prev + Math.round(curr.nowPrice * 100) * curr.count, 0) / 100
         },
-        // 是否全选
+        // 是否全选 ()
         isCheckAll(state, getters) {
             return getters.validList.length !== 0 && getters.selectedList.length === getters.validList.length
         }
     },
+    // TODO: mutations
     mutations: {
         // 加入购物车
         insertCart(state, payload) {
@@ -69,8 +72,13 @@ export default {
             // goods 商品信息：nowPrice stock isEffective
             // goods 商品对象的字段不固定，对象中有哪些字段就改哪些字段，字段的值合理才改
             // goods 商品对象 必需有SKUID
+            // console.log(state)
+            // console.log(goods)
             const updateGoods = state.list.find(item => item.skuId === goods.skuId)
+                // console.log(updateGoods) // {skuId: '300287220', attrsText: '颜色：卡其绿 尺码：XL',  name: '瑜伽裸感女式运动训练紧身裤', …}
             for (const key in goods) {
+                // console.log('key', key) // skuId, selected
+                // console.log('key', key) // skuId, count
                 if (goods[key] !== undefined && goods[key] !== null && goods[key] !== '') {
                     updateGoods[key] = goods[key]
                 }
@@ -87,6 +95,7 @@ export default {
             state.list = payload
         }
     },
+    // TODO: actions
     actions: {
         // 合并购物车
         async mergeCart(ctx) {
@@ -104,6 +113,7 @@ export default {
         },
         // 修改规格
         updateCartSku(ctx, { oldSkuId, newSku }) {
+            // skuId, newSku: 300287226  {skuId: '300287218', price: '83.90', oldPrice: '149.90', specsText: '颜色：卡其绿 尺码：M'}
             return new Promise((resolve, reject) => {
                 if (ctx.rootState.user.profile.token) {
                     // 已登录
@@ -136,7 +146,7 @@ export default {
             })
         },
         // 批量删除
-        batchDeleteCart(ctx, isClear) {
+        batchDeleteCart(ctx, isClear) { // isClear: Boolean
             return new Promise((resolve, reject) => {
                 if (ctx.rootState.user.profile.token) {
                     // 已登录
@@ -152,14 +162,15 @@ export default {
                     // 找出选中的商品列表，遍历调用删除的mutations
                     // isClear 未 true  删除失效商品列表，否则事选中的商品列表
                     ctx.getters[isClear ? 'invalidList' : 'selectedList'].forEach(item => {
-                        ctx.commit('deleteCart', item.skuId)
-                    })
+                            ctx.commit('deleteCart', item.skuId)
+                        })
+                        // ctx.getters['invalidList']
                     resolve()
                 }
             })
         },
         // 全选与取消全选
-        checkAllCart(ctx, selected) {
+        checkAllCart(ctx, selected) { // FIXME: selected: Boolean
             return new Promise((resolve, reject) => {
                 if (ctx.rootState.user.profile.token) {
                     // 已登录
@@ -180,8 +191,9 @@ export default {
             })
         },
         // 修改购物车（选中状态，数量）
-        updateCart(ctx, payload) {
-            // payload 需要：必需有skuId  可能：selected  count
+        updateCart(ctx, payload) { // FIXME: payload 需要：必需有skuId  可能：selected  count
+            // console.log(payload) // Gouxuan: {skuId: '300287220', selected: true}
+            // console.log(payload) // Shuliang: {skuId: '300287220', count: 4}
             return new Promise((resolve, reject) => {
                 if (ctx.rootState.user.profile.token) {
                     // 已登录
@@ -199,13 +211,11 @@ export default {
             })
         },
         // 删除购物车
-        deleteCart(ctx, payload) {
+        deleteCart(ctx, payload) { // 单条删除 payload 现在  就是skuId
             return new Promise((resolve, reject) => {
                 if (ctx.rootState.user.profile.token) {
                     // 已登录
-                    deleteCart([payload]).then(() => {
-                        return findCart()
-                    }).then(data => {
+                    deleteCart([payload]).then(() => { return findCart() }).then(data => {
                         ctx.commit('setCart', data.result)
                         resolve()
                     })

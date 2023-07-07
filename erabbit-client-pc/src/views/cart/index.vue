@@ -15,7 +15,6 @@
         <table>
           <thead>
             <tr>
-            <!-- // 1、组件中获取getters：$store.getters['cart/isCheckAll'] -->
               <th width="120">
                 <!-- FIXME: XtxCheckbox组件中 使用useVModel实现双向数据绑定v-model指令 -->
                 <XtxCheckbox @change="checkAll" :modelValue="$store.getters['cart/isCheckAll']"> 全选</XtxCheckbox>
@@ -51,7 +50,7 @@
                   </RouterLink>
                   <div>
                     <p class="name ellipsis">{{goods.name}}</p>
-                    <!-- 选择规格组件 - 商品信息(规格) -->
+                    <!-- FIXME: <CartSku /> 选择规格组件 - 商品信息(规格) -->
                     <CartSku @change="$event => updateCartSku(goods.skuId, $event)" :skuId="goods.skuId" :attrsText="goods.attrsText" />
                   </div>
                 </div>
@@ -85,7 +84,9 @@
           <tbody v-if="$store.getters['cart/invalidList'].length">
             <tr><td colspan="6"><h3 class="tit">失效商品</h3></td></tr>
             <tr v-for="goods in $store.getters['cart/invalidList']" :key="goods.skuId">
-              <td><XtxCheckbox style="color:#eee;" /></td>
+              <td>
+                <XtxCheckbox style="color:#eee;" />
+              </td>
               <td>
                 <div class="goods">
                   <RouterLink :to="`/product/${goods.id}`">
@@ -124,7 +125,7 @@
         </div>
       </div>
 
-      <!-- 猜你喜欢 -->
+      <!-- TODO: 猜你喜欢 (Swiper) -->
       <GoodRelevant />
 
     </div>
@@ -141,14 +142,14 @@ import { useRouter } from 'vue-router'
 export default {
   name: 'XtxCartPage',
   components: { GoodRelevant, CartNone, CartSku },
+
   setup () {
     const store = useStore()
-
-    // 单选
-    const checkOne = (skuId, selected) => {
+    // 单选 @params: <XtxCheckbox @change="($event) => checkOne(goods.skuId, $event)" :modelValue="goods.selected" />
+    const checkOne = (skuId, selected) => { // console.log(skuId, selected) 300270667 true
       store.dispatch('cart/updateCart', { skuId, selected })
     }
-    // 全选
+    // 全选 @params: Boolean
     const checkAll = (selected) => {
       store.dispatch('cart/checkAllCart', selected)
     }
@@ -172,6 +173,7 @@ export default {
     }
     // 修改商品信息中商品的规格
     const updateCartSku = (oldSkuId, newSku) => {
+      // console.log('guige', oldSkuId, newSku) // 300287226  {skuId: '300287218', price: '83.90', oldPrice: '149.90', specsText: '颜色：卡其绿 尺码：M'}
       store.dispatch('cart/updateCartSku', { oldSkuId, newSku })
     }
 

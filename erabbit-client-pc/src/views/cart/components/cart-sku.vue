@@ -40,6 +40,7 @@ export default {
       // 获取商品数据（specs,skus）
       loading.value = true
       getGoodsSku(props.skuId).then(data => {
+        // console.log(data.result) // {specs: Array(1), skus: Array(1)}
         goods.value = data.result
         loading.value = false
       })
@@ -54,13 +55,12 @@ export default {
     }
     // 点击其他地方关闭
     const target = ref(null)
-    onClickOutside(target, () => {
-      close()
-    })
+    onClickOutside(target, () => { close() })
 
     // 监听sku改变的函数，记录sku信息
     const currSku = ref(null)
     const changeSku = (sku) => {
+      console.log('currSku', sku)
       currSku.value = sku
     }
 
@@ -69,6 +69,8 @@ export default {
       // 当你currSku有值，且skuId和默认的skuId不同
       if (currSku.value && currSku.value.skuId && currSku.value.skuId !== props.skuId) {
         emit('change', currSku.value)
+        close()
+      } else {
         close()
       }
     }

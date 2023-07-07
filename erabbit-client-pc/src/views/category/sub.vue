@@ -1,12 +1,15 @@
-<!-- TODO: 详情分类 -->
-<!-- 详情分类：http://localhost:8080/#/category/sub/1008006 -->
+<!-- TODO: 二级分类 -->
+<!-- 二级分类：http://localhost:8080/#/category/sub/1008006 -->
 <template>
   <div class="sub-categroy">
     <div class="container">
+
       <!-- 面包屑 -->
       <SubBread />
+
       <!-- 筛选区 -->
       <SubFilter @filter-change="filterChange" />
+
       <!-- 商品面板（排序+列表） -->
       <div class="goods-list">
         <SubSort @sort-change="sortChange" />
@@ -18,9 +21,11 @@
         <!-- 无限加载组件 -->
         <XtxInfiniteLoading :loading="loading" :finished="finished" @infinite="getData" />
       </div>
+
     </div>
   </div>
 </template>
+
 <script>
 import SubBread from './components/sub-bread'
 import SubFilter from './components/sub-filter'
@@ -45,6 +50,7 @@ export default {
       page: 1,
       pageSize: 20
     }
+
     const getData = () => {
       loading.value = true
       // 设置二级分类的ID
@@ -63,6 +69,7 @@ export default {
         loading.value = false
       })
     }
+
     // 在更改了二级分类的时候需要重新加载数据
     watch(() => route.params.id, (newVal) => {
       if (newVal && `/category/sub/${newVal}` === route.path) {
@@ -74,6 +81,7 @@ export default {
         }
       }
     })
+
     // 1. 更改排序组件的筛选数据，重新请求
     const sortChange = (sortParams) => {
       finished.value = false
