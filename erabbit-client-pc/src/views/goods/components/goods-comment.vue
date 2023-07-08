@@ -1,5 +1,7 @@
+<!-- TODO: Tabs 商品评价 -->
 <template>
   <div class="goods-comment">
+
     <!-- 评价头部 -->
     <div class="head" v-if="commentInfo">
       <div class="data">
@@ -15,17 +17,21 @@
             href="javascript:;"
             :class="{active:currentTagIndex===i}"
             @click="changeTag(i)"
-            >{{item.title}}（{{item.tagCount}}）</a
           >
+            {{item.title}}（{{item.tagCount}}）
+          </a>
         </div>
       </div>
     </div>
+
+    <!-- 排序：默认、最新、最热 -->
     <div class="sort" v-if="commentInfo">
       <span>排序：</span>
       <a @click="changeSort(null)" :class="{active:reqParams.sortField===null}" href="javascript:;">默认</a>
       <a @click="changeSort('createTime')" :class="{active:reqParams.sortField==='createTime'}" href="javascript:;">最新</a>
       <a @click="changeSort('praiseCount')" :class="{active:reqParams.sortField==='praiseCount'}" href="javascript:;">最热</a>
     </div>
+
     <!-- 评价列表 -->
     <div class="list" v-if="commentList">
       <div class="item" v-for="item in commentList" :key="item.id">
@@ -49,8 +55,10 @@
         </div>
       </div>
     </div>
+
     <!-- 分页组件 -->
     <XtxPagination v-if="total" @current-change="changePagerFn" :page-size="reqParams.pageSize" :current-page="reqParams.page" />
+
   </div>
 </template>
 <script>

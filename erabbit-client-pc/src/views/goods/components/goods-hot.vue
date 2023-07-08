@@ -1,3 +1,4 @@
+<!-- TODO: 24小时热销榜 || 周热销榜 -->
 <template>
   <div class="goods-hot">
     <h3>{{title}}</h3>
@@ -6,6 +7,7 @@
     </div>
   </div>
 </template>
+
 <script>
 import GoodsItem from '@/views/category/components/goods-item'
 import { computed, ref } from 'vue'

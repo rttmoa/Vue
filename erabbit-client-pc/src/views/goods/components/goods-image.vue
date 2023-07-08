@@ -1,7 +1,7 @@
 <template>
   <div class="goods-image">
     <!-- 大图 -->
-    <div v-show="show" class="large" :style="[{backgroundImage:`url(${images[currIndex]})`},largePosition]"></div>
+    <div v-show="show" class="large" :style="[{backgroundImage:`url(${images[currIndex]})`}, largePosition]"></div>
     <!-- 中图 -->
     <div class="middle" ref="target">
       <img :src="images[currIndex]" alt="">
@@ -10,8 +10,8 @@
     </div>
     <!-- 小图 -->
     <ul class="small">
-      <li v-for="(img,i) in images" :key="img" :class="{active:i===currIndex}">
-        <img @mouseenter="currIndex=i" :src="img" alt="">
+      <li v-for="(img, i) in images" :key="img" :class="{active: i === currIndex}">
+        <img @mouseenter="currIndex = i" :src="img" alt="">
       </li>
     </ul>
   </div>

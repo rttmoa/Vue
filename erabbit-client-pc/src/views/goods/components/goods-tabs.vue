@@ -1,14 +1,11 @@
 <template>
   <div class="goods-tabs">
     <nav>
-      <a
-        @click="activeName = 'GoodsDetial'"
+      <a @click="activeName = 'GoodsDetial'"
         :class="{ active: activeName === 'GoodsDetial' }"
         href="javascript:;"
-        >商品详情</a
-      >
-      <a
-        @click="activeName = 'GoodsComment'"
+        >商品详情</a>
+      <a @click="activeName = 'GoodsComment'"
         :class="{ active: activeName === 'GoodsComment' }"
         href="javascript:;"
         >商品评价<span>({{goods.commentCount}})</span></a
@@ -22,6 +19,7 @@
     <component :is="activeName"></component>
   </div>
 </template>
+
 <script>
 import { ref, inject } from 'vue'
 import GoodsDetial from './goods-detial'
@@ -30,7 +28,7 @@ export default {
   name: 'GoodsTabs',
   components: { GoodsDetial, GoodsComment },
   setup () {
-    // activeName的值：GoodsDetial  GoodsComment
+    // activeName的值： GoodsDetial  GoodsComment
     const activeName = ref('GoodsDetial')
     // goods详情数据
     const goods = inject('goods')
@@ -38,6 +36,7 @@ export default {
   }
 }
 </script>
+
 <style scoped lang="less">
 .goods-tabs {
   min-height: 600px;

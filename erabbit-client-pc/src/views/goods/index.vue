@@ -16,17 +16,19 @@
       <!-- 商品信息 -->
       <div class="goods-info">
         <div class="media">
+          <!-- FIXME: 预览图 放大的位置 useMouseInElement 获取 elementX, elementY, isOutside 数据 -->
           <GoodsImage :images="goods.mainPictures" />
+          <!-- 销量人气、商品评价、收藏人气、品牌信息 -->
           <GoodsSales />
         </div>
         <div class="spec">
           <GoodsName :goods="goods" />
           <!-- sku组件 skuId="1369155865461919746" 测试选中 -->
           <GoodsSku :goods="goods" @change="changeSku" />
-          <!-- 数量选择组件 -->
+          <!-- FIXME: 数量选择组件 -->
           <XtxNumbox label="数量" v-model="num" :max="goods.inventory" />
           <!-- 按钮组件 -->
-          <XtxButton @click="insertCart()" type="primary" style="margin-top:20px">加入购物车</XtxButton>
+          <XtxButton @click="insertCart()" type="primary" style="margin-top: 20px">加入购物车</XtxButton>
         </div>
       </div>
 
@@ -77,7 +79,8 @@ const useGoods = () => {
         // 让商品数据为null然后使用v-if的组件可以重新销毁和创建
         goods.value = null
         nextTick(() => {
-          // console.log(data.result) // FIXME: 接口数据
+          console.log(data.result) // FIXME: 接口数据
+          // console.log(data.result.mainPictures) // 5张商品详情图片
           goods.value = data.result
         })
       })

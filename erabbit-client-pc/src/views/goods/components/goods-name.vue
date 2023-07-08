@@ -1,3 +1,4 @@
+<!-- TODO: 商品标题、商品描述、商品价格 -->
 <template>
   <p class="g-name">{{goods.name}}</p>
   <p class="g-desc">{{goods.desc}}</p>
@@ -12,6 +13,7 @@
     </dl>
     <dl>
       <dt>配送</dt>
+      <!-- FIXME: 全国城市 -->
       <dd>至 <XtxCity @change="changeCity" :fullLocation="fullLocation" /></dd>
     </dl>
     <dl>

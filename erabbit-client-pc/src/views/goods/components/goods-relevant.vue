@@ -1,8 +1,9 @@
+<!-- TODO: 同类商品推荐 (轮播图) -->
 <template>
   <div class="goods-relevant">
     <div class="header">
       <i class="icon" />
-      <span class="title">{{goodsId?'同类商品推荐':'猜你喜欢'}}</span>
+      <span class="title">{{goodsId ? '同类商品推荐':'猜你喜欢'}}</span>
     </div>
     <!-- 此处使用改造后的xtx-carousel.vue -->
     <XtxCarousel :sliders="sliders" />

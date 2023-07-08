@@ -1,3 +1,4 @@
+<!-- TODO: 去选择 规格属性 -->
 <template>
   <div class="goods-sku">
     <dl v-for="item in goods.specs" :key="item.id">
