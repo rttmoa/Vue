@@ -1,5 +1,6 @@
 <template>
   <div class='sub-sort'>
+    <!-- 左侧 默认排序... -->
     <div class="sort">
       <a :class="{active:sortParams.sortField === null}" @click="changeSort(null)" href="javascript:;">默认排序</a>
       <a :class="{active:sortParams.sortField === 'publishTime'}" @click="changeSort('publishTime')" href="javascript:;">最新商品</a>
@@ -11,6 +12,7 @@
         <i class="arrow down" :class="{active:sortParams.sortField === 'price' && sortParams.sortMethod === 'desc'}" />
       </a>
     </div>
+    <!-- 右侧 复选框 -->
     <div class="check">
       <XtxCheckbox @change="changeCheck" v-model="sortParams.inventory">仅显示有货商品</XtxCheckbox>
       <XtxCheckbox @change="changeCheck" v-model="sortParams.onlyDiscount">仅显示特惠商品</XtxCheckbox>
@@ -23,23 +25,24 @@ export default {
   name: 'SubSort',
   setup (props, { emit }) {
     // 实现交互（实现交换的数据和后台保持一致）
-    // 1. 明确交互数据
+    // 1. FIXME: 明确交互数据
     const sortParams = reactive({
       inventory: false,
       onlyDiscount: false,
-      sortField: null, // publishTime,orderNum,price,evaluateNum
+      sortField: null, // publishTime, orderNum, price, evaluateNum
       sortMethod: null // asc为正序，desc为倒序，默认为desc
     })
     // 2. 提供模板使用
     // 3. 需要绑定按钮的点击事件修改排序字段和排序方式
     const changeSort = (sortField) => {
+      // FIXME: 条件为 默认排序,最新商品,最高人气,评论最多  或者  价格排序
       if (sortField === 'price') {
         sortParams.sortField = sortField
         // 处理排序
         if (sortParams.sortMethod === null) {
           sortParams.sortMethod = 'desc'
         } else {
-          sortParams.sortMethod = sortParams.sortMethod === 'desc' ? 'asc' : 'desc'
+          sortParams.sortMethod = (sortParams.sortMethod === 'desc' ? 'asc' : 'desc')
         }
       } else {
         // 如果已经选项阻止运行
@@ -47,14 +50,19 @@ export default {
         sortParams.sortField = sortField
         sortParams.sortMethod = null
       }
-      // 触发 sort-change 事件
+      // FIXME: 触发 sort-change 事件
       emit('sort-change', sortParams)
     }
     const changeCheck = () => {
-      // 触发 sort-change 事件
+      // console.log(sortParams) // {inventory: false, onlyDiscount: true, sortField: null, sortMethod: null}
+      // FIXME: 触发 sort-change 事件
       emit('sort-change', sortParams)
     }
-    return { sortParams, changeSort, changeCheck }
+    return {
+      sortParams,
+      changeSort,
+      changeCheck
+    }
   }
 }
 </script>

@@ -21,11 +21,14 @@ export default {
     const category = computed(() => {
       const cate = {}
       // 完成获取数据逻辑
+      // console.log(store.state.category.list)
       store.state.category.list.forEach(top => {
         if (top.children) {
           const sub = top.children.find(sub => sub.id === route.params.id)
           if (sub) {
+            // FIXME: 第一层For
             cate.top = { id: top.id, name: top.name }
+            // FIXME: 第一层For中的children
             cate.sub = { id: sub.id, name: sub.name }
           }
         }

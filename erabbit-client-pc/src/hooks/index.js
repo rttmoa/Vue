@@ -4,7 +4,7 @@ import { ref, onUnmounted } from 'vue'
 import dayjs from 'dayjs'
 
 /**
- * 数据懒加载函数
+ * TODO: 数据懒加载函数
  * @param {Element} target - Dom对象
  * @param {Function} apiFn - API函数
  */
@@ -26,15 +26,13 @@ export const useLazyData = (apiFn) => {
             }
         },
         // 配置选项，相交的比例大于0就触发
-        {
-            threshold: 0
-        }
+        { threshold: 0 }
     )
     return { result, target }
 }
 
 /**
- * 支付倒计时函数
+ * TODO: 支付倒计时函数
  */
 export const usePayTime = () => {
     // 倒计时逻辑

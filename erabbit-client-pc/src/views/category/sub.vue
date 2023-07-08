@@ -92,6 +92,7 @@ export default {
     }
     // 2. 更改筛选组件的筛选数据，重新请求
     const filterChange = (filterParams) => {
+      // console.log(filterParams) // { attrs: Array(3) [{groupName: '规格', propertyName: '大号2个装'}, ... ], brandId: "1" }
       finished.value = false
       // 合并请求参数，保留之前参数
       reqParams = { ...reqParams, ...filterParams }

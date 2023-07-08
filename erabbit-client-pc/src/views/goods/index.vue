@@ -1,8 +1,10 @@
 <!-- TODO: 商品详情 -->
 <!-- 商品详情： http://localhost:8080/#/product/3434008 -->
+<!-- 瑜伽裤：   http://localhost:8080/#/product/4001126 -->
 <template>
   <div class='xtx-goods-page' v-if="goods">
     <div class="container">
+
       <!-- 面包屑 -->
       <XtxBread>
         <XtxBreadItem to="/">首页</XtxBreadItem>
@@ -10,6 +12,7 @@
         <XtxBreadItem :to="`/category/sub/${goods.categories[0].id}`">{{goods.categories[0].name}}</XtxBreadItem>
         <XtxBreadItem>{{goods.name}}</XtxBreadItem>
       </XtxBread>
+
       <!-- 商品信息 -->
       <div class="goods-info">
         <div class="media">
@@ -26,8 +29,10 @@
           <XtxButton @click="insertCart()" type="primary" style="margin-top:20px">加入购物车</XtxButton>
         </div>
       </div>
+
       <!-- 商品推荐 -->
       <GoodsRelevant :goodsId="goods.id" />
+
       <!-- 商品详情 -->
       <div class="goods-footer">
         <div class="goods-article">
@@ -42,6 +47,7 @@
           <GoodsHot :type="2" />
         </div>
       </div>
+
     </div>
   </div>
 </template>
@@ -60,9 +66,29 @@ import { findGoods } from '@/api/product'
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import Message from '@/components/library/Message'
+// FIXME: 获取商品详情
+const useGoods = () => {
+  // 出现路由地址商品ID发生变化，但是不会重新初始化组件
+  const goods = ref(null)
+  const route = useRoute()
+  watch(() => route.params.id, (newVal) => {
+    if (newVal && `/product/${newVal}` === route.path) {
+      findGoods(route.params.id).then(data => {
+        // 让商品数据为null然后使用v-if的组件可以重新销毁和创建
+        goods.value = null
+        nextTick(() => {
+          // console.log(data.result) // FIXME: 接口数据
+          goods.value = data.result
+        })
+      })
+    }
+  }, { immediate: true })
+  return goods
+}
 export default {
   name: 'XtxGoodsPage',
   components: { GoodsRelevant, GoodsImage, GoodsSales, GoodsName, GoodsSku, GoodsTabs, GoodsHot, GoodsWarn },
+
   setup () {
     const goods = useGoods()
     const changeSku = (sku) => {
@@ -76,7 +102,7 @@ export default {
       currSku.value = sku
     }
 
-    // 提供goods数据给后代组件使用
+    // FIXME: 提供goods数据给后代组件使用
     provide('goods', goods)
 
     // 选择的数量
@@ -112,24 +138,6 @@ export default {
 
     return { goods, changeSku, num, insertCart }
   }
-}
-// 获取商品详情
-const useGoods = () => {
-  // 出现路由地址商品ID发生变化，但是不会重新初始化组件
-  const goods = ref(null)
-  const route = useRoute()
-  watch(() => route.params.id, (newVal) => {
-    if (newVal && `/product/${newVal}` === route.path) {
-      findGoods(route.params.id).then(data => {
-        // 让商品数据为null然后使用v-if的组件可以重新销毁和创建
-        goods.value = null
-        nextTick(() => {
-          goods.value = data.result
-        })
-      })
-    }
-  }, { immediate: true })
-  return goods
 }
 </script>
 

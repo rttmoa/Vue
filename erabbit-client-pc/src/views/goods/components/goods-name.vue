@@ -8,7 +8,7 @@
   <div class="g-service">
     <dl>
       <dt>促销</dt>
-      <dd>12月好物放送，App领券购买直降120元</dd>
+      <dd>12月好物放送, App领券购买直降120元</dd>
     </dl>
     <dl>
       <dt>配送</dt>
