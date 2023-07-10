@@ -5,7 +5,7 @@
   <div class='xtx-goods-page' v-if="goods">
     <div class="container">
 
-      <!-- 面包屑 -->
+      <!-- TODO: 面包屑 -->
       <XtxBread>
         <XtxBreadItem to="/">首页</XtxBreadItem>
         <XtxBreadItem :to="`/category/${goods.categories[1].id}`">{{goods.categories[1].name}}</XtxBreadItem>
@@ -13,37 +13,41 @@
         <XtxBreadItem>{{goods.name}}</XtxBreadItem>
       </XtxBread>
 
-      <!-- 商品信息 -->
+      <!-- TODO: 商品信息 -->
       <div class="goods-info">
         <div class="media">
-          <!-- FIXME: 预览图 放大的位置 useMouseInElement 获取 elementX, elementY, isOutside 数据 -->
+          <!-- FIXME: 预览图 放大的位置 TODO:（useMouseInElement 获取 elementX, elementY, isOutside 数据） -->
           <GoodsImage :images="goods.mainPictures" />
           <!-- 销量人气、商品评价、收藏人气、品牌信息 -->
           <GoodsSales />
         </div>
         <div class="spec">
+          <!-- FIXME: 商品标题、商品描述、商品价格 + 全国城市 TODO: （获取省市区数据函数、父子组件传值回调） -->
           <GoodsName :goods="goods" />
           <!-- sku组件 skuId="1369155865461919746" 测试选中 -->
+          <!-- FIXME: 去选择 规格属性 -->
           <GoodsSku :goods="goods" @change="changeSku" />
-          <!-- FIXME: 数量选择组件 -->
+          <!-- FIXME: 数量选择组件   TODO: (使用vueuse的useVModel做数据绑定,修改 count 通知父组件更新   const count = useVModel(props, 'modelValue', emit) ) -->
           <XtxNumbox label="数量" v-model="num" :max="goods.inventory" />
           <!-- 按钮组件 -->
           <XtxButton @click="insertCart()" type="primary" style="margin-top: 20px">加入购物车</XtxButton>
         </div>
       </div>
 
-      <!-- 商品推荐 -->
+      <!-- TODO: 商品推荐 (轮播图)  -->
+      <!-- 轮播图接口处理中需要处理 数据结构  Array(16) [{…}, {…}, {…}, {…}, {…},....] ->  [[4个],[4个],[4个],[4个]]  -->
       <GoodsRelevant :goodsId="goods.id" />
 
-      <!-- 商品详情 -->
+      <!-- TODO: 商品详情 -->
       <div class="goods-footer">
         <div class="goods-article">
-          <!-- 商品+评价 -->
+          <!-- Tabs： 商品 + 评价  动态渲染组件：<component :is="activeName"></component> -->
+          <!-- // TODO: 评价列表中： watch监听reqparams对象，如果参数page，pageSize，hasPicture，tag，sortField变化去发请求 -->
           <GoodsTabs />
           <!-- 注意事项 -->
           <GoodsWarn />
         </div>
-        <!-- 24热榜+周热销榜 -->
+        <!-- 24热榜 + 周热销榜 -->
         <div class="goods-aside">
           <GoodsHot />
           <GoodsHot :type="2" />
@@ -79,7 +83,7 @@ const useGoods = () => {
         // 让商品数据为null然后使用v-if的组件可以重新销毁和创建
         goods.value = null
         nextTick(() => {
-          console.log(data.result) // FIXME: 接口数据
+          console.log('商品数据', data.result) // FIXME: 接口数据
           // console.log(data.result.mainPictures) // 5张商品详情图片
           goods.value = data.result
         })
@@ -91,7 +95,6 @@ const useGoods = () => {
 export default {
   name: 'XtxGoodsPage',
   components: { GoodsRelevant, GoodsImage, GoodsSales, GoodsName, GoodsSku, GoodsTabs, GoodsHot, GoodsWarn },
-
   setup () {
     const goods = useGoods()
     const changeSku = (sku) => {

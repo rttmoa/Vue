@@ -13,6 +13,7 @@
   <!-- 底部组件 -->
   <AppFooter />
 </template>
+
 <script>
 import AppNavbar from '@/components/app-navbar'
 import AppHeader from '@/components/app-header'

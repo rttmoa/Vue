@@ -24,7 +24,7 @@ export default {
   },
   setup (props) {
     // 最终需要的数据是 sliders 提供给轮播图使用
-    // 数据结构：sliders = [[4个],[4个],[4个],[4个]]
+    // 数据结构： sliders = [[4个],[4个],[4个],[4个]]
     const sliders = ref([])
     findRelevantGoods({ id: props.goodsId }).then(data => {
       // data.result 商品列表，数据结构 [16个]
@@ -32,8 +32,10 @@ export default {
       const pageSize = 4
       const pageCount = Math.ceil(data.result.length / pageSize)
       for (let i = 0; i < pageCount; i++) {
-        sliders.value.push(data.result.slice(pageSize * i, pageSize * (i + 1)))
+        sliders.value.push(data.result.slice(pageSize * i, pageSize * (i + 1))) // (4*0, 4*1), (4*1, 4*2),
       }
+      // console.log('接口中', data.result) // (16) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+      // console.log('处理后', sliders.value) // Array(4)  [[{…}, {…}, {…}, {…}], [{…}, {…}, {…}, {…}], [{…}, {…}, {…}, {…}], [{…}, {…}, {…}, {…}]]
     })
     return { sliders }
   }

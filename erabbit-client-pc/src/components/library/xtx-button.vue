@@ -1,8 +1,9 @@
 <template>
-  <button class="xtx-button ellipsis" :class="[size,type]">
+  <button class="xtx-button ellipsis" :class="[size, type]">
     <slot />
   </button>
 </template>
+
 <script>
 export default {
   name: 'XtxButton',

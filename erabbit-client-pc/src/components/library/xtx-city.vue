@@ -1,11 +1,12 @@
-<!-- TODO: 全国城市 -->
+<!-- TODO: 全国城市 （切换省、市、） -->
 <template>
   <div class="xtx-city" ref="target">
-    <div class="select" @click="toggle()" :class="{active:visible}">
+    <div class="select" @click="toggle()" :class="{active: visible}">
       <span v-if="!fullLocation" class="placeholder">{{placeholder}}</span>
       <span v-else class="value">{{fullLocation}}</span>
       <i class="iconfont icon-angle-down"></i>
     </div>
+    <!-- 隐藏的区域 -->
     <div class="option" v-if="visible">
       <div v-if="loading" class="loading"></div>
       <template v-else>
@@ -14,6 +15,7 @@
     </div>
   </div>
 </template>
+
 <script>
 import { computed, reactive, ref } from 'vue'
 import { onClickOutside } from '@vueuse/core'
@@ -21,6 +23,7 @@ import axios from 'axios'
 export default {
   name: 'XtxCity',
   props: {
+    // fullLocation: 北京市 市辖区 东城区
     fullLocation: {
       type: String,
       default: ''
@@ -36,6 +39,7 @@ export default {
 
     // 所有省市区数据
     const allCityData = ref([])
+
     // 正在加载数据
     const loading = ref(false)
 
@@ -57,9 +61,8 @@ export default {
       visible.value = false
     }
     // 提供一个切换函数给select使用
-    const toggle = () => {
-      visible.value ? close() : open()
-    }
+    const toggle = () => { visible.value ? close() : open() }
+
     // 实现点击组件外部元素进行关闭操作
     const target = ref(null)
     onClickOutside(target, () => {

@@ -1,4 +1,4 @@
-<!-- TODO: Tabs 商品评价 -->
+<!-- TODO: Tabs 商品评价 （评论的内容） -->
 <template>
   <div class="goods-comment">
 
@@ -11,13 +11,7 @@
       <div class="tags">
         <div class="dt">大家都在说：</div>
         <div class="dd">
-          <a
-            v-for="(item,i) in commentInfo.tags"
-            :key="item.title"
-            href="javascript:;"
-            :class="{active:currentTagIndex===i}"
-            @click="changeTag(i)"
-          >
+          <a v-for="(item, i) in commentInfo.tags" @click="changeTag(i)" :class="{active: currentTagIndex === i}" :key="item.title" href="javascript:;">
             {{item.title}}（{{item.tagCount}}）
           </a>
         </div>
@@ -40,17 +34,20 @@
           <span>{{formatNickname(item.member.nickname)}}</span>
         </div>
         <div class="body">
+          <!-- 星星 + 属性 -->
           <div class="score">
             <i v-for="i in item.score" :key="i+'s'" class="iconfont icon-wjx01"></i>
             <i v-for="i in 5-item.score" :key="i+'k'" class="iconfont icon-wjx02"></i>
             <span class="attr">{{formatSpecs(item.orderInfo.specs)}}</span>
           </div>
           <div class="text">{{item.content}}</div>
-          <!-- 评论图片组件 -->
+          <!-- FIXME: 评论图片组件 -->
           <GoodsCommentImage v-if="item.pictures.length" :pictures="item.pictures" />
           <div class="time">
             <span>{{item.createTime}}</span>
-            <span class="zan"><i class="iconfont icon-dianzan"></i>{{item.praiseCount}}</span>
+            <span class="zan">
+              <i class="iconfont icon-dianzan"></i>{{item.praiseCount}}
+            </span>
           </div>
         </div>
       </div>
@@ -83,11 +80,12 @@ export default {
         tagCount: data.result.evaluateCount,
         type: 'all'
       })
+      // console.log('大家都在说', data.result) // FIXME: 大家都在说
       // 设置数据之前，tags数组前追加 有图tag  全部评价tag
       commentInfo.value = data.result
     })
 
-    // 激活tag
+    // 切换 tag
     const currentTagIndex = ref(0)
     const changeTag = (i) => {
       currentTagIndex.value = i
@@ -106,18 +104,19 @@ export default {
         reqParams.hasPicture = null
         reqParams.tag = tag.title
       }
-      // 重置页码1
+      // 重置页码 1
       reqParams.page = 1
     }
 
     // 点击排序
     const changeSort = (sortField) => {
+      // null || createTime || praiseCount
       reqParams.sortField = sortField
-      // 重置页码1
+      // 重置页码 1
       reqParams.page = 1
     }
 
-    // 准备筛选条件数据
+    // FIXME: 准备筛选条件数据 （监听参数并发送请求）
     const reqParams = reactive({
       page: 1,
       pageSize: 10,
@@ -127,20 +126,24 @@ export default {
       sortField: null
     })
 
-    // 初始化需要发请求，筛选条件发生改变发请求
+    // FIXME: 初始化需要发请求，筛选条件发生改变发请求
     const commentList = ref([])
     const total = ref(0)
+    // TODO: watch监听reqparams对象，如果参数page，pageSize，hasPicture，tag，sortField变化去发请求
     watch(reqParams, () => {
       findGoodsCommentList(goods.value.id, reqParams).then(data => {
-        commentList.value = data.result.items
-        total.value = data.result.counts
+        // console.log('评论列表数据', data.result) // {counts: 86, page: '1', pageSize: 10, pages: 9, items: Array(10)}
+        const { counts, items } = data.result
+        commentList.value = items
+        total.value = counts
       })
     }, { immediate: true })
 
     // 定义转换数据的函数（对应vue2.0的过滤器）
     const formatSpecs = (specs) => {
-      return specs.reduce((p, c) => `${p} ${c.name}：${c.nameValue}`, '').trim()
+      return specs.reduce((p, c) => `${p} ${c.name}：${c.nameValue}`, ' ').trim()
     }
+    // 用户名称
     const formatNickname = (nickname) => {
       return nickname.substr(0, 1) + '****' + nickname.substr(-1)
     }

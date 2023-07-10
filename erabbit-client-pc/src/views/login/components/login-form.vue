@@ -13,7 +13,6 @@
       </a>
     </div>
 
-
     <Form ref="formCom" class="form" :validation-schema="schema" v-slot="{errors}" autocomplete="off">
 
       <!-- 账号密码登陆 -->
@@ -103,8 +102,6 @@
 
   </div>
 </template>
-
-
 
 <script>
 import { onUnmounted, reactive, ref, watch } from 'vue'
@@ -211,8 +208,6 @@ export default {
       }
     }
 
-
-
     // TODO: 手机短信登陆： 发送验证码
     const time = ref(0)
     // pause 暂停, resume 开始
@@ -229,6 +224,7 @@ export default {
     // 1.3 如果失败，失败的校验样式显示出来
     const send = async () => {
       const valid = mySchema.mobile(form.mobile) // vaild是传入utils中校验后返回的true
+      console.log(valid)
       if (valid === true) {
         // 通过
         if (time.value === 0) {
@@ -255,7 +251,6 @@ export default {
   }
 }
 </script>
-
 
 <style scoped lang="less">
 // 账号容器

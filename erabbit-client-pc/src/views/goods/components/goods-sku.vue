@@ -2,16 +2,19 @@
 <template>
   <div class="goods-sku">
     <dl v-for="item in goods.specs" :key="item.id">
+      <!-- 左侧：颜色、尺码、规格 -->
       <dt>{{item.name}}</dt>
+      <!-- 右侧：选择不同的型号 -->
       <dd>
         <template v-for="val in item.values" :key="val.name">
-          <img :class="{selected:val.selected,disabled:val.disabled}" @click="changeSku(item,val)" v-if="val.picture" :src="val.picture" :title="val.name" >
-          <span :class="{selected:val.selected,disabled:val.disabled}" @click="changeSku(item,val)" v-else>{{val.name}}</span>
+          <img :class="{selected: val.selected, disabled: val.disabled}" @click="changeSku(item, val)" v-if="val.picture" :src="val.picture" :title="val.name" >
+          <span :class="{selected: val.selected, disabled: val.disabled}" @click="changeSku(item, val)" v-else>{{val.name}}</span>
         </template>
       </dd>
     </dl>
   </div>
 </template>
+
 <script>
 import powerSet from '@/vender/power-set'
 const spliter = '★'

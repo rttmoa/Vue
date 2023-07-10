@@ -1,8 +1,9 @@
 <template>
-  <div class="xtx-tabs-panel" v-show="name===activeName">
+  <div class="xtx-tabs-panel" v-show="name === activeName">
     <slot />
   </div>
 </template>
+
 <script>
 import { inject } from 'vue'
 export default {

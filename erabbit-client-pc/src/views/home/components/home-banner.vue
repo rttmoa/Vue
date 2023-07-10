@@ -11,13 +11,13 @@ import { ref } from 'vue'
 import { findBanner } from '@/api/home'
 export default {
   name: 'HomeBanner',
-  async setup () {
+  setup () {
     // 获取轮播图数据
     const sliders = ref([])
-    await findBanner().then(data => {
+    findBanner().then(data => {
+      // console.log('轮播图Data', data.result)
       sliders.value = data.result
     })
-    // console.log('sliders', JSON.parse(JSON.stringify(sliders.value))) // (5) [{…}, {…}, {…}, {…}, {…}]
     return {
       sliders
     }

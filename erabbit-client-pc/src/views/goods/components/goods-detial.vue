@@ -1,4 +1,4 @@
-<!-- TODO: Tabs 商品详情 -->
+<!-- TODO: Tabs 商品详情 （描述 + 描述图片） -->
 <template>
   <div class="goods-detail">
 
@@ -10,17 +10,19 @@
       </li>
     </ul>
 
-    <!-- 图片 -->
-    <img v-for="item in goods.details.pictures" :key="item" :src="item" alt="">
+    <!-- 图片 FIXME: 渲染截图3张图片  item是url -->
+    <img v-for="item in goods.details.pictures.splice(0, 3)" :key="item" :src="item" alt="">
 
   </div>
 </template>
+
 <script>
 import { inject } from 'vue'
 export default {
   name: 'GoodsDetial',
   setup () {
     const goods = inject('goods')
+    // console.log('属性+描述图片', goods)
     return { goods }
   }
 }

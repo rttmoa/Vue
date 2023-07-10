@@ -5,12 +5,12 @@ export default {
     return {
       // 用户信息
       profile: {
-        id: '',
-        avatar: '',
-        nickname: '',
-        account: '',
-        mobile: '',
-        token: ''
+        id: '1',
+        avatar: '123',
+        nickname: '123',
+        account: '123',
+        mobile: '123',
+        token: '12352asd11'
       },
       // 登录后回跳路径
       redirectUrl: '/'

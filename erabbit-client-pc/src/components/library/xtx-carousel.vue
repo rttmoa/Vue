@@ -1,4 +1,4 @@
-<!-- TODO: 轮播图 -->
+<!-- TODO: 轮播图 (轮播数据处理++ ) -->
 <template>
   <div class='xtx-carousel' @mouseenter="stop()" @mouseleave="start()">
     <!-- 图片容器 -->

@@ -26,16 +26,19 @@ export default {
   setup (props) {
     // 类型数据字典
     const types = { 1: '24小时热销榜', 2: '周热销榜', 3: '总热销榜' }
-    const title = computed(() => {
-      return types[props.type]
-    })
+    const title = computed(() => { return types[props.type] })
+
     // 发请求获取数据
     const route = useRoute()
     const goodsList = ref([])
     findGoodsHot({ id: route.params.id, type: props.type }).then(data => {
+      // console.log('热销榜结果', data.result)
       goodsList.value = data.result
     })
-    return { title, goodsList }
+    return {
+      title,
+      goodsList
+    }
   }
 }
 </script>
