@@ -7,6 +7,7 @@
     </Transition>
   </XtxBread>
 </template>
+
 <script>
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'

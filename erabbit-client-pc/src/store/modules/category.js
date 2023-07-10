@@ -17,6 +17,7 @@ export default {
     },
     // 定义show和hide函数，控制当前分类的二级分类显示和隐藏
     show (state, id) {
+      // console.log(id)
       const currCategory = state.list.find(item => item.id === id)
       currCategory.open = true
     },

@@ -2,14 +2,6 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import store from '@/store'
 import { h } from 'vue'
 
-// http://localhost:8080/#/
-// http://localhost:8080/#/category/1043000
-// http://localhost:8080/#/category/sub/1008006
-// http://localhost:8080/#/product/3434008
-// http://localhost:8080/#/cart
-// http://localhost:8080/#/login
-// http://localhost:8080/#/login/callback
-// member未激活
 const Layout = () => import('@/views/Layout')
 const Home = () => import('@/views/home')
 const TopCategory = () => import('@/views/category/index')
@@ -114,6 +106,7 @@ const routes = [
 const router = createRouter({
   // 使用hash的路由模式
   history: createWebHashHistory(),
+  // 路由规则
   routes,
   // 每次切换路由的时候滚动到页面顶部
   scrollBehavior() {
@@ -130,7 +123,9 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   // 需要登录的路由：地址是以 /member 开头
   const { profile } = store.state.user
+  // 如果未登录 && 要去结算
   if (!profile.token && to.path.startsWith('/member')) {
+    // 跳转到登陆页
     return next('/login?redirectUrl=' + encodeURIComponent(to.fullPath))
   }
   next()

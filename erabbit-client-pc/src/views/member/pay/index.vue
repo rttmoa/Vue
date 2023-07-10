@@ -1,3 +1,5 @@
+<!-- TODO: 支付订单 订单提交成功！请尽快完成支付 -->
+<!-- http://localhost:8080/#/member/pay?orderId=1678348637068857346 -->
 <template>
   <div class="xtx-pay-page">
     <div class="container">
@@ -43,21 +45,21 @@
         <img src="@/assets/images/load.gif" alt="">
         <div v-if="order">
             <p>如果支付成功：</p>
-            <RouterLink :to="`/member/order/${$route.query.orderId}`">查看订单详情></RouterLink>
+            <RouterLink :to="`/member/order/${$route.query.orderId}`"> 查看订单详情> </RouterLink>
             <p>如果支付失败：</p>
-            <RouterLink to="/">查看相关疑问></RouterLink>
+            <RouterLink to="/"> 查看相关疑问> </RouterLink>
         </div>
       </div>
     </XtxDialog>
   </div>
 </template>
+
 <script>
 import { useRoute } from 'vue-router'
 import { findOrderDetail } from '@/api/order'
 import { ref } from 'vue'
 import { usePayTime } from '@/hooks'
 import { baseURL } from '@/utils/request'
-
 export default {
   name: 'XtxPayPage',
   setup () {

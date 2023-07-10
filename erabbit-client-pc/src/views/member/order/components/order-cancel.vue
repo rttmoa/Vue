@@ -56,6 +56,7 @@ export default {
 }
 </script>
 <style scoped lang="less">
+
  .xtx-dialog :deep(.wrapper) {
   width: 620px;
 }

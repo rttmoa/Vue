@@ -17,11 +17,20 @@ import '@/mock/index.js'
 createApp(App).use(store).use(router).use(UI).mount('#app')
 
 // UrlAddress
-// 首页：     http://localhost:8080/#/
+// 首页：    http://localhost:8080/#/
+
 // 分类：     http://localhost:8080/#/category/1043000
 // 详情分类： http://localhost:8080/#/category/sub/1008006
 // 商品详情： http://localhost:8080/#/product/3434008
+
 // 购物车：   http://localhost:8080/#/cart
+
+// 个人中心：http://localhost:8080/#/member
+// 我的订单：http://localhost:8080/#/member/order
+// 填写订单：http://localhost:8080/#/member/checkout
+// 支付订单：http://localhost:8080/#/member/pay
+// 支付结果：http://localhost:8080/#/pay/callback
+// 订单详情：http://localhost:8080/#/member/order/1678221211961659393
+
 // 登陆：     http://localhost:8080/#/login
 // 联合登陆： http://localhost:8080/#/login/callback
-// member未激活

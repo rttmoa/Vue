@@ -22,6 +22,7 @@
     </div>
   </XtxDialog>
 </template>
+
 <script>
 import { ref } from 'vue'
 import { logisticsOrder } from '@/api/order'

@@ -69,6 +69,7 @@ export default {
   },
   emits: ['on-cancel', 'on-delete', 'on-confirm', 'on-logistics'],
   setup (props) {
+    // TODO: 支付倒计时函数
     const { start, timeText } = usePayTime()
     start(props.order.countdown)
 

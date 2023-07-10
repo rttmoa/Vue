@@ -1,19 +1,27 @@
+<!-- TODO: 个人中心 首页 -->
 <template>
   <div class="member-home">
+
     <!-- 概览 -->
     <HomeOverview />
+
     <!-- 收藏 -->
     <HomePanel title="我的收藏">
       <GoodsItem v-for="item in collectGoods" :key="item.id" :goods="item" />
     </HomePanel>
+
     <!-- 足迹 -->
     <HomePanel title="我的足迹">
       <GoodsItem v-for="i in 4" :key="i" :goods="goods" />
     </HomePanel>
+
     <!-- 猜你 -->
     <GoodsRelevant />
+
   </div>
 </template>
+
+<!-- ============ Script ============= -->
 <script>
 import HomeOverview from './components/home-overview'
 import HomePanel from './components/home-panel'
@@ -40,10 +48,8 @@ export default {
 
     // 调用模拟的接口
     const collectGoods = ref([])
-    findCollect({
-      page: 1,
-      pageSize: 4
-    }).then(data => {
+    findCollect({ page: 1, pageSize: 4 }).then(data => {
+      // console.log('我的收藏接口数据', data.result)
       collectGoods.value = data.result.items
     })
 

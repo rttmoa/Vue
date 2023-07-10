@@ -31,6 +31,7 @@
   <!-- 收货地址添加编辑组件 -->
   <AddressEdit @on-success="successHandler" ref="addressEditCom" />
 </template>
+
 <script>
 import { ref } from 'vue'
 import AddressEdit from './address-edit'

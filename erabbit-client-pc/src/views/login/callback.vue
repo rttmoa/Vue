@@ -1,3 +1,4 @@
+<!-- QQ登陆 || 注册小兔鲜账户 -->
 <template>
 
   <LoginHeader>联合登录</LoginHeader>
@@ -29,8 +30,6 @@
   <LoginFooter />
 
 </template>
-
-
 
 <!-- TODO: 联合登陆callback组件的地址：http://localhost:8080/#/login/callback -->
 <script>

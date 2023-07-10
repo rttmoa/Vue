@@ -10,6 +10,7 @@
     </Teleport>
   </div>
 </template>
+
 <script>
 import { logisticsOrder } from '@/api/order'
 import OrderLogistics from './order-logistics'

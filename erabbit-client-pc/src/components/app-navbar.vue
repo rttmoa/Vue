@@ -12,7 +12,7 @@
           <li><RouterLink to="/login">请先登录</RouterLink></li>
           <li><a href="javascript:;">免费注册</a></li>
         </template>
-        <li><a href="javascript:;">我的订单</a></li>
+        <li><RouterLink to="/member/order" style="color: deeppink">我的订单</RouterLink></li>
         <li><a href="javascript:;">会员中心</a></li>
         <li><a href="javascript:;">帮助中心</a></li>
         <li><a href="javascript:;">关于我们</a></li>
@@ -22,14 +22,12 @@
   </nav>
 </template>
 
-
 <script>
 import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 export default {
   name: 'AppTopnav',
-
   setup () {
     // 获取用户的登录信息才能控制切换导航菜单
     const store = useStore()

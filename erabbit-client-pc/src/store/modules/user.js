@@ -1,28 +1,29 @@
 // 用户模块
 export default {
   namespaced: true,
-  state () {
+  state() {
     return {
       // 用户信息
       profile: {
-        id: '1',
-        avatar: '123',
-        nickname: '123',
-        account: '123',
-        mobile: '123',
-        token: '12352asd11'
+        id: '',
+        avatar: '',
+        nickname: '',
+        account: '',
+        mobile: '',
+        token: ''
       },
       // 登录后回跳路径
       redirectUrl: '/'
     }
   },
+  // TODO: reducers
   mutations: {
     // 修改用户信息，payload就是用户信息对象
-    setUser (state, payload) {
+    setUser(state, payload) {
       state.profile = payload
     },
     // 修改回跳地址
-    setRedirectUrl (state, url) {
+    setRedirectUrl(state, url) {
       state.redirectUrl = url
     }
   }

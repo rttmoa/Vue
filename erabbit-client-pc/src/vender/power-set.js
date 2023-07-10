@@ -1,7 +1,7 @@
 /**
- * Find power-set of a set using BITWISE approach.
+ * Find power-set of a set using BITWISE approach. (使用 BITWISE 方法查找集合的幂集)
  *
- * @param {*[]} originalSet
+ * @param {*[]} originalSet (初始值)
  * @return {*[][]}
  */
  export default function bwPowerSet(originalSet) {

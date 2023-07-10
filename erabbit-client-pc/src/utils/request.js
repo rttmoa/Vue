@@ -15,6 +15,7 @@ const instance = axios.create({
   timeout: 5000
 })
 
+// 请求拦截
 instance.interceptors.request.use(config => {
   // 拦截业务逻辑
   // 进行请求配置的修改

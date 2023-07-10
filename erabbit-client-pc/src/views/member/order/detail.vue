@@ -1,3 +1,4 @@
+<!-- TODO: 订单详情(查看详情信息)：  http://localhost:8080/#/member/order/1678221211961659393  -->
 <template>
   <div class="member-order-detail" v-if="order">
     <!-- 头部 -->
@@ -17,6 +18,8 @@
     <DetailInfo :order="order" />
   </div>
 </template>
+
+<!-- ========================= Script =================================== -->
 <script>
 import { ref } from 'vue'
 import DetailAction from './components/detail-action'
@@ -37,6 +40,7 @@ export default {
     const route = useRoute()
     const order = ref(null)
     findOrderDetail(route.params.id).then(data => {
+      // console.log('订单详情接口数据', data.result)
       order.value = data.result
     })
     return { order }

@@ -1,3 +1,5 @@
+<!-- TODO: 填写订单 收货地址、商品信息、配送时间、支付方式  -->
+<!-- http://localhost:8080/#/member/checkout -->
 <template>
   <div class="xtx-pay-checkout-page">
     <div class="container">
@@ -57,7 +59,7 @@
         <div class="box-body">
           <a class="my-btn active" href="javascript:;">在线支付</a>
           <a class="my-btn" href="javascript:;">货到付款</a>
-          <span style="color:#999">货到付款需付5元手续费</span>
+          <span style="color: #999">货到付款需付5元手续费</span>
         </div>
         <!-- 金额明细 -->
         <h3 class="box-title">金额明细</h3>
@@ -77,6 +79,7 @@
     </div>
   </div>
 </template>
+
 <script>
 import CheckoutAddress from './components/checkout-address'
 import { createOrder, submitOrder, repurchaseOrder } from '@/api/order'

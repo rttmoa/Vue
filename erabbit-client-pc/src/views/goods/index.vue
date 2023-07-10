@@ -122,19 +122,21 @@ export default {
         // id skuId name attrsText picture price nowPrice selected stock count isEffective
         const { skuId, specsText: attrsText, inventory: stock } = currSku.value
         const { id, name, price, mainPictures } = goods.value
-        store.dispatch('cart/insertCart', {
-          skuId,
-          attrsText,
-          stock,
-          id,
-          name,
-          price,
-          nowPrice: price,
-          picture: mainPictures[0],
+        const newDoc = {
+          skuId, // 300425957
+          attrsText, // "规格：多功能 款式：10.1寸彩屏"
+          stock, // 3625
+          id, // "4019874"
+          name, // "麦瑞克家用轻音智能多功能彩屏跑步机S450"
+          price, // "2812.00"
+          nowPrice: price, // "2812.00"
+          picture: mainPictures[0], // "https://yanxuan-item.nosdn.127.net/a5d745bbe067ca2468cdb2948f4f10ca.jpg"
           selected: true,
           isEffective: true,
-          count: num.value
-        }).then(() => {
+          count: num.value // 1
+        }
+        // console.log('加入购物车数据', newDoc)
+        store.dispatch('cart/insertCart', newDoc).then(() => {
           Message({ type: 'success', text: '加入购物车成功' })
         })
       } else {

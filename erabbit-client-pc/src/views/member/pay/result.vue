@@ -10,7 +10,7 @@
       <div class="pay-result">
         <span v-if="$route.query.payResult" class="iconfont icon-queren2 green"></span>
         <span v-else class="iconfont icon-shanchu red" ></span>
-        <p class="tit">订单支付{{$route.query.payResult?'成功':'失败'}}</p>
+        <p class="tit">订单支付{{$route.query.payResult ? '成功' : '失败'}}</p>
         <p class="tip">我们将尽快为您发货，收货期间请保持手机畅通</p>
         <p>支付方式：<span>支付宝支付</span></p>
         <p>支付金额：<span class="red">¥{{order?.payMoney}}</span></p>
@@ -26,6 +26,7 @@
     </div>
   </div>
 </template>
+
 <script>
 import { findOrderDetail } from '@/api/order'
 import { useRoute } from 'vue-router'

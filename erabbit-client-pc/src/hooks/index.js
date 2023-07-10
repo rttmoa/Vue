@@ -8,6 +8,7 @@ import dayjs from 'dayjs'
  * @param {Element} target - Dom对象
  * @param {Function} apiFn - API函数
  */
+// 表示: 如果Dom盒子进入可视区后，调用api()函数后，使用ref挂载接口数据后，返回ref数据
 export const useLazyData = (apiFn) => {
     const result = ref([])
     const target = ref(null)

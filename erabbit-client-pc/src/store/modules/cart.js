@@ -230,20 +230,20 @@ export default {
         // 加入购物车
         insertCart(ctx, payload) {
             return new Promise((resolve, reject) => {
-                if (ctx.rootState.user.profile.token) {
-                    // 已登录
-                    insertCart({ skuId: payload.skuId, count: payload.count }).then(() => {
-                        return findCart()
-                    }).then(data => {
-                        ctx.commit('setCart', data.result)
-                        resolve()
-                    })
-                } else {
-                    // 未登录
-                    ctx.commit('insertCart', payload)
-                    resolve()
-                }
-            })
+              if (ctx.rootState.user.profile.token) {
+                  // 已登录
+                  insertCart({ skuId: payload.skuId, count: payload.count }).then(() => {
+                      return findCart()
+                  }).then(data => {
+                      ctx.commit('setCart', data.result)
+                      resolve()
+                  })
+              } else {
+                  // 未登录
+                  ctx.commit('insertCart', payload)
+                  resolve()
+              }
+          })
         },
         // 获取商品列表
         findCart(ctx) {
@@ -255,23 +255,23 @@ export default {
                         resolve()
                     })
                 } else {
-                    // 未登录
-                    // 同时发送请求（有几个商品发几个请求）等所有请求成功，一并去修改本地数据。
-                    // Promise.all(promise数组).then((dataList)=>{})  同时发请求，所有请求成功，得到所有成功结果
-                    // Promise.resolve() Promise.reject() new Promise()
-                    // Promise.race(promise数组).then((data)=>{}) 同时发请求，最快的请求成功，得到成功结果
-                    const promiseArr = ctx.state.list.map(goods => {
-                            return getNewCartGoods(goods.skuId)
+                  // 未登录
+                  // 同时发送请求（有几个商品发几个请求）等所有请求成功，一并去修改本地数据。
+                  // Promise.all(promise数组).then((dataList)=>{})  同时发请求，所有请求成功，得到所有成功结果
+                  // Promise.resolve() Promise.reject() new Promise()
+                  // Promise.race(promise数组).then((data)=>{}) 同时发请求，最快的请求成功，得到成功结果
+                  const promiseArr = ctx.state.list.map(goods => {
+                      return getNewCartGoods(goods.skuId)
+                  })
+                  // dataList成功结果的集合，数据顺序和promiseArr顺序一致，它又是根据state.list而来
+                  Promise.all(promiseArr).then(dataList => {
+                    // 更新本地购物车
+                    dataList.forEach((data, i) => {
+                            ctx.commit('updateCart', { skuId: ctx.state.list[i].skuId, ...data.result })
                         })
-                        // dataList成功结果的集合，数据顺序和promiseArr顺序一致，它又是根据state.list而来
-                    Promise.all(promiseArr).then(dataList => {
-                        // 更新本地购物车
-                        dataList.forEach((data, i) => {
-                                ctx.commit('updateCart', { skuId: ctx.state.list[i].skuId, ...data.result })
-                            })
-                            // 调用resolve代表操作成功
-                        resolve()
-                    })
+                        // 调用resolve代表操作成功
+                    resolve()
+                  })
                 }
             })
         }

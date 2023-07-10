@@ -48,6 +48,7 @@
     </template>
   </XtxDialog>
 </template>
+
 <script>
 import { reactive, ref } from 'vue'
 import { addAddress, editAddress } from '@/api/order'

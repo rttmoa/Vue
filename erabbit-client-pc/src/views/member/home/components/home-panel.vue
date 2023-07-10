@@ -10,6 +10,8 @@
     </div>
   </div>
 </template>
+
+<!-- ============ Script ============= -->
 <script>
 export default {
   name: 'MemberHomePanel',
