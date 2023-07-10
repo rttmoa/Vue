@@ -1,4 +1,5 @@
-<!-- TODO: 订单详情(查看详情信息)：  http://localhost:8080/#/member/order/1678221211961659393  -->
+<!-- TODO: 订单详情(查看详情信息)  -->
+<!-- http://localhost:8080/#/member/order/1678221211961659393 -->
 <template>
   <div class="member-order-detail" v-if="order">
     <!-- 头部 -->
@@ -19,6 +20,7 @@
   </div>
 </template>
 
+<!-- http://localhost:8080/#/member/order/1678221211961659393 -->
 <!-- ========================= Script =================================== -->
 <script>
 import { ref } from 'vue'

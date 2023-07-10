@@ -1,4 +1,5 @@
 <!-- TODO: 个人中心 首页 -->
+<!-- http://localhost:8080/#/member -->
 <template>
   <div class="member-home">
 
@@ -21,6 +22,7 @@
   </div>
 </template>
 
+<!-- 个人中心：http://localhost:8080/#/member -->
 <!-- ============ Script ============= -->
 <script>
 import HomeOverview from './components/home-overview'
