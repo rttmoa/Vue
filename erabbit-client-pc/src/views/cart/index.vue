@@ -110,7 +110,7 @@
         </table>
       </div>
 
-      <!-- 操作栏 -->
+      <!-- TODO: 操作栏 -->
       <div class="action">
         <div class="batch">
           <XtxCheckbox @change="checkAll" :modelValue="$store.getters['cart/isCheckAll']"> 全选</XtxCheckbox>
@@ -119,8 +119,8 @@
           <a @click="batchDeleteCart(true)" href="javascript:;">清空失效商品</a>
         </div>
         <div class="total">
-          共 {{$store.getters['cart/validTotal']}} 件商品，已选择 {{$store.getters['cart/selectedTotal']}} 件，商品合计：
-          <span class="red">¥{{$store.getters['cart/selectedAmount']}}</span>
+          共 {{$store.getters['cart/validTotal']}} 件商品，已选择 {{$store.getters['cart/selectedTotal']}} 件，
+          商品合计：<span class="red">¥{{$store.getters['cart/selectedAmount']}}</span>
           <XtxButton @click="checkout()" type="primary">下单结算</XtxButton>
         </div>
       </div>

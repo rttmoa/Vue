@@ -1,6 +1,11 @@
 const path = require('path')
 
 module.exports = {
+  devServer: {
+    host: 'localhost',
+    port: 8080,
+    open: true,
+  },
   pluginOptions: {
     'style-resources-loader': {
       preProcessor: 'less',

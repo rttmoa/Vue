@@ -1,4 +1,4 @@
-<!-- TODO: 同类商品推荐 (轮播图) -->
+<!-- TODO: 同类商品推荐 (轮播图)  复用 -->
 <template>
   <div class="goods-relevant">
     <div class="header">
@@ -24,18 +24,20 @@ export default {
   },
   setup (props) {
     // 最终需要的数据是 sliders 提供给轮播图使用
-    // 数据结构： sliders = [[4个],[4个],[4个],[4个]]
+    // FIXME: 数据结构： sliders = [[4个],[4个],[4个],[4个]]
     const sliders = ref([])
     findRelevantGoods({ id: props.goodsId }).then(data => {
       // data.result 商品列表，数据结构 [16个]
       // 将data.result数据赋值给sliders数据，保证数据结构正确
       const pageSize = 4
-      const pageCount = Math.ceil(data.result.length / pageSize)
+      const pageCount = Math.ceil(data.result.length / pageSize) // 18 / 4
       for (let i = 0; i < pageCount; i++) {
+        // FIXME: 轮播图要的数组，需要data中4个一截取放到ref中
         sliders.value.push(data.result.slice(pageSize * i, pageSize * (i + 1))) // (4*0, 4*1), (4*1, 4*2),
       }
+      // Object：{id: '4023738', name: '舒适软弹，糖果色儿童运动鞋25-30', desc: '防踢鞋头更舒适', price: '139.00', picture: 'https://ya66.png', …}
       // console.log('接口中', data.result) // (16) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
-      // console.log('处理后', sliders.value) // Array(4)  [[{…}, {…}, {…}, {…}], [{…}, {…}, {…}, {…}], [{…}, {…}, {…}, {…}], [{…}, {…}, {…}, {…}]]
+      console.log('处理后', sliders.value) // Array(4)  [[{…}, {…}, {…}, {…}], [{…}, {…}, {…}, {…}], [{…}, {…}, {…}, {…}], [{…}, {…}, {…}, {…}]]
     })
     return { sliders }
   }
@@ -55,6 +57,7 @@ export default {
       font-size: 20px;
       padding-left: 10px;
     }
+    /**FIXME: 猜你喜欢的图标 */
     .icon {
       width: 16px;
       height: 16px;
@@ -76,6 +79,7 @@ export default {
     }
   }
 }
+/**TODO: :deep ??? */
 :deep(.xtx-carousel) {
   height: 380px;
   .carousel {
