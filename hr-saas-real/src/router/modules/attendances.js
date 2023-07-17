@@ -1,5 +1,7 @@
-
 import Layout from '@/layout'
+
+
+
 
 const attendRouter = {
   path: '/attendances',
@@ -12,7 +14,8 @@ const attendRouter = {
       name: 'attendances',
       meta: {
         title: '考勤',
-        icon: 'excel' }
+        icon: 'excel'
+      }
     },
     {
       path: 'archiving',

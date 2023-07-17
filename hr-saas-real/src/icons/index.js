@@ -1,9 +1,12 @@
 import Vue from 'vue'
-import SvgIcon from '@/components/SvgIcon'// svg component
+import SvgIcon from '@/components/SvgIcon' // svg component
 
 
-// TODO: register globally / 注册全局
+
+// TODO: 全局 Icon
 Vue.component('svg-icon', SvgIcon)
+
+
 
 // 下面三行代码的任务是 把 同级目录的 svg目录下的.svg图片引入到项目中来
 const req = require.context('./svg', false, /\.svg$/)

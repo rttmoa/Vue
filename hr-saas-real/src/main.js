@@ -1,12 +1,10 @@
 import Vue from 'vue'
-
-import 'normalize.css/normalize.css' // A modern alternative to CSS resets
-
+import 'normalize.css/normalize.css' // CSS 重置的现代替代方案
 import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
+import 'element-ui/lib/theme-chalk/index.css' // Vue2使用element-ui引入自定义主题的方法
+import '@/styles/index.scss' // 全局 CSS
 // import locale from 'element-ui/lib/locale/lang/en' // lang i18n
 
-import '@/styles/index.scss' // global css
 
 import App from './App'
 import store from './store'
@@ -22,7 +20,6 @@ import '@/permission' // permission control
 
 // directives是所有指令的一个集合
 Object.keys(directives).forEach(key => {
-// key就是指令名称
   Vue.directive(key, directives[key])
 })
 Object.keys(filters).forEach(key => {
@@ -39,6 +36,7 @@ Vue.use(ElementUI, {
 // 如果想要中文版 element-ui，按如下方式声明
 // Vue.use(ElementUI)
 Vue.config.productionTip = false;
+
 
 new Vue({
   el: '#app',

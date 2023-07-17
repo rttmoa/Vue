@@ -1,4 +1,6 @@
 import Layout from '@/layout'
+
+
 // 审批模块路由规则
 export default {
   path: '/departments', // 地址

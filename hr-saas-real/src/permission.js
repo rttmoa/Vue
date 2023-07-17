@@ -1,4 +1,3 @@
-// 路由的拦截权限问题
 import router from '@/router'
 import store from '@/store'
 import NProgress from 'nprogress'
@@ -6,9 +5,9 @@ import 'nprogress/nprogress.css' // 引入进度条样式
 
 
 
-// 前置守卫
+// TODO: 路由守卫 （路由的拦截权限问题）
 const whileList = ['/login', '/404'];
-router.beforeEach(async(to, from, next) => {
+router.beforeEach( async (to, from, next) => { // 前置守卫
   NProgress.start() // 开启进度条
   // next是一个必须执行的钩子 不执行就卡主了
   if (store.getters.token) { // token: f5b969aa-320c-4e57-ac59-3e013b9e9ed3
@@ -21,7 +20,7 @@ router.beforeEach(async(to, from, next) => {
       // 要判断是不是已经获取过资料了
       if (!store.getters.userId) {
         // 如果id不存在 意味着当前没有用户资料 就要去获取用户资料
-        // vuex的action是一个promise
+        // Vuex的action是一个promise
         const { roles } = await store.dispatch('user/getUserInfo')
         // 此时已经获取完资料
         const routes = await store.dispatch('permission/filterRoutes', roles.menus)
@@ -31,22 +30,16 @@ router.beforeEach(async(to, from, next) => {
         // 添加完路由之后 不能用next()  要用next(to.path) 否则地址不能生效 这算是一个已知 的小缺陷
         // 执行完addRoutes 必须执行next(to.path) 不能执行 next() 这是一个已知的问题缺陷
         next(to.path) // 解决直接执行next()时的异常
-      } else {
-        next() // 放行
-      }
+      } else next()   // 放行
     }
   } else {
-    if (whileList.indexOf(to.path) > -1) {
-      // 表示在白名单里面
-      next()
-    } else {
-      next('/login')
-    }
+    // if (whileList.indexOf(to.path) > -1) { next() }
+    // if(whileList.includes(to.path)) { next() } else { next('/login') }
+    whileList.includes(to.path) ? next() : next('/login')
   }
   NProgress.done() // 是为了解决手动输入地址时 进度条不关闭的问题
 })
 
-// 后置守卫
-router.afterEach(() => {
+router.afterEach(() => { // 后置守卫
   NProgress.done()
 })

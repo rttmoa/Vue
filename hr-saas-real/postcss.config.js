@@ -2,7 +2,7 @@
 
 module.exports = {
   'plugins': {
-    // to edit target browsers: use "browserslist" field in package.json
+    // 编辑目标浏览器：使用 package.json 中的“browserslist”字段
     'autoprefixer': {}
   }
 }

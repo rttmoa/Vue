@@ -10,11 +10,11 @@
   </section>
   <section class="container" v-else>
     <nav class="tab">
-      <a @click="hasAccount=true" :class="{active:hasAccount}" href="javascript:;">
+      <a @click="hasAccount=true" :class="{active: hasAccount}" href="javascript:;">
         <i class="iconfont icon-bind" />
         <span>已有小兔鲜账号，请绑定手机</span>
       </a>
-      <a @click="hasAccount=false" :class="{active:!hasAccount}" href="javascript:;">
+      <a @click="hasAccount=false" :class="{active: !hasAccount}" href="javascript:;">
         <i class="iconfont icon-edit" />
         <span>没有小兔鲜账号，请完善资料</span>
       </a>

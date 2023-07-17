@@ -2,6 +2,8 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import store from '@/store'
 import { h } from 'vue'
 
+
+
 const Layout = () => import('@/views/Layout')
 const Home = () => import('@/views/home')
 const TopCategory = () => import('@/views/category/index')

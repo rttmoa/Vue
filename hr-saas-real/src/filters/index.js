@@ -1,19 +1,18 @@
-// import parseTime, formatTime and set to filter
+// 导入parseTime、formatTime并设置为过滤器
+
 
 /**
- * Show plural label if time is plural number
+ * 如果时间是复数，则显示复数标签
  * @param {number} time
  * @param {string} label
  * @return {string}
  */
 function pluralize(time, label) {
-  if (time === 1) {
-    return time + label
-  }
-  return time + label + 's'
+  if (time === 1) return time + label
+  else return time + label + 's'
 }
-
 /**
+ * TODO: 处理时间，多久之前
  * @param {number} time
  */
 export function timeAgo(time) {
@@ -28,8 +27,7 @@ export function timeAgo(time) {
 }
 
 /**
- * Number formatting
- * like 10000 => 10k
+ * TODO: 数字格式化 （like 10000 => 10k）
  * @param {number} num
  * @param {number} digits
  */
@@ -51,7 +49,7 @@ export function numberFormatter(num, digits) {
 }
 
 /**
- * 10000 => "10,000"
+ * TODO: 处理 千分位 （10000 => "10,000"）
  * @param {number} num
  */
 export function toThousandFilter(num) {
@@ -59,13 +57,15 @@ export function toThousandFilter(num) {
 }
 
 /**
- * Upper case first char
+ * TODO: 第一个字符大写 （ "name" => "Name"）
  * @param {String} string
  */
 export function uppercaseFirst(string) {
   return string.charAt(0).toUpperCase() + string.slice(1)
 }
 
+
+/** #### TODO: 解析时间  ---*/
 export function parseTime(time, cFormat) {
   if (arguments.length === 0) {
     return null
@@ -101,9 +101,12 @@ export function parseTime(time, cFormat) {
     }
     return value || 0
   })
+  // console.log('timeStr', timeStr)
   return timeStr
 }
 
+
+/** #### TODO: 格式化时间 ---*/
 export function formatTime(time, option) {
   time = +time * 1000
   const d = new Date(time)
@@ -121,38 +124,23 @@ export function formatTime(time, option) {
   } else if (diff < 3600 * 24 * 2) {
     return '1天前'
   }
-  if (option) {
-    return parseTime(time, option)
-  } else {
-    return (
-      d.getMonth() +
-      1 +
-      '月' +
-      d.getDate() +
-      '日' +
-      d.getHours() +
-      '时' +
-      d.getMinutes() +
-      '分'
-    )
-  }
+  if (option) return parseTime(time, option)
+  else return d.getMonth() + 1 + '月' + d.getDate() + '日' + d.getHours() + '时' + d.getMinutes() + '分'
 }
+
+/** #### TODO: 获取现在格式时间 （年-月-日） ---*/
 export function getNowFormatDate() {
   var date = new Date()
   var seperator1 = '-'
   var year = date.getFullYear()
   var month = date.getMonth() + 1
   var strDate = date.getDate()
-  if (month >= 1 && month <= 9) {
-    month = '0' + month
-  }
-  if (strDate >= 0 && strDate <= 9) {
-    strDate = '0' + strDate
-  }
-  var currentdate = year + seperator1 + month + seperator1 + strDate
-  return currentdate
+  if (month >= 1 && month <= 9) month = `0${month}`
+  if (strDate >= 0 && strDate <= 9) strDate = `0${strDate}`
+  return year + seperator1 + month + seperator1 + strDate
 }
-/* 数字 格式化 */
+
+/** #### TODO: 数字 格式化 ---*/
 export function nFormatter(num, digits) {
   const si = [{
     value: 1e18,
@@ -177,8 +165,7 @@ export function nFormatter(num, digits) {
   {
     value: 1e3,
     symbol: 'k'
-  }
-  ]
+  }]
   for (let i = 0; i < si.length; i++) {
     if (num >= si[i].value) {
       return (
@@ -191,30 +178,31 @@ export function nFormatter(num, digits) {
   return num.toString()
 }
 
+
+
 export function html2Text(val) {
   const div = document.createElement('div')
   div.innerHTML = val
   return div.textContent || div.innerText
 }
 
+/** #### TODO: 千分位转化 ---*/
 export function toThousandslsFilter(num) {
-  return (+num || 0)
-    .toString()
-    .replace(/^-?\d+/g, m => m.replace(/(?=(?!\b)(\d{3})+$)/g, ','))
+  return (+num || 0).toString().replace(/^-?\d+/g, m => m.replace(/(?=(?!\b)(\d{3})+$)/g, ','))
 }
-// 验证手机号
+
+/** #### TODO: 验证手机号 （eg：15303663366） ---*/
 export function checkPhone(rule, value, callback) {
   if (!value) {
     return callback(new Error('手机号不能为空'))
   } else {
     const reg = /^1[3|4|5|7|8][0-9]\d{8}$/
-    if (reg.test(value)) {
-      callback()
-    } else {
-      return callback(new Error('请输入正确的手机号'))
-    }
+    if (reg.test(value)) callback()
+    else return callback(new Error('请输入正确的手机号'))
   }
 }
+
+/** #### TODO: 验证密码 （eg：123456） ---*/
 export function checkPassword(rule, value, callback) {
   if (!value) {
     return callback(new Error('密码不能为空'))
@@ -224,6 +212,7 @@ export function checkPassword(rule, value, callback) {
     callback()
   }
 }
+
 // 手机号证验证
 export function checkTel(value, callback) {
   var reg = /^1[3|4|5|7|8][0-9]\d{8}$/
@@ -252,21 +241,26 @@ export function checkEmail(rule, value, callback) {
     }
   }
 }
+
 // 英文验证
 export function checkCode(value, callback) {
   var reg = /^[A-Za-z]+$/g
   return reg.test(value)
 }
+
 // qq验证
 export function checkQq(value, callback) {
   var reg = /^[0-9]+$/g
   return reg.test(value)
 }
+
 // 银行卡号
 export function formatBankNo(BankNo, callback) {
   var strBin = '10,18,30,35,37,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,58,60,62,65,68,69,84,87,88,94,95,98,99'
   return strBin
 }
+
+/** #### TODO: 获取字符串长度 ---*/
 export function getStrleng(str, max) {
   var myLen = 0
   for (var i = 0; i < str.length && myLen <= max * 2; i++) {
@@ -276,20 +270,13 @@ export function getStrleng(str, max) {
   }
   return myLen
 }
-// 上传图片格式控制
+
+/** #### TODO: 上传图片格式控制 ---*/
 export function updatedImg(file, obj, callback, func) {
   if (file.size < 10100000) {
     var fileName = file.name
-    var suffix = fileName
-      .substring(fileName.lastIndexOf('.') + 1)
-      .toUpperCase()
-    if (
-      suffix === 'PDF' ||
-      suffix === 'JPG' ||
-      suffix === 'JPEG' ||
-      suffix === 'PNG' ||
-      suffix === 'GIF'
-    ) {
+    var suffix = fileName.substring(fileName.lastIndexOf('.') + 1).toUpperCase()
+    if (suffix === 'PDF' || suffix === 'JPG' || suffix === 'JPEG' || suffix === 'PNG' || suffix === 'GIF') {
       return true
     } else {
       var tipType = '文件类型不正确,请重新上传'
@@ -302,22 +289,13 @@ export function updatedImg(file, obj, callback, func) {
     return false
   }
 }
-// 上传文档格式控制
+
+/** #### TODO: 上传文档格式控制 ---*/
 export function updatedFile(file, obj, callback, func) {
   if (file.size < 10100000) {
     var fileName = file.name
-    var suffix = fileName
-      .substring(fileName.lastIndexOf('.') + 1)
-      .toUpperCase()
-    if (
-      suffix === 'DOC' ||
-      suffix === 'DOCX' ||
-      suffix === 'XLS' ||
-      suffix === 'XLSX' ||
-      suffix === 'PDF' ||
-      suffix === 'ZIP' ||
-      suffix === 'RAR'
-    ) {
+    var suffix = fileName.substring(fileName.lastIndexOf('.') + 1).toUpperCase()
+    if (suffix === 'DOC' || suffix === 'DOCX' || suffix === 'XLS' || suffix === 'XLSX' || suffix === 'PDF' || suffix === 'ZIP' || suffix === 'RAR') {
       return true
     } else {
       var tipType = '文件类型不正确,请重新上传'
@@ -330,16 +308,13 @@ export function updatedFile(file, obj, callback, func) {
     return false
   }
 }
+
+/** #### TODO: 上传文件 / 导入文件 ---*/
 export function importFile(file, obj, callback, func) {
   if (file.size < 10100000) {
     var fileName = file.name
-    var suffix = fileName
-      .substring(fileName.lastIndexOf('.') + 1)
-      .toUpperCase()
-    if (
-      suffix === 'XLS' ||
-      suffix === 'XLSX'
-    ) {
+    var suffix = fileName.substring(fileName.lastIndexOf('.') + 1).toUpperCase()
+    if (suffix === 'XLS' || suffix === 'XLSX') {
       return true
     } else {
       var tipType = '文件类型不正确,请重新上传'
@@ -352,10 +327,13 @@ export function importFile(file, obj, callback, func) {
     return false
   }
 }
+
+/** #### TODO: 获取最小高度 ---*/
 export function minHeight(resfile) {
   return document.body.clientHeight - 180 + 'px'
 }
 
+/** #### TODO: 格式化时间 ---*/
 export function formatDate(date, fmt = 'yyyy-MM-dd') {
   if (!(date instanceof Array)) {
     date = new Date(date)
@@ -382,6 +360,8 @@ export function formatDate(date, fmt = 'yyyy-MM-dd') {
 function padLeftZero(str) {
   return ('00' + str).substr(str.length)
 }
+
+/** #### TODO: GETBLOB ---*/
 export function getBlob(response) {
   const blob = new Blob([response.data], {
     type: 'application/vnd.ms-excel'
@@ -393,7 +373,8 @@ export function getBlob(response) {
   link.download = filename
   link.click()
 }
-// 图片 blob 流转化为可用 src
+
+/** #### TODO: 图片 blob 流转化为可用 src ---*/
 export function imgHandle(obj) {
   return window.URL.createObjectURL(obj)
 }

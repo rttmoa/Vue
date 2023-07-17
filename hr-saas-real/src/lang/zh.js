@@ -144,6 +144,5 @@ export default {
     reset: '重置',
     know: '我知道了',
     view: '查看'
-
   }
 }

@@ -1,4 +1,7 @@
-# http://editorconfig.org
+# Url:   http://editorconfig.org
+# TODO: editorconfig文件是什么？  https://blog.csdn.net/lhjuejiang/article/details/110925631
+# TODO: EditorConfig帮助开发人员在不同的编辑器和IDE之间定义和维护一致的编码样式
+# TODO: EditorConfig文件易于阅读，并且与版本控制系统配合使用
 root = true
 
 [*]

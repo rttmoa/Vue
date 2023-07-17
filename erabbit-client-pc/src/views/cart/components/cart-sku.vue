@@ -55,6 +55,7 @@ export default {
       visible.value ? close() : open()
     }
     // 点击其他地方关闭
+    // <div class="cart-sku" ref="target"></div>
     const target = ref(null)
     onClickOutside(target, () => { close() })
 

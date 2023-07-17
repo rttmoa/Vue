@@ -14,6 +14,7 @@ import customEN from './en'
 Vue.use(VueI18n) // 注册国际化对象
 // 有elementUI的语言包
 // Vuei18n进行实例化
+
 export default new VueI18n({
   // 多语言的配置选项
   // locale这个值是随意的

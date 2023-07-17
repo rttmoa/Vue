@@ -238,7 +238,7 @@ export default {
       this.loading = true
       try {
         const { data } = await getArticleById(this.articleId)
-
+        // console.log('getArticleById', data)
         // if (Math.random() > 0.5) {
         //   JSON.parse('dsankljdnskaljndlkjsa')
         // }

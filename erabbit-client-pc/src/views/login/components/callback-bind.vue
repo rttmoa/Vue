@@ -7,7 +7,7 @@
     <div class="xtx-form-item">
       <div class="field">
         <i class="icon iconfont icon-phone"></i>
-        <Field :class="{err:errors.mobile}" v-model="form.mobile" name="mobile" class="input" type="text" placeholder="绑定的手机号" />
+        <Field :class="{err: errors.mobile}" v-model="form.mobile" name="mobile" class="input" type="text" placeholder="绑定的手机号" />
       </div>
       <div v-if="errors.mobile" class="error">{{errors.mobile}}</div>
     </div>
@@ -16,7 +16,7 @@
         <i class="icon iconfont icon-code"></i>
         <Field :class="{err:errors.code}" v-model="form.code" name="code" class="input" type="text" placeholder="短信验证码" />
         <span @click="send()" class="code">
-          {{time===0?'发送验证码':`${time}秒后发送`}}
+          {{time === 0 ? '发送验证码' : `${time}秒后发送`}}
         </span>
       </div>
       <div v-if="errors.code" class="error">{{errors.code}}</div>
@@ -69,7 +69,7 @@ export default {
       code: schema.code
     }
 
-    // 发送短信验证码
+    // TODO: 发送短信验证码
     // pause 暂停 resume 开始
     // useIntervalFn(回调函数,执行间隔,是否立即开启)
     const formCom = ref(null)
@@ -105,7 +105,7 @@ export default {
       }
     }
 
-    // 立即绑定
+    // TODO: 立即绑定
     const store = useStore()
     const router = useRouter()
     const submit = async () => {
@@ -116,6 +116,7 @@ export default {
           ...form
         }).then(data => {
           // 实现和之前登录一样的逻辑
+
           // 1. 存储用户信息
           const { id, account, avatar, mobile, nickname, token } = data.result
           store.commit('user/setUser', { id, account, avatar, mobile, nickname, token })

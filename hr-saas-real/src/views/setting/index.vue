@@ -1,14 +1,10 @@
-<!-- 2、公司设置 -->
-<!--
-  树结构
- -->
+<!-- TODO: 公司设置 (树结构) -->
 <template>
   <div class="dashboard-container">
 
     <div class="app-container">
-      <!-- 公司页面结构  ———— 角色管理+公司信息 -->
+      <!-- FIXME: 公司页面结构  ———— Tab1角色管理 + Tab2公司信息 -->
       <el-tabs>
-
         <el-tab-pane label="角色管理">
           <el-row style="height: 60px">
             <el-button type="primary" size="small" @click="showDialog = true">新增角色</el-button>
@@ -29,7 +25,7 @@
           </el-table>
           <!-- 放置分页 -->
           <el-row type="flex" justify="end" style="height: 60px" align="middle">
-            <!-- this.$emit("update:current-page",newPage) -->
+            <!-- this.$emit("update: current-page", newPage) -->
             <el-pagination
               :total="page.total"
               :page-size="page.pagesize"
@@ -39,7 +35,6 @@
             />
           </el-row>
         </el-tab-pane>
-
         <el-tab-pane label="公司信息">
           <el-alert
             title="对公司名称、公司地址、营业执照、公司地区的更新，将使得公司资料被重新审核，请谨慎修改"
@@ -76,14 +71,12 @@
             </el-form-item>
           </el-form>
         </el-tab-pane>
-
         <el-tab-pane label="需 测试 分配权限(树结构)" ></el-tab-pane>
-
       </el-tabs>
     </div>
 
     <!-- 弹层组件 -->
-    <!-- this.$emit("update:visible", false) -->
+    <!-- this.$emit("update: visible", false) -->
     <el-dialog title="编辑角色" :visible="showDialog" @close="btnCancel">
       <!-- 表单 -->
       <el-form ref="roleForm" label-width="120px" :model="roleForm" :rules="rules">
@@ -134,6 +127,7 @@
 
 
 
+<!-- TODO: 公司设置： http://localhost:8888/hrsaas/setting -->
 <script>
 import { getRoleList, getCompanyInfo, deleteRole, getRoleDetail, updateRole, addRole, assignPerm } from '@/api/setting'
 import { getPermissionList } from '@/api/permission'
@@ -172,10 +166,8 @@ export default {
   },
   methods: {
     // 页码改变事件
-
     // 获取列表数据
     async getRoleList() {
-      // console.log(await getRoleList(this.page))
       const { total, rows } = await getRoleList(this.page)
       this.page.total = total
       this.list = rows
@@ -245,7 +237,7 @@ export default {
       this.showPermDialog = false;
     },
     // 分配权限关闭 + 关闭选择的树结构 + 关闭弹窗
-    btnPermCancel() {
+    btnPermCancel () {
       this.selectChecks = [];
       this.showPermDialog = false;
     }

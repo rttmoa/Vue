@@ -144,6 +144,7 @@ export default {
     async loadUserProfile () {
       try {
         const { data } = await getUserProfile()
+        // console.log(data)
         this.user = data.data
       } catch (err) {
         this.$toast('数据获取失败')

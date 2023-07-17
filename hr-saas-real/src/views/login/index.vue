@@ -9,7 +9,7 @@
           <img src="@/assets/common/login-logo.png" alt="" />
         </h3>
       </div>
-      <!-- 手机号验证 -->
+      <!-- FIXME: 手机号验证 -->
       <el-form-item prop="mobile">
         <span class="svg-container">
           <svg-icon icon-class="user" />
@@ -23,7 +23,7 @@
           auto-complete="on"
         />
       </el-form-item>
-
+      <!-- FIXME: 密码输入框 -->
       <el-form-item prop="password">
         <span class="svg-container">
           <svg-icon icon-class="password" />
@@ -44,13 +44,7 @@
         </span>
       </el-form-item>
 
-      <el-button
-        class="loginBtn"
-        :loading="loading"
-        type="primary"
-        style="width:100%;margin-bottom:30px;"
-        @click.native.prevent="handleLogin"
-      >
+      <el-button class="loginBtn" :loading="loading" type="primary" style="width:100%; margin-bottom:30px;" @click.native.prevent="handleLogin">
         登录
       </el-button>
 
@@ -58,8 +52,8 @@
         <span style="margin-right:20px;">账号: 13800000002</span>
         <span>密码: 123456</span>
       </div>
-
     </el-form>
+
   </div>
 </template>
 
@@ -69,36 +63,29 @@ import { mapActions } from 'vuex'
 export default {
   name: 'Login',
   data() {
-    /***--- validator 自定义校验函数  ---**/
-    const validateMobile = (rule, value, callback) => {
-      validMobile(value) ? callback() : callback(new Error('手机号格式不正确'))
-    }
-    // console.log("mapActions", mapActions(['user/login']))
     return {
-      loginForm: {
-        mobile: '13800000002',
-        password: '123456'
-      },
+      loginForm: { mobile: '13800000002', password: '123456' },
       loginRules: {
         mobile: [{ required: true, trigger: 'blur', message: '请输入手机号' }, {
           trigger: 'blur',
-          validator: validateMobile// 校验手机号
+          validator: (rule, value, callback) => {validMobile(value) ? callback() : callback(new Error('手机号格式不正确'))}
         }],
-        // 校验规则
         // min   max  校验的字符串 指的是长度 校验的是数字 校验的大小
-        password: [{ required: true, trigger: 'blur', message: '请输入密码' }, {
-          min: 6, max: 16, message: '密码长度在6-16位之间', trigger: 'blur'
-        }]
+        password: [
+          { required: true, trigger: 'blur', message: '请输入密码' },
+          { min: 6, max: 16, message: '密码长度在6-16位之间', trigger: 'blur' }
+        ]
       },
       loading: false,
-      passwordType: '',   // 默认改成password就可以隐藏掉了
+      passwordType: '', // 显示/隐藏 密码
       redirect: undefined
     }
   },
+  // TODO: 监听路由变化
   watch: {
     $route: {
       handler: function(route) {
-        // console.log("监听路由", route)
+        // console.log("$route", route) // {name: undefined, meta: {…}, path: '/login', hash: '', query: {…}, …}
         this.redirect = route.query && route.query.redirect
       },
       immediate: true
@@ -119,24 +106,17 @@ export default {
     },
     // 登录
     handleLogin() {
-      this.$refs.loginForm.validate(async isOK => {
-        // console.log(this.$router)
-        // return
+      this.$refs.loginForm.validate(async isOK => { // 通过 loginRules 校验后
         if (isOK) {
-          console.log("可以登陆")
-          // return
-          // 表示校验通过
           this.loading = true
           try {
-            // console.log(this['user/login']) //     res[key] = function mappedAction () {}
-            // console.log(this.loginForm) // {__ob__: Observer}
+            // console.log(this['user/login'])  // ƒ mappedAction () {}
+            // console.log(this.loginForm)      // {mobile: "13800000002, "password: "123456"}
             await this['user/login'](this.loginForm)
-            // 只要进行到这个位置 说明登录成功了 跳到主页
             this.$router.push('/')
           } catch (error) {
-            console.log("登陆错误", error) // FIXME: 在requestjs中 响应的结果 Promise.reject(new Error(Message))
+            console.log("登陆失败", error) // FIXME: 在requestjs中 响应的结果 Promise.reject(new Error(Message))
           } finally {
-            // finally是和trycatch配套的 不论你执行不执行catch都会执行finally
             this.loading = false
           }
         }

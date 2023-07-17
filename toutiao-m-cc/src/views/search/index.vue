@@ -79,7 +79,6 @@ export default {
     onSearch (val) {
       // 更新文本框内容
       this.searchText = val
-
       // 存储搜索历史记录
       // 要求：不要有重复历史记录、最新的排在最前面
       const index = this.searchHistories.indexOf(val)
@@ -87,7 +86,6 @@ export default {
         this.searchHistories.splice(index, 1)
       }
       this.searchHistories.unshift(val)
-
       // 渲染搜索结果
       this.isResultShow = true
     },

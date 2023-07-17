@@ -82,7 +82,11 @@
 
           <!-- 无效商品 -->
           <tbody v-if="$store.getters['cart/invalidList'].length">
-            <tr><td colspan="6"><h3 class="tit">失效商品</h3></td></tr>
+            <tr>
+              <td colspan="6">
+                <h3 class="tit">失效商品</h3>
+              </td>
+            </tr>
             <tr v-for="goods in $store.getters['cart/invalidList']" :key="goods.skuId">
               <td>
                 <XtxCheckbox style="color:#eee;" />

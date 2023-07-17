@@ -107,7 +107,6 @@ export default {
     closeOthers: 'Close Others',
     closeAll: 'Close All',
     refresh: 'refresh'
-
   },
   table: {
     title: 'Title',
@@ -144,6 +143,5 @@ export default {
     know: 'I Know',
     return: 'return',
     view: 'view'
-
   }
 }

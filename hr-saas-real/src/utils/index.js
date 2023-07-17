@@ -44,7 +44,7 @@ export function parseTime(time, cFormat) {
   }
   const time_str = format.replace(/{([ymdhisa])+}/g, (result, key) => {
     const value = formatObj[key]
-    // Note: getDay() returns 0 on Sunday
+    // NOTE: getDay() returns 0 on Sunday
     if (key === 'a') { return ['日', '一', '二', '三', '四', '五', '六'][value ] }
     return value.toString().padStart(2, '0')
   })
@@ -64,9 +64,7 @@ export function formatTime(time, option) {
   }
   const d = new Date(time)
   const now = Date.now()
-
   const diff = (now - d) / 1000
-
   if (diff < 30) {
     return '刚刚'
   } else if (diff < 3600) {
@@ -77,21 +75,8 @@ export function formatTime(time, option) {
   } else if (diff < 3600 * 24 * 2) {
     return '1天前'
   }
-  if (option) {
-    return parseTime(time, option)
-  } else {
-    return (
-      d.getMonth() +
-      1 +
-      '月' +
-      d.getDate() +
-      '日' +
-      d.getHours() +
-      '时' +
-      d.getMinutes() +
-      '分'
-    )
-  }
+  if (option) return parseTime(time, option)
+  else return d.getMonth() + 1 + '月' + d.getDate() + '日' + d.getHours() + '时' + d.getMinutes() + '分'
 }
 
 /**

@@ -224,7 +224,7 @@ export default {
     // 1.3 如果失败，失败的校验样式显示出来
     const send = async () => {
       const valid = mySchema.mobile(form.mobile) // vaild是传入utils中校验后返回的true
-      console.log(valid)
+      // console.log(valid)
       if (valid === true) {
         // 通过
         if (time.value === 0) {

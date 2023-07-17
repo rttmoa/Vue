@@ -1,5 +1,7 @@
-
 import Layout from '@/layout'
+
+
+
 
 export default {
   path: '/social_securitys',

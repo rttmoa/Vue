@@ -98,6 +98,7 @@ export default {
         if (this.user) {
           // 已登录，请求获取用户频道列表
           const { data } = await getUserChannels()
+          // console.log(data)
           channels = data.data.channels
         } else {
           // 未登录，判断是否有本地的频道列表数据
@@ -108,13 +109,14 @@ export default {
           } else {
             //    没有，请求获取默认频道列表
             const { data } = await getUserChannels()
+            console.log('获取默认频道列表', data)
             channels = data.data.channels
           }
         }
 
         this.channels = channels
       } catch (err) {
-        console.log(err)
+        console.log('获取用户频道Error', err)
         this.$toast('获取频道数据失败')
       }
     },

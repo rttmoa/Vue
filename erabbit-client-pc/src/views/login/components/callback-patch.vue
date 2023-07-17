@@ -65,7 +65,7 @@ export default {
     // 2. 发送短信验证码：接口API定义
     // 3. 完善信息
 
-    // 表单数据对象
+    // TODO: 表单数据对象
     const form = reactive({
       account: null,
       mobile: null,
@@ -83,6 +83,7 @@ export default {
     }
 
     // -------------------------------------------------------
+    // TODO: 验证码倒计时
     const formCom = ref(null)
     const time = ref(0)
     const { pause, resume } = useIntervalFn(() => {

@@ -23,6 +23,7 @@
   <LoginFooter />
 
 </template>
+
 <script>
 import LoginHeader from './components/login-header'
 import LoginFooter from './components/login-footer'

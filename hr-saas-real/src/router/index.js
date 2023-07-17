@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 Vue.use(Router)
+
 // 引入多个模块的规则
 import approvalsRouter from './modules/approvals'
 import departmentsRouter from './modules/departments'
@@ -16,7 +17,7 @@ import userRouter from './modules/user'
 import Layout from '@/layout'
 
 /**
- * Note: sub-menu only appear when route children.length >= 1
+ * Note: 子菜单仅在路由children.length >= 1 时出现
  * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
  *
  * hidden: true                   if set true, item will not show in the sidebar(default is false)
@@ -35,9 +36,7 @@ import Layout from '@/layout'
  */
 
 /**
- * constantRoutes
- * a base page that does not have permission requirements
- * all roles can be accessed
+ * TODO: constantRoutes 没有权限要求的基本页面 所有角色均可访问
  */
 export const constantRoutes = [
   {
@@ -45,13 +44,11 @@ export const constantRoutes = [
     component: () => import('@/views/login/index'),
     hidden: true
   },
-
   {
     path: '/404',
     component: () => import('@/views/404'),
     hidden: true
   },
-
   {
     path: '/',
     component: Layout,
@@ -75,11 +72,12 @@ export const constantRoutes = [
       }
     }]
   },
-  userRouter
-  // 404 page must be placed at the end !!!
+  userRouter,
+  // 404页面必须放在最后 !!!
   // { path: '*', redirect: '/404', hidden: true }
 ]
-// 动态路由的变量
+
+// TODO: 动态路由的变量
 export const asyncRoutes = [
   approvalsRouter,
   departmentsRouter,
@@ -90,11 +88,16 @@ export const asyncRoutes = [
   settingRouter,
   socialRouter
 ]
+
 const createRouter = () => new Router({
-  mode: 'history', // require service support
+  // 需要服务支持
+  mode: 'history',
   base: '/hrsaas/',
+  // 路由跳转后手动使滚动条回到头部位置
+  // 或者 router.afterEach((to, from, next ) => { window.scrollTo(0, 0)})
   scrollBehavior: () => ({ y: 0 }),
-  routes: [...constantRoutes] // 动态路由和静态路由的临时合并
+  // 动态路由和静态路由的临时合并
+  routes: [...constantRoutes]
 })
 
 const router = createRouter()
