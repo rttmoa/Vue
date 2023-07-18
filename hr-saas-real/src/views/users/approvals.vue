@@ -9,6 +9,7 @@
       </el-tabs>
     </div>
     <div class="approvalsContent">
+      <!-- FIXME: 审批类型 && 审批状态 -->
       <div class="topTitle">
         <div>
           <span>审批类型：</span>
@@ -36,27 +37,21 @@
         </div>
       </div>
       <div>
-        <!-- 排序组件需要 设置列的prop 和sortable才能使得默认的排序生效 -->
-        <el-table :data="tableData" style="width: 100%" :default-sort="{order: 'descending',prop: 'procApplyTime'}">
+        <!-- 排序组件需要 设置列的prop 和 sortable 才能使得默认的排序生效 -->
+        <el-table :data="tableData" style="width: 100%" :default-sort="{order: 'descending', prop: 'procApplyTime'}">
           <el-table-column type="selection" width="28" />
           <el-table-column type="index" label="序号" width="60" />
           <el-table-column prop="processName" label="审批类型" />
           <el-table-column v-if="tagName!=='launch'" prop="username" label="申请人" />
-          <el-table-column
-            v-if="tagName!=='approvals'"
-            prop="procCurrNodeUserName"
-            label="当前审批人"
-          />
+          <el-table-column v-if="tagName!=='approvals'" prop="procCurrNodeUserName" label="当前审批人" />
           <el-table-column label="申请时间" sortable prop="procApplyTime">
             <template slot-scope="scope">
               <span>{{ scope.row.procApplyTime | formatDate }}</span>
             </template>
           </el-table-column>
           <!-- <el-table-column label="最后操作时间" v-if='tabLab!=="launch"'>
-            <template slot-scope="scope">
-              <span>{{scope.row.proc_last_node_time | formatDate}}</span>
-            </template>
-          </el-table-column>-->
+            <template slot-scope="scope"><span>{{scope.row.proc_last_node_time | formatDate}}</span></template>
+          </el-table-column> -->
           <el-table-column label="审批状态">
             <template slot-scope="scope">
               <span v-if="scope.row.processState==='0'" class="rovalsState">
@@ -78,40 +73,36 @@
           </el-table-column>
           <el-table-column label="操作">
             <template slot-scope="scope">
-              <!--  && (item.row.stateOfApproval == '待审批' || item.row.stateOfApproval == '已驳回') -->
-              <el-button
-                v-show="(tagName == 'launch')&&(scope.row.processState==='1')"
-                size="mini"
-                type="text"
-                @click="clickPass('4',scope.row.processId)"
-              >撤销</el-button>
+               <!-- && (item.row.stateOfApproval == '待审批' || item.row.stateOfApproval == '已驳回') -->
+              <el-button v-show="(tagName == 'launch') && (scope.row.processState==='1')"
+                size="mini" type="text" @click="clickPass('4',scope.row.processId)"
+              >
+                撤销
+              </el-button>
               <!--  && item.row.currentApproverId == userId -->
-              <el-button
-                v-show="(tagName == 'copy' || tagName == 'approvals')&&(scope.row.processState==='1')"
-                size="mini"
-                type="text"
-                @click="clickPass('2',scope.row.processId)"
-              >通过</el-button>
+              <el-button v-show="(tagName == 'copy' || tagName == 'approvals')&&(scope.row.processState==='1')"
+                size="mini" type="text" @click="clickPass('2',scope.row.processId)"
+              >
+                通过
+              </el-button>
               <!--  && item.row.currentApproverId == userId -->
-              <el-button
-                v-show="(tagName == 'copy' || tagName == 'approvals')&&(scope.row.processState==='1')"
-                size="mini"
-                type="text"
-                @click="clickPass('3',scope.row.processId)"
-              >驳回</el-button>
-              <el-button
-                size="mini"
-                type="text"
-                @click="clickDetail(scope.row.processId,scope.row.processName)"
-              >查看</el-button>
+              <el-button v-show="(tagName == 'copy' || tagName == 'approvals') && (scope.row.processState==='1')"
+                size="mini" type="text" @click="clickPass('3',scope.row.processId)"
+              >
+                驳回
+              </el-button>
+              <el-button size="mini" type="text" @click="clickDetail(scope.row.processId,scope.row.processName)">
+                查看
+              </el-button>
               <!-- <el-button size="mini" type="danger">打印</el-button> -->
             </template>
           </el-table-column>
         </el-table>
+        <!-- 分页器 -->
         <el-row type="flex" justify="center" style="height:60px" align="middle">
           <el-pagination
             :total="Number(total)"
-            :page-sizes="[10,20,30, 50]"
+            :page-sizes="[10, 20, 30, 50]"
             layout="prev, pager, next"
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"

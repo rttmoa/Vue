@@ -74,11 +74,11 @@
           <div class="header headTit">
             <span>流程申请</span>
           </div>
-          <!-- 4个按钮： 离职申请弹出框，null，跳转审批页，跳转个人信息页 -->
+          <!-- TODO: 4个按钮： 离职申请弹出框，null，跳转审批页，跳转个人信息页 -->
           <div class="sideNav">
             <el-button class="sideBtn" @click="showDialog = true" style="background-color: pink">离职申请</el-button>
             <el-button class="sideBtn">请假调休</el-button>
-            <el-button class="sideBtn" @click="$router.push('/users/approvals')" style="background-color: pink">审批列表</el-button>
+            <el-button class="sideBtn" @click="$router.push('/users/approvals')" style="background-color: deeppink; color: black">审批列表</el-button>
             <el-button class="sideBtn" @click="$router.push('/users/info')" style="background-color: pink">我的信息</el-button>
           </div>
         </el-card>
