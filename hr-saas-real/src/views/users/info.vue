@@ -1,4 +1,4 @@
-<!-- 首页 + 流程申请 + 我的信息 -->
+<!-- TODO: 首页 -> 我的信息 -> http://localhost:8888/hrsaas/users/info  -->
 <template>
   <div v-loading="loading" class="myInfo">
     <div class="myInfoTop">
@@ -40,8 +40,6 @@
 
 
 
-
-
 <script>
 import { getUserDetailById } from '@/api/user'
 import { updateUser } from '@/api/approvals'
@@ -52,6 +50,7 @@ export default {
   data() {
     return {
       loading: false,
+      // 接口数据赋值给myInfo对象
       myInfo: {
         dateOfBirth: '',
         sex: ''
@@ -65,26 +64,27 @@ export default {
     this.getUserInfo();
   },
   methods: {
+    // 保存个人信息
     async onSubmit() {
-      // console.log(this.myInfo); return;
-      const user = this.myInfo;
+      const user = this.myInfo; // user: {companyId: "1",companyName: "传智播客",id: "64897b801834477cd137fe88", mobile:"13800000002", .......}
       await updateUser(user) // 更新用户信息
       await updatePersonal(user) // 更新用户详情的基础信息
       this.$message.success('保存成功')
     },
+    // 取消更改
     onCancel() {
       this.$router.back(-1);
     },
+    // 一进入页面 获取用户信息
     async getUserInfo() {
-      // console.log(this.userId) // 1063705989926227968
-      // console.log(await getUserDetailById(this.userId)) // 获取用户详情信息
-      // console.log(await getPersonalDetail(this.userId)) // 读取用户详情的基础信息
-
       this.loading = true
-      const detailData = await getUserDetailById(this.userId)
-      const personData = await getPersonalDetail(this.userId)
+      const detailData = await getUserDetailById(this.userId) // 获取用户详情信息
+      const personData = await getPersonalDetail(this.userId) // 读取用户详情的基础信息
       detailData.sex = personData.sex
       detailData.dateOfBirth = personData.dateOfBirth
+      // console.log(await getUserDetailById(this.userId))
+      // console.log(await getPersonalDetail(this.userId))
+      // console.log(detailData) // {staffPhoto: 'http://nan3%29.jpg', id: '64897b801834477cd137fe88', mobile: '13800000002', username: '淑芬儿', password: 'e10adc3949ba59abbe56e057f20f883e', …}
       this.myInfo = detailData
       this.loading = false
     }

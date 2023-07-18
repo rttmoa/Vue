@@ -1,6 +1,8 @@
+<!-- TODO: 日历组件 -->
 <template>
   <div>
     <el-row type="flex" justify="end">
+      <!-- <span>下拉框</span> -->
       <el-select v-model="currentYear" size="small" style="width: 120px" @change="dataChage">
         <el-option v-for="item in yearList" :key="item" :label="item" :value="item" />
       </el-select>
@@ -20,10 +22,10 @@
         </div>
       </template>
     </el-calendar>
-
   </div>
 </template>
 
+<!-- TODO: 顶部两个下拉框绑定的值改变后绑定给日历组件 （el-select & el-option & el-calendar） -->
 <script>
 export default {
   filters: {
@@ -42,17 +44,17 @@ export default {
   },
   data() {
     return {
-      currentMonth: null, // 当前月份
-      currentYear: null, // 当前年份
-      currentDate: null, // 当前时间
-      yearList: [] // 可选择的年份  前5年  +当前年+ 后5年
-
+      currentMonth: null, // 当前月份（07）
+      currentYear: null, // 当前年份 （2023）
+      currentDate: null, // 当前时间 （2023-07）
+      yearList: [] // 可选择的年份  前5年 +当前年+ 后5年
     }
   },
   created() {
     // 当前年和月都没值 要去赋值
     this.currentMonth = this.startDate.getMonth() + 1
     this.currentYear = this.startDate.getFullYear()
+    // yearList（2023）：[2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028]
     this.yearList = Array.from(Array(11), (v, i) => (i + this.currentYear - 5))
   },
   methods: {

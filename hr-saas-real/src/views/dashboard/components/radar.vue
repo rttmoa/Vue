@@ -1,3 +1,4 @@
+<!-- TODO: 雷达图组件 -->
 <template>
   <div ref="myDiv" class="radar-echart" />
 </template>
@@ -16,9 +17,9 @@ require('echarts/lib/component/legend')
 
 
 export default {
-  //  组件中获取组件的dom元素
-  // beforeCreate created  beforeMount  mounted  beforeUpdate updated  beforeDestory  destoryed
-  //  TODO: 挂载
+  //  TODO: 组件中获取组件的dom元素
+  //  钩子：beforeCreate created  beforeMount  mounted  beforeUpdate updated  beforeDestory  destoryed
+  // Echarts的引入，获取DOM元素（this.$refs.myDiv）
   mounted() {
     var myEchart = echarts.init(this.$refs.myDiv)
     // 图表的元素一定要有高和宽

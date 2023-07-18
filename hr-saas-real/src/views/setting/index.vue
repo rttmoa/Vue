@@ -3,7 +3,7 @@
   <div class="dashboard-container">
 
     <div class="app-container">
-      <!-- FIXME: 公司页面结构  ———— Tab1角色管理 + Tab2公司信息 -->
+      <!-- FIXME: 公司页面结构  （ Tab1角色管理 + Tab2公司信息 ） -->
       <el-tabs>
         <el-tab-pane label="角色管理">
           <el-row style="height: 60px">
@@ -34,6 +34,8 @@
               @current-change="getRoleList"
             />
           </el-row>
+          <!-- FIXME: alert -->
+          <el-alert type="warning" title="分配权限 树结构 && 新增/编辑角色信息" show-icon :closable="false" />
         </el-tab-pane>
         <el-tab-pane label="公司信息">
           <el-alert
@@ -71,7 +73,6 @@
             </el-form-item>
           </el-form>
         </el-tab-pane>
-        <el-tab-pane label="需 测试 分配权限(树结构)" ></el-tab-pane>
       </el-tabs>
     </div>
 
@@ -142,7 +143,7 @@ export default {
         page: 1,
         pagesize: 10
       },
-      formData: {}, // 公司信息页数据
+      formData: {}, // 公司信息数据
       roleForm: {}, // 新增/编辑角色信息
       rules: { name: [{ required: true, message: '角色名称不能为空', trigger: 'blur' }] },
       showDialog: false,  // 是否显示弹出框
@@ -157,7 +158,7 @@ export default {
   },
   // 计算
   computed: {
-    ...mapGetters(['companyId'])
+    ...mapGetters(['companyId']) // FIXME: ...mapGetters(['companyId']) 等同于 this.$store.getters[`companyId`]
   },
   // 创建
   created() {
@@ -165,16 +166,14 @@ export default {
     this.getCompanyInfo() // 获取公司数据
   },
   methods: {
-    // 页码改变事件
-    // 获取列表数据
     async getRoleList() {
       const { total, rows } = await getRoleList(this.page)
+      // debugger
       this.page.total = total
       this.list = rows
     },
     async getCompanyInfo() {
-      // console.log(await getCompanyInfo(this.companyId))
-      // console.log(await getCompanyInfo(this.$store.getters.companyId))
+      // console.log(this.companyId === this.$store.getters.companyId) // true
       this.formData = await getCompanyInfo(this.companyId)
     },
     async delRole(id) {
@@ -188,50 +187,46 @@ export default {
     },
     // 编辑按钮
     async editRole(id) {
-      // console.log(await getRoleDetail(id))
-      this.roleForm = await getRoleDetail(id)
+      this.roleForm = await getRoleDetail(id) // FIXME: 当编辑时，获取角色信息赋值给 roleForm 用
       this.showDialog = true
     },
-    // 提交按钮 —— 添加或者编辑角色时
+    // 提交按钮 （添加 / 编辑角色）
     async btnOK() {
       try {
         await this.$refs.roleForm.validate()
         if (this.roleForm.id) {
-          // 编辑场景
           await updateRole(this.roleForm)
           this.showDialog = false
         } else {
-          // 新增场景
           await addRole(this.roleForm)
           this.showDialog = false
         }
-        this.getRoleList() // 获取角色列表
+        this.getRoleList()
       } catch (error) {
-        console.log(error)
-        this.showDialog = false // 关闭弹层 会触发 close事件
+        this.showDialog = false
       }
     },
     btnCancel() {
-      this.roleForm = {} // 重置数据
-      this.$refs.roleForm.resetFields() // 重置校验
+      // 重置数据
+      this.roleForm = {}
+      // 重置表单值
+      this.$refs.roleForm.resetFields()
       this.showDialog = false;
     },
-    // 分配权限 —————————————— 树结构(utils)
+    // TODO: 分配权限  （树结构 /utils/indexjs ）
     async assignRole(id) {
       this.roleId = id;
       this.permData = transListToTreeData(await getPermissionList(), '0') // 将树形转化
       const { permIds } = await getRoleDetail(id) // permIds就是当前点击的角色的权限数据
+      // console.log('permIds', permIds) // (2) ['604f7e79f900be1850edb158', '604f7df5f900be1850edb152']
+      // console.log('this.permData', this.permData) // (8) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…},]
       this.selectChecks = permIds
       this.showPermDialog = true;
-      // debugger
     },
-    /***--- 确定分配权限 ---**/
+    // 分配权限Dilog确定按钮
     async btnPermOK() {
-      // console.log(this)
-      // console.log(this.roleId)
-      // console.log(this.$refs.permTree)
-      // console.log(this.$refs.permTree.getCheckedKeys())
-      // TODO: this.$refs.permTree.getCheckedKeys()得到的是一个字符串数组 数组中id的值
+      // console.log(this.$refs.permTree) // VueComponent {_uid: 898, _isVue: true, $options: {…}, _renderProxy: Proxy(VueComponent), _self: VueComponent, …}
+      // console.log(this.$refs.permTree.getCheckedKeys()) // ['604f7df5f900be1850edb152', '604f7e07f900be1850edb153', '604f7e79f900be1850edb158']
       await assignPerm({ id: this.roleId, permIds: this.$refs.permTree.getCheckedKeys() });
       this.$message.success('分配权限成功');
       this.showPermDialog = false;

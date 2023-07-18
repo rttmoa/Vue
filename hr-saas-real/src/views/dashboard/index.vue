@@ -5,6 +5,7 @@
       <div>
         <div class="fl headL">
           <div class="headImg">
+            <!-- FIXME: 使用自定义全局指令 v-imageerror -->
             <img v-imageerror="require('@/assets/common/head.jpg')" :src="userInfo.staffPhoto">
           </div>
           <div class="headInfoTip">
@@ -19,18 +20,19 @@
     <el-row type="flex" justify="space-between">
       <!-- 左侧内容 -->
       <el-col :span="13" style="padding-right:26px">
-        <!-- 工作日历 -->
+        <!-- #### 工作日历 -->
         <el-card class="box-card">
           <div slot="header" class="header">
             <span>工作日历</span>
           </div>
           <!-- 放置日历组件 -->
+          <!-- TODO: 顶部两个下拉框绑定的值改变后绑定给日历组件 （el-select & el-option & el-calendar） -->
           <work-calendar />
         </el-card>
-        <!-- 公告 -->
+        <!-- #### 公告 -->
         <el-card class="box-card">
           <div class="advContent">
-            <div class="title"> 公告</div>
+            <div class="title">公告</div>
             <div class="contentItem">
               <ul class="noticeList">
                 <li>
@@ -67,27 +69,30 @@
       </el-col>
       <!-- 右侧内容 -->
       <el-col :span="11">
+        <!-- #### 流程申请 -->
         <el-card class="box-card">
           <div class="header headTit">
             <span>流程申请</span>
           </div>
+          <!-- 4个按钮： 离职申请弹出框，null，跳转审批页，跳转个人信息页 -->
           <div class="sideNav">
-            <el-button class="sideBtn" @click="showDialog = true">加班离职</el-button>
+            <el-button class="sideBtn" @click="showDialog = true" style="background-color: pink">离职申请</el-button>
             <el-button class="sideBtn">请假调休</el-button>
-            <el-button class="sideBtn" @click="$router.push('/users/approvals')">审批列表</el-button>
-            <el-button class="sideBtn" @click="$router.push('/users/info')">我的信息</el-button>
+            <el-button class="sideBtn" @click="$router.push('/users/approvals')" style="background-color: pink">审批列表</el-button>
+            <el-button class="sideBtn" @click="$router.push('/users/info')" style="background-color: pink">我的信息</el-button>
           </div>
         </el-card>
-
-        <!-- 绩效指数 -->
+        <!-- #### 绩效指数 -->
         <el-card class="box-card">
           <div slot="header" class="header">
             <span>绩效指数</span>
           </div>
-          <!-- 放置雷达图 -->
+          <!-- TODO: 放置雷达图 -->
+          <!-- //  钩子：beforeCreate created  beforeMount  mounted  beforeUpdate updated  beforeDestory  destoryed -->
+          <!-- //  Echarts的引入，获取DOM元素（this.$refs.myDiv） -->
           <radar />
         </el-card>
-        <!-- 帮助连接 -->
+        <!-- #### 帮助连接 -->
         <el-card class="box-card">
           <div class="header headTit">
             <span>帮助链接</span>
@@ -117,7 +122,7 @@
         </el-card>
       </el-col>
     </el-row>
-    <!-- 弹层 -->
+
     <!-- 弹出层 -->
     <el-dialog :visible="showDialog" title="离职申请" @close="btnCancel">
       <el-form
@@ -201,7 +206,10 @@ export default {
         }
       })
     },
+    // 离职申请 -> 关闭弹出框 -> 测试mapGetters&mapState
     btnCancel() {
+      // console.log('mapGetters', this.name) // 染尘
+      // console.log('mapState', this.userInfo) // {userId, username, roles:{}, roleIds:[], company, companyId}
       this.showDialog = false
       this.$refs.ruleForm.resetFields()
       this.ruleForm = {

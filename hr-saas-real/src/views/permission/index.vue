@@ -10,15 +10,14 @@
           <el-button type="primary" size="small" @click="addPermission('0', 1)">添加权限</el-button>
         </template>
       </page-tools>
-
       <h3>测试树结构</h3>
-
       <!-- 如果要用树形的话 必须给一个属性 row-key -->
       <el-table border :data="list" row-key="id">
         <el-table-column prop="name" label="名称" />
         <el-table-column align="center" prop="code" label="标识" />
         <el-table-column align="center" prop="description" label="描述" />
         <el-table-column align="center" label="操作">
+          <!-- TODO: 表单内插槽 v-slot -->
           <template v-slot="{ row }">
             <!-- 当type==1的时候才显示 添加按钮 -->
             <el-button v-if="row.type === 1" type="text" @click="addPermission(row.id, 2)">添加</el-button>
@@ -44,11 +43,7 @@
         </el-form-item>
         <el-form-item label="开启">
           <!-- 当值为1时表示打开 当值为0时表示关闭 -->
-          <el-switch
-            v-model="formData.enVisible"
-            active-value="1"
-            inactive-value="0"
-          />
+          <el-switch v-model="formData.enVisible" active-value="1" inactive-value="0" />
         </el-form-item>
       </el-form>
       <!-- 按钮 -->
@@ -59,9 +54,11 @@
         </el-col>
       </el-row>
     </el-dialog>
+
   </div>
 </template>
 
+<!-- TODO: 新增权限时，员工管理下有children，添加到children当中，而children中无法再新增权限 （树结构） -->
 <script>
 import { getPermissionList, addPermission, updatePermission, delPermission, getPermissionDetail } from '@/api/permission'
 import { transListToTreeData } from '@/utils'
@@ -69,7 +66,9 @@ export default {
   data() {
     return {
       list: [],
+      // 是否展示添加权限弹出框
       showDialog: false,
+      // 添加权限表单值
       formData: {
         name: '', // 名称
         code: '', // 标识
@@ -78,6 +77,7 @@ export default {
         pid: '', // 因为做的是树 需要知道添加到哪个节点下了
         enVisible: '0' // 开启
       },
+      // 新增权限表单规则
       rules: {
         name: [{ required: true, message: '权限名称不能为空', trigger: 'blur' }],
         code: [{ required: true, message: '权限标识不能为空', trigger: 'blur' }],
@@ -93,7 +93,8 @@ export default {
       // console.log("递归算法")
       // console.log((await getPermissionList()).map(v => { return {name: v.name, id: v.id, pid: v.pid} }))
       // console.log(transListToTreeData((await getPermissionList()).map(v => { return {name: v.name, id: v.id, pid: v.pid} }), "0"))
-      this.list = transListToTreeData(await getPermissionList(), '0')   // ———————— 递归算法转化树形
+      this.list = transListToTreeData(await getPermissionList(), '0')
+      // console.log('树结构 list', this.list) // FIXME: 转换后的树结构 List
     },
     // 删除权限
     delPermission(id) {
@@ -104,7 +105,6 @@ export default {
         this.getPermissionList()
       })
     },
-    // pid  类型
     addPermission(pid, type) {
       this.formData.pid = pid
       this.formData.type = type
@@ -112,7 +112,7 @@ export default {
     },
     // 编辑权限点
     async editPermission(id) {
-      this.formData = await getPermissionDetail(id)
+      this.formData = await getPermissionDetail(id) // FIXME: 编辑某个权限时，获取权限数据，赋值给 this.formData
       this.showDialog = true
     },
     // 添加/编辑权限 确定时
@@ -142,7 +142,7 @@ export default {
         pid: '', // 因为做的是树 需要知道添加到哪个节点下了
         enVisible: '0' // 开启
       }
-      this.$refs.perForm.resetFields() // 重置校验
+      this.$refs.perForm.resetFields() // 重置表单值
       this.showDialog = false
     },
   }

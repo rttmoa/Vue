@@ -1,0 +1,24 @@
+/src/views/
+
+
+
+/dashboard    首页
+
+/login        登陆注册
+/permission   权限管理
+/setting      公司设置
+
+
+
+
+
+
+
+
+
+生命周期：beforeCreate created  beforeMount  mounted  beforeUpdate updated  beforeDestory  destoryed
+获取组件DOM元素： <div ref="myDiv" class="radar-echart" />  ->  this.$refs.myDiv
+
+
+如果数组中 只有两个车 并且车号是1和8，那么数组把1车过滤掉就好了
+根据时间倒序，把车号更新给主任务  
