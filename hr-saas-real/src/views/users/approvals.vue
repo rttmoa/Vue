@@ -1,6 +1,7 @@
 <!-- TODO: 首页 -> 审批列表 -> http://localhost:8888/hrsaas/users/approvals  -->
 <template>
   <div class="usersApprovalsContainer">
+
     <div class="approvalsTop">
       <el-tabs v-model="tagName" @tab-click="tabSwitch">
         <el-tab-pane label="全部" name="copy" />
@@ -8,8 +9,9 @@
         <el-tab-pane label="待审批" name="approvals" />
       </el-tabs>
     </div>
+
     <div class="approvalsContent">
-      <!-- FIXME: 审批类型 && 审批状态 -->
+      <!-- FIXME: 审批类型 && 审批状态 （表头筛选状态） -->
       <div class="topTitle">
         <div>
           <span>审批类型：</span>
@@ -75,34 +77,34 @@
             <template slot-scope="scope">
                <!-- && (item.row.stateOfApproval == '待审批' || item.row.stateOfApproval == '已驳回') -->
               <el-button v-show="(tagName == 'launch') && (scope.row.processState==='1')"
-                size="mini" type="text" @click="clickPass('4',scope.row.processId)"
+                size="large" type="text" @click="clickPass('4', scope.row.processId)"
               >
                 撤销
               </el-button>
               <!--  && item.row.currentApproverId == userId -->
-              <el-button v-show="(tagName == 'copy' || tagName == 'approvals')&&(scope.row.processState==='1')"
-                size="mini" type="text" @click="clickPass('2',scope.row.processId)"
+              <el-button v-show="(tagName == 'copy' || tagName == 'approvals') && (scope.row.processState==='1')"
+                size="large" type="text" @click="clickPass('2', scope.row.processId)"
               >
                 通过
               </el-button>
               <!--  && item.row.currentApproverId == userId -->
               <el-button v-show="(tagName == 'copy' || tagName == 'approvals') && (scope.row.processState==='1')"
-                size="mini" type="text" @click="clickPass('3',scope.row.processId)"
+                size="large" type="text" @click="clickPass('3', scope.row.processId)"
               >
                 驳回
               </el-button>
-              <el-button size="mini" type="text" @click="clickDetail(scope.row.processId,scope.row.processName)">
+              <el-button size="large" type="text" @click="clickDetail(scope.row.processId, scope.row.processName)">
                 查看
               </el-button>
-              <!-- <el-button size="mini" type="danger">打印</el-button> -->
+              <!-- <el-button size="large" type="danger">打印</el-button> -->
             </template>
           </el-table-column>
         </el-table>
         <!-- 分页器 -->
-        <el-row type="flex" justify="center" style="height:60px" align="middle">
+        <el-row type="flex" justify="center" style="height: 60px" align="middle">
           <el-pagination
             :total="Number(total)"
-            :page-sizes="[10, 20, 30, 50]"
+            :page-sizes="[5, 10, 20, 30, 50]"
             layout="prev, pager, next"
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
@@ -110,10 +112,12 @@
         </el-row>
       </div>
     </div>
-    <!--查看弹框-->
+
+    <!-- TODO: 弹窗显示内容为：审批类型(离职/加班/请假) + 操作查看 -->
     <el-dialog :title="topLabel" :visible.sync="centerDialogVisible" width="50%" left>
       <!-- <BecomeARegularWorker v-show="seeState == 'becomeARegularWorker'" /> -->
       <!-- <AdjustThePost v-show="seeState == 'adjustThePost'" /> -->
+      <!-- TODO: 审批类型为离职 -->
       <Quit
         v-show="seeState == 'quit'"
         ref="quit"
@@ -136,16 +140,11 @@
         :tab-lab="tagName"
         @closeDialog="closeDialog"
       />
-    <!-- <Employment v-show="seeState == 'employment'" /> -->
+      <!-- <Employment v-show="seeState == 'employment'" /> -->
     </el-dialog>
-    <!--查看弹框-->
-    <!-- 通过审核 -->
-    <el-dialog
-      title="通过审核"
-      :visible.sync="adoptVisible"
-      width="30%"
-      :before-close="handleClose"
-    >
+
+    <!-- 通过审核 Dialog -->
+    <el-dialog  title="通过审核" :visible.sync="adoptVisible" width="30%" :before-close="handleClose">
       <span><el-input v-model="formData.handleOpinion" type="textarea" /></span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="adoptVisible = false">取消</el-button>
@@ -162,13 +161,7 @@
 
 
 <script>
-import {
-  getApprovalList,
-  approvalsDel,
-  approvalsPass,
-  approvalsReject,
-  getFlowList
-} from '@/api/approvals'
+import {  getApprovalList,  approvalsDel,  approvalsPass,  approvalsReject,  getFlowList  } from '@/api/approvals'
 import baseApi from '@/api/constant/approvals'
 import Quit from './components/quit'
 import Leave from './components/leave-job'
@@ -176,27 +169,37 @@ import Overtime from './components/overtime'
 import { mapGetters } from 'vuex'
 export default {
   name: 'UsersTableIndex',
+  // TODO: 封装组价： quit、leave-job、overtime
   components: {
+    // 离职
     Quit,
+    // 请假、调休
     Leave,
+    // 加班
     Overtime
   },
-
   data() {
     return {
+      // 标签名
       tagName: 'copy',
+      // 查看状态：调岗、离职、审核、加班、录用、请假、调休、转正
       seeState: 'becomeARegularWorker',
       centerDialogVisible: false,
       topLabel: '转正',
-      approvalsType: [],
+      // 审批类型选中值（单选框）
       approvalsTypes: '',
+      // 审批类型接口数据（单选框）
+      approvalsType: [],
+      // 审批状态接口数据（复选框）
       approvalsState: baseApi.approvalState,
+      // 审批状态选中值（复选框）
       approvalsStates: [],
       tableData: [],
       page: null,
       pageSize: null,
       total: '',
       selectedId: '',
+      // 页码信息：
       pagination: {
         page: 1,
         pageSize: 10,
@@ -204,6 +207,7 @@ export default {
         process_state$in: this.process_state$in
         // proc_apply_user_id$equal:''
       },
+      // 审核 Dialog
       adoptVisible: false,
       formData: {
         handleOpinion: '',
@@ -216,101 +220,58 @@ export default {
     ...mapGetters(['userId'])
   },
   created() {
-    this.getApprovalList()
-    this.getFlowList()
+    this.getApprovalList()  // 获取审批数据
+    this.getFlowList()      // 获取流程数据
   },
   methods: {
+    // api 审批数据 （表格中的数据内容）
     async getApprovalList() {
-      console.log(123)
       const result = await getApprovalList(this.pagination)
       this.total = result.total
       this.tableData = result.rows
+      // console.log(await getApprovalList(this.pagination)) // 表格内容
     },
+    // api 流程数据 （单选框中内容）
     async getFlowList() {
-      console.log(await getFlowList())
-      this.approvalsType = await getFlowList()
+      this.approvalsType = await getFlowList()  // 离职 / 请假 / 加班
     },
-    async delProcess(id) {
-      await approvalsDel({ id })
-      this.$message.success('撤销成功')
-      this.getApprovalList()
-    },
+    // 审核弹窗确定
     async handleProcess() {
       await approvalsPass(this.formData)
       this.$message.success('操作成功')
       this.getApprovalList()
       this.adoptVisible = false
     },
-    async rejectProcess(id) {
-      await approvalsReject({ id })
-      this.getApprovalList()
-      this.$message.success('操作成功')
-    },
-    changeSelectParams() {
-      this.pagination.processKey = this.approvalsTypes
-      this.pagination.processState = this.approvalsStates.join(',')
-      this.getApprovalList()
-    },
-    // 每页显示信息条数
-    handleSizeChange(pageSize) {
-      this.pagination.pagesize = pageSize
-      if (this.pagination.page === 1) {
-        this.getApprovalList()
-      }
-    },
-    // 进入某一页
-    handleCurrentChange(val) {
-      this.pagination.page = val
-      this.getApprovalList()
-    },
+    // TODO: 切换Tabs： 全部 / 我发起的 / 待审批
     tabSwitch() {
+      // 审批状态 和 程序状态
       this.approvalsStates = []
       this.pagination.processState = ''
       // let sendData = {};
-      if (this.tagName === 'launch') {
+      if (this.tagName === 'launch') { // 发起
         delete this.pagination.userId
         delete this.pagination.procCurrNodeUserId
         this.pagination.userId = this.userId
-      } else if (this.tagName === 'approvals') {
+      } else if (this.tagName === 'approvals') { // 审批
         delete this.pagination.userId
         delete this.pagination.procCurrNodeUserId
         this.pagination.procCurrNodeUserId = this.userId
         this.pagination.processState = '1'
-      } else if (this.tagName === 'copy') {
+      } else if (this.tagName === 'copy') { // 全部
         delete this.pagination.userId
         delete this.pagination.procCurrNodeUserId
       }
       this.getApprovalList()
     },
-    clickCancel(id) {
-      this.$confirm('是否撤销该流程')
-        .then(() => {
-          this.delProcess(id)
-        })
+    // TODO: 表头筛选条件（单选，复选框）
+    changeSelectParams() {
+      this.pagination.processKey = this.approvalsTypes
+      this.pagination.processState = this.approvalsStates.join(',')
+      // console.log('pagination', this.pagination)
+      // this.pagination:  {page: 1, pageSize: 10, processKey: "process_leave", processState: "2,3", process_key$equal: undefined,}
+      this.getApprovalList()
     },
-    clickPass(num, id) {
-      this.adoptVisible = true
-      this.formData.processId = id
-      if (num === '2') {
-        this.formData.handleType = '2'
-      } else if (num === '3') {
-        this.formData.handleType = '3'
-      } else if (num === '4') {
-        this.formData.handleType = '4'
-      }
-      this.formData.handleUserId = this.userId
-    },
-    clickBack(id) {
-      this.$confirm('是否驳回', '确认', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-        center: true
-      })
-        .then(() => {
-          this.rejectProcess(id)
-        })
-    },
+    // TODO: 操作 - 查看按钮
     clickDetail(id, approvalType) {
       this.centerDialogVisible = true
       this.topLabel = approvalType
@@ -349,15 +310,67 @@ export default {
           this.topLabel = '转正'
       }
     },
+    // TODO: Table操作 - 撤销 / 通过 / 驳回按钮
+    clickPass(num, id) {
+      this.adoptVisible = true
+      this.formData.processId = id
+      if (num === '2') {
+        this.formData.handleType = '2'
+      } else if (num === '3') {
+        this.formData.handleType = '3'
+      } else if (num === '4') {
+        this.formData.handleType = '4'
+      }
+      this.formData.handleUserId = this.userId
+    },
+    // 每页显示信息条数 （@size-change）
+    handleSizeChange(pageSize) {
+      this.pagination.pagesize = pageSize
+      if (this.pagination.page === 1) {
+        this.getApprovalList()
+      }
+    },
+    // 进入某一页 （@current-change）
+    handleCurrentChange(val) {
+      this.pagination.page = val
+      this.getApprovalList()
+    },
+
+    async delProcess(id) {
+      await approvalsDel({ id })
+      this.$message.success('撤销成功')
+      this.getApprovalList()
+    },
+    clickCancel(id) {
+      this.$confirm('是否撤销该流程')
+        .then(() => {
+          this.delProcess(id)
+        })
+    },
+
+    async rejectProcess(id) {
+      await approvalsReject({ id })
+      this.getApprovalList()
+      this.$message.success('操作成功')
+    },
+    clickBack(id) {
+      this.$confirm('是否驳回', '确认', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        center: true
+      }).then(() => {
+          this.rejectProcess(id)
+        })
+    },
+    // 关闭 自定义组件 按钮
     closeDialog() {
       this.centerDialogVisible = false
       this.getApprovalList()
     },
+    // 审核弹窗 右上角x关闭时 提示是否关闭
     handleClose(done) {
-      this.$confirm('确认关闭？')
-        .then(_ => {
-          done()
-        })
+      this.$confirm('确认关闭？').then(_ => { done() })
     }
   }
 }

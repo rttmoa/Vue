@@ -38,8 +38,6 @@
 </template>
 
 
-
-
 <script>
 import { getUserDetailById } from '@/api/user'
 import { updateUser } from '@/api/approvals'

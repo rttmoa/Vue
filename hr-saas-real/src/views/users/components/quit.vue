@@ -1,5 +1,7 @@
+<!-- TODO: 离职：查看条件为  审批类型为离职 + 操作为查看 -->
 <template>
   <div class="AdjustThePost">
+    <!-- TODO: 管理员信息 -->
     <div class="infoBox">
       <div class="logo">
         <img src="@/assets/common/img.jpeg" alt>
@@ -9,15 +11,14 @@
           <span class="name">{{ ruleForm.username }}</span>
         </p>
         <p>
-          <span>部门：</span>
-          {{ ruleForm.departmentName }}
+          <span>部门：</span>{{ ruleForm.departmentName }}
         </p>
         <p>
-          <span>入职时间：</span>
-          {{ ruleForm.timeOfEntry | formatDate }}
+          <span>入职时间：</span>{{ ruleForm.timeOfEntry | formatDate }}
         </p>
       </div>
     </div>
+    <!-- TODO: Form表单部分 -->
     <div>
       <el-form ref="ruleForm" :model="ruleForm" label-width="120px" class="demo-ruleForm">
         <el-form-item label="期望离职时间：" prop="expectedDepartureTime">
@@ -38,28 +39,13 @@
             :disabled="computeOpType"
           />
         </el-form-item>
-        <div class="buttones" style="text-align: center;margin-top: 40px">
+        <!-- TODO: 控制 底部按钮是否显示与隐藏 -->
+        <div class="buttones" style="text-align: center; margin-top: 40px">
           <el-form-item>
-            <el-button
-              v-show="(ruleForm.state == 0 || ruleForm.state == 1) && tabLab =='launch'"
-              type="primary"
-              @click="btnClick"
-            >撤销</el-button>
-            <el-button
-              v-show="(ruleForm.state == 0 || ruleForm.state == 1) && tabLab =='approvals'"
-              type="primary"
-              @click="btnPass"
-            >通过</el-button>
-            <el-button
-              v-show="(ruleForm.state == 0 || ruleForm.state == 1) && tabLab =='approvals'"
-              type="primary"
-              @click="btnReject"
-            >驳回</el-button>
-            <el-button
-              v-show="ruleForm.state == 4 && tabLab =='launch'"
-              type="primary"
-              @click="btnSave"
-            >提交</el-button>
+            <el-button v-show="(ruleForm.state == 0 || ruleForm.state == 1) && tabLab =='launch'" type="primary" @click="btnClick">撤销</el-button>
+            <el-button v-show="(ruleForm.state == 0 || ruleForm.state == 1) && tabLab =='approvals'" type="primary" @click="btnPass">通过</el-button>
+            <el-button v-show="(ruleForm.state == 0 || ruleForm.state == 1) && tabLab =='approvals'" type="primary" @click="btnReject">驳回</el-button>
+            <el-button v-show="ruleForm.state == 4 && tabLab =='launch'" type="primary" @click="btnSave">提交</el-button>
           </el-form-item>
         </div>
       </el-form>
@@ -68,13 +54,7 @@
 </template>
 
 <script>
-import {
-  getApprovalsDetail,
-  approvalsDel,
-  approvalsPass,
-  approvalsReject,
-  applyDimission
-} from '@/api/approvals'
+import {  getApprovalsDetail,  approvalsDel,  approvalsPass,  approvalsReject,  applyDimission  } from '@/api/approvals'
 export default {
   name: 'UsersTableIndex',
   props: {
@@ -96,6 +76,7 @@ export default {
     }
   },
   computed: {
+    // 计算 disabled 属性
     computeOpType() {
       return this.ruleForm.stateOfApproval !== '已撤销'
     }
@@ -108,22 +89,27 @@ export default {
       const data = await getApprovalsDetail(this.selectedId)
       this.ruleForm = data
       this.ruleForm.data = JSON.parse(this.ruleForm.procData)
+      console.log(await getApprovalsDetail(this.selectedId))
     },
+    // BTN - 撤销 并 this.$emit('closeDialog')
     async btnClick() {
       await approvalsDel(this.selectedId)
       this.$message.success('撤销成功')
       this.$emit('closeDialog')
     },
+    // BTN - 通过 并 this.$emit('closeDialog')
     async btnPass() {
       await approvalsPass({ id: this.selectedId })
       this.$message.success('操作成功')
       this.$emit('closeDialog')
     },
+    // BTN - 驳回 并 this.$emit('closeDialog')
     async btnReject() {
       await approvalsReject({ id: this.selectedId })
       this.$message.success('操作成功')
       this.$emit('closeDialog')
     },
+    // BTN - 提交 并 this.$emit('closeDialog')
     async btnSave() {
       const sendForm = {}
       sendForm.processInstanceId = this.selectedId

@@ -125,13 +125,7 @@
 
     <!-- 弹出层 -->
     <el-dialog :visible="showDialog" title="离职申请" @close="btnCancel">
-      <el-form
-        ref="ruleForm"
-        :model="ruleForm"
-        status-icon
-        label-width="110px"
-        :rules="rules"
-      >
+      <el-form ref="ruleForm" :model="ruleForm" status-icon label-width="110px" :rules="rules">
         <!--离职表单-->
         <el-form-item label="离职时间" prop="end_time">
           <el-date-picker
